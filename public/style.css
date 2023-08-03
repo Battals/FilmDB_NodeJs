@@ -1,0 +1,192 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e8e5e5; 
+    color: #fff; 
+}
+
+header {
+    background-color: #b9b8b8;;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.movie-list {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.movie {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.movie img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.movie h2 {
+    margin: 0;
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+}
+
+
+
+.movie p {
+    margin: 0;
+    color: #666;
+}
+
+.date-picker {
+    text-align: center;
+    margin-top: 2rem;
+    background-color: #e8e5e5;; 
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.date-picker label {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+
+.date-picker input[type="date"] {
+    background-color: #e8e5e5; 
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.date-picker input[type="date"]::before {
+    content: none;
+}
+
+.movie-list {
+    margin-top: 2rem;
+}
+  
+  .container {
+    width: 400px;
+  }
+
+  .loginContainer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      
+  }
+  
+  .glass-frame {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #fff;
+  }
+  
+  .tabs {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .tab {
+    background: none;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    outline: none;
+    transition: 0.3s;
+  }
+  
+  .tab:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+  }
+  
+  .tab-content {
+    display: none;
+    margin-top: 20px;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    padding: 10px 0;
+    background: #323232;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  button[type="submit"]:hover {
+    background: #444;
+  }
+
+  a {
+    display: inline-block;
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+a:hover {
+    background-color: #444;
+}
+
+#headerLogo{
+    width: 35px;
+    height: 30px;
+    position: fixed;
+}

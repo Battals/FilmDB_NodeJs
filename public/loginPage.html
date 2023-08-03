@@ -1,0 +1,33 @@
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <header>
+      <a href="frontPage.html">
+        <h1>KinoNu.dk</h1>
+      </a>
+        <nav>
+            <a href="loginPage.html">Login</a>
+            <a href="registerPage.html">Opret bruger</a>
+            <a href="#">Film i biograffen</a>
+            <a href="#">Kommende film</a>
+            <img id="headerLogo" src="/public/assets/2027080.png" alt="err">
+        </nav>
+    </header>
+  <div class="loginContainer">
+    <div class="glass-frame">
+      <h1 style="font-size: smaller; text-align: inherit; color: #666; margin: revert;">Log ind på KinoNu</h1>
+        <form action="/login" method="POST">
+          <input type="text" placeholder="Brugernavn" name="username" required>
+          <input type="password" placeholder="Kode" name="password" required>
+          <button type="submit">Login</button>
+        </form>
+
+    </div>
+  </div>
+</body>
+
+</html>
