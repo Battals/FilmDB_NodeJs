@@ -2,26 +2,37 @@ import express from "express";
 import multer from "multer";
 import { register, login } from "../controllers/authentication.js";
 import createDBConnection from '../db/dbConnection.js';
+import path from 'path'
 
-const upload = multer();
 const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
 
-router.post("/createMovie", upload.single("image"), (req, res) => {
-  const { movie_name, release_year } = req.body;
-  const imageBuffer = req.file.buffer;
+const storage = multer.diskStorage({
+  destination: 'public/assets/',
+  filename: function (req, file, cb) {
+    const uniqueFileName = Date.now() + path.extname(file.originalname);
+    cb(null, uniqueFileName);
+  }
+});
 
-  const db = createDBConnection()
+const upload = multer({ storage: storage });
 
-  const sql = 'INSERT INTO movies (movie_name, release_year, movie_image) VALUES (?, ?, ?)';
-  db.query(sql, [movie_name, release_year, imageBuffer], (err, result) => {
+router.post('/createMovie', upload.single('image'), (req, res) => {
+  const { movie_name, release_year, description } = req.body;
+  console.log(req.body);
+  const imagePath = req.file.filename; 
+
+  const db = createDBConnection();
+
+  const sql = 'INSERT INTO movies (movie_name, release_year, image_path, description) VALUES (?, ?, ?, ?)';
+  db.query(sql, [movie_name, release_year, imagePath, description], (err, result) => {
     if (err) {
       console.error('Error inserting movie:', err);
       res.status(500).send('Error inserting movie');
     } else {
-      res.send("Movie created successfully!");
+      res.sendFile("frontPage.html", {root: 'public'})
     }
   });
 });

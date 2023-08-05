@@ -44,41 +44,41 @@
 <script src="../server/controllers/authentication.js" type="module"></script>
 <script type="module">
     function displayMovies(movies) {
-    
-    
-        
       const movieListDiv = document.querySelector('.movie-list');
       movieListDiv.innerHTML = '';
-  
+
       movies.forEach(movie => {
         const movieDiv = document.createElement('div');
         movieDiv.classList.add('movie');
-  
 
-        const imageBlob = new Blob([movie.movie_image], { type: 'image/jpeg' });
+        const imageUrl = `assets/${movie.image_path}`;
+        console.log(imageUrl)
+
+    
 
 
-  
-        const imageUrl = URL.createObjectURL(imageBlob);
-  
+
         const image = document.createElement('img');
-        console.log(image)
         image.src = imageUrl; 
         image.alt = movie.movie_name;
         movieDiv.appendChild(image);
-  
+
         const title = document.createElement('h2');
         title.textContent = movie.movie_name;
         movieDiv.appendChild(title);
-  
+
         const startTime = document.createElement('p');
         startTime.textContent = `Start Time: ${movie.release_year}`;
         movieDiv.appendChild(startTime);
-  
+
+        const description = document.createElement('p');
+        description.textContent = movie.description;
+        movieDiv.appendChild(description); 
+
         movieListDiv.appendChild(movieDiv);
       });
     }
-  
+
     fetch('/movies')
       .then(response => response.json())
       .then(data => {
