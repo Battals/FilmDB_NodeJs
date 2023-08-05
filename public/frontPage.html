@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kino</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <header>
         <a href="frontPage.html">
-        <h1>KinoNu.dk</h1>
-    </a>
+            <h1>KinoNu.dk</h1>
+        </a>
         <nav>
             <a href="loginPage.html">Login</a>
             <a href="registerPage.html">Opret bruger</a>
@@ -20,23 +20,73 @@
         </nav>
     </header>
 
-
-    <div class="date-picker">
-        <label for="date">Dato:</label>
-        <input type="date" id="date" name="date">
+    <div class="weekday-picker">
+        <button id="monday">Mandag</button>
+        <button id="tuesday">Tirsdag</button>
+        <button id="wednesday">Onsdag</button>
+        <button id="thursday">Torsdag</button>
+        <button id="friday">Fredag</button>
+        <button id="saturday">Lørdag</button>
+        <button id="sunday">Søndag</button>
     </div>
 
     <div class="movie-list">
         <div class="movie">
             <img src="movie1.jpg" alt="Movie 1">
-            <h2>Movie Title 1</h2>
-            <p>Start Time: 12:00 PM</p>
+            
         </div>
         <div class="movie">
             <img src="movie2.jpg" alt="Movie 2">
-            <h2>Movie Title 2</h2>
-            <p>Start Time: 3:30 PM</p>
+        
         </div>
     </div>
 </body>
+<script src="../server/controllers/authentication.js" type="module"></script>
+<script type="module">
+    function displayMovies(movies) {
+    
+    
+        
+      const movieListDiv = document.querySelector('.movie-list');
+      movieListDiv.innerHTML = '';
+  
+      movies.forEach(movie => {
+        const movieDiv = document.createElement('div');
+        movieDiv.classList.add('movie');
+  
+
+        const imageBlob = new Blob([movie.movie_image], { type: 'image/jpeg' });
+
+
+  
+        const imageUrl = URL.createObjectURL(imageBlob);
+  
+        const image = document.createElement('img');
+        console.log(image)
+        image.src = imageUrl; 
+        image.alt = movie.movie_name;
+        movieDiv.appendChild(image);
+  
+        const title = document.createElement('h2');
+        title.textContent = movie.movie_name;
+        movieDiv.appendChild(title);
+  
+        const startTime = document.createElement('p');
+        startTime.textContent = `Start Time: ${movie.release_year}`;
+        movieDiv.appendChild(startTime);
+  
+        movieListDiv.appendChild(movieDiv);
+      });
+    }
+  
+    fetch('/movies')
+      .then(response => response.json())
+      .then(data => {
+        displayMovies(data);
+      })
+      .catch(error => console.error('Error fetching movies:', error));
+  </script>
+  
+  
+
 </html>
