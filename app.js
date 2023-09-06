@@ -3,6 +3,7 @@ import dotenv from "dotenv/config";
 import router from "./server/routes/pages.js";
 import mysql from "mysql2";
 import pagesRouter from "./server/routes/auth.js";
+import movieRouter from "./server/routes/movies.js"
 
 
 const app = express();
@@ -10,8 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 
+
 app.use(router);
 app.use(pagesRouter);
+app.use(movieRouter)
 app.use(express.json());
 
 const db = mysql.createConnection({

@@ -1,92 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kino</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kino</title>
+  <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
-    <header>
-        <a href="frontPage.html">
-            <h1>KinoNu.dk</h1>
-        </a>
-        <nav>
-            <a href="loginPage.html">Login</a>
-            <a href="registerPage.html">Opret bruger</a>
-            <a href="#">Film i biograffen</a>
-            <a href="#">Kommende film</a>
-            <img id="headerLogo" src="/public/assets/2027080.png" alt="err">
-        </nav>
-    </header>
+  <header>
+    <a href="frontPage.html">
+      <h1>KinoNu.dk</h1>
+    </a>
+    <nav>
+      <a href="loginPage.html">Login</a>
+      <a href="registerPage.html">Opret bruger</a>
+      <a href="frontPage.html">Film i biograffen</a>
+      <a href="#">Kommende film</a>
+    </nav>
+  </header>
 
-    <div class="weekday-picker">
-        <button id="monday">Mandag</button>
-        <button id="tuesday">Tirsdag</button>
-        <button id="wednesday">Onsdag</button>
-        <button id="thursday">Torsdag</button>
-        <button id="friday">Fredag</button>
-        <button id="saturday">Lørdag</button>
-        <button id="sunday">Søndag</button>
+  <div class="weekday-picker">
+    <button id="monday">Mandag</button>
+    <button id="tuesday">Tirsdag</button>
+    <button id="wednesday">Onsdag</button>
+    <button id="thursday">Torsdag</button>
+    <button id="friday">Fredag</button>
+    <button id="saturday">Lørdag</button>
+    <button id="sunday">Søndag</button>
+  </div>
+  
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <button id="modal-close" class="close">&times;</button>
+      <h2 id="modal-title">Movie Title</h2>
+      <div class="modal-description-container">
+        <div id="player"></div>
+        <p id="modal-description">Beksrivelse</p>
+      </div>
     </div>
+  </div>
 
-    <div class="movie-list">
-        <div class="movie">
-            <img src="movie1.jpg" alt="Movie 1">
-            
-        </div>
-        <div class="movie">
-            <img src="movie2.jpg" alt="Movie 2">
-        
-        </div>
-    </div>
+  <div class="movie-list">
+
+    <div class="button-div"></div>
+
+  </div>
 </body>
-<script src="../server/controllers/authentication.js" type="module"></script>
-<script type="module">
-    function displayMovies(movies) {
-      const movieListDiv = document.querySelector('.movie-list');
-      movieListDiv.innerHTML = '';
+<script src="/public/JS/frontPage.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
 
-      movies.forEach(movie => {
-        const movieDiv = document.createElement('div');
-        movieDiv.classList.add('movie');
-
-        const imageUrl = `assets/${movie.image_path}`;
-        console.log(imageUrl)
-
-    
-
-
-
-        const image = document.createElement('img');
-        image.src = imageUrl; 
-        image.alt = movie.movie_name;
-        movieDiv.appendChild(image);
-
-        const title = document.createElement('h2');
-        title.textContent = movie.movie_name;
-        movieDiv.appendChild(title);
-
-        const startTime = document.createElement('p');
-        startTime.textContent = `Start Time: ${movie.release_year}`;
-        movieDiv.appendChild(startTime);
-
-        const description = document.createElement('p');
-        description.textContent = movie.description;
-        movieDiv.appendChild(description); 
-
-        movieListDiv.appendChild(movieDiv);
-      });
-    }
-
-    fetch('/movies')
-      .then(response => response.json())
-      .then(data => {
-        displayMovies(data);
-      })
-      .catch(error => console.error('Error fetching movies:', error));
-  </script>
-  
-  
 
 </html>

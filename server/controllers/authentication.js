@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import path from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
+const __dirname = fileURLToPath("file:///C:/Users/Battal/Desktop/Node_r2");
 const publicDir = path.join(__dirname, "public");
 
 
@@ -68,16 +68,14 @@ export const login = (req, res) => {
         return res.status(500).json({ error: "Internal Server Error" });
       }
       if (results.length === 0) {
-        return res.status(401).json({ error: "Ugyldig adgangskode eller brugernavn" });
-      }
+        return res.status(400).json({ error: "Ugyldig adgangskode eller brugernavn" });}
 
       const user = results[0];
       
 
       const isPasswordMatch = await bcrypt.compare(password, user.password);
       if (!isPasswordMatch) {
-        res.status(401).json({ error: "Ugyldig adgangskode eller brugernavn" });
-      }
+        return res.status(400).json({ error: "Ugyldig adgangskode eller brugernavn" });}
       
       else if (isPasswordMatch) {
         const token = jwt.sign({ userId: user.ID }, process.env.SECRET_KEY); 
@@ -90,19 +88,6 @@ export const login = (req, res) => {
       }
     }
   );
-};
-
-
-export const getMovies = (req, res) => {
-  db.query("SELECT * FROM movies", (err, results) => {
-    if (err) {
-      console.error('Error fetching movies:', err);
-      res.status(500).send('Error fetching movies');
-    } else {
-      console.log('Movies fetched successfully!');
-      res.json(results); 
-    }
-  });
 };
 
 
