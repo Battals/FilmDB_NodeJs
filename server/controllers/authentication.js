@@ -7,7 +7,7 @@ import path from "path";
 
 
 const __dirname = fileURLToPath("file:///C:/Users/Battal/Desktop/Node_r2");
-const publicDir = path.join(__dirname, "public");
+const publicDir = path.join(__dirname, "client");
 
 
 const db = mysql.createConnection({

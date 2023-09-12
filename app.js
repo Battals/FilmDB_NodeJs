@@ -3,18 +3,25 @@ import dotenv from "dotenv/config";
 import router from "./server/routes/pages.js";
 import mysql from "mysql2";
 import pagesRouter from "./server/routes/auth.js";
-import movieRouter from "./server/routes/movies.js"
+import movieRouter from "./server/routes/movies.js";
+import path from 'path';
+import { fileURLToPath } from 'url'; 
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
 
+app.use(express.static("client"));
+
+app.use("/client/JS", express.static(path.join(__dirname, "client/JS")));
+app.use("/client/CSS", express.static(path.join(__dirname, "client/CSS")));
 
 
 app.use(router);
 app.use(pagesRouter);
-app.use(movieRouter)
+app.use(movieRouter);
 app.use(express.json());
 
 const db = mysql.createConnection({

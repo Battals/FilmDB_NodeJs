@@ -10,7 +10,7 @@ router.post("/register", register);
 router.post("/login", login);
 
 const storage = multer.diskStorage({
-  destination: 'public/assets/',
+  destination: 'client/assets/',
   filename: function (req, file, cb) {
     const uniqueFileName = Date.now() + path.extname(file.originalname);
     cb(null, uniqueFileName);
@@ -32,7 +32,7 @@ router.post('/createMovie', upload.single('image'), (req, res) => {
       console.error('Error inserting movie:', err);
       res.status(500).send('Error inserting movie');
     } else {
-      res.sendFile("frontPage.html", {root: 'public'})
+      res.sendFile("frontPage.html", {root: 'client'})
     }
   });
 });

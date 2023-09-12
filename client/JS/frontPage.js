@@ -117,6 +117,7 @@ function displayMovies(response) {
           modal.style.display = "block";
           modalTitle.textContent = movie.title;
           modalDescription.textContent = movie.overview;
+          modalDescription.insertAdjacentHTML("afterbegin", `<h4>Sprog: ${movie.original_language} </br> Bedømmelse: ${movie.vote_average} stjerner</h4>`)
           closeModal.addEventListener("click", () => {
             modal.style.display = "none";
           });

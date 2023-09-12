@@ -34,3 +34,19 @@ export const getMovies = async (req, res) => {
       res.status(500).send("Internal Server Error");
     }
   };
+
+  export const getUpcomingMovies = async (req, res) => {
+try {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=da&page=1`)
+if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log("Movies fetched successfully!");
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching movies:", error.message);
+      res.status(500).send("Error fetching movies");
+    }
+  }

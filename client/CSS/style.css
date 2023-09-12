@@ -90,7 +90,7 @@ h1 {
 }
 
 .movie-list {
-  margin-top: 2rem;
+  margin-top: 0.5rem;
 }
 
 .container {
@@ -114,7 +114,7 @@ h1 {
 
 h1 {
   text-align: center;
-  color: #fff;
+  color: white;
 }
 
 .tabs {
@@ -197,7 +197,7 @@ a:hover {
 .weekday-picker {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 25px;
   margin-top: 1rem;
 }
 
@@ -254,15 +254,17 @@ a:hover {
   position: relative;
 }
 .modal-description-container {
-  max-height: 60%; /* Set a maximum height for the description */
-  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  max-height: 60%; 
+  overflow-y: auto; 
   color: black;
   display: -webkit-box;
 }
 #modal-description {
   max-width: 50%;
+  height: 300px;
   text-align: center;
   font-family: system-ui;
+  overflow: overlay;
 }
 .close {
   position: absolute;
@@ -300,3 +302,27 @@ a:hover {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.weekday-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.weekday-picker {
+  display: flex;
+  gap: 25px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.weekday-picker button {
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Add more styles for your buttons as needed */
+
