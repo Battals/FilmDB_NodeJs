@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details</title>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <link rel="stylesheet" href="../../client/CSS/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <a href="/">
+          <h1>KinoNu.dk</h1>
+        </a>
+        <nav>
+          <a href="login">Login</a>
+    
+          <a href="registerPage.html">Opret bruger</a>
+          <a href="/">Film i biograffen</a>
+          <a href="upcomingMovies.html">Kommende film</a>
+          <a href="findMovie.html">Find film</a>
+        </nav>
+        
+      </header>
+
+  <div class="movie-container1">
+    <div id="button-div">
+      <button style="color: #007bff;">
+        <i class="fas fa-bookmark"> Favorit</i>
+      </button>
+      <button>
+        <i class="fas fa-plus-circle">Mark as watched</i>
+      </button>
+    </div>
+    <h1 class="movie-title">
+      <%= movieDetails.title %>
+    </h1>
+    <div class="movie-layout">
+      <div class="movie-test">
+        <img class="movie-poster" style="width: auto;"
+          src="https://image.tmdb.org/t/p/w200<%= movieDetails.poster_path %>" alt="Movie Poster">
+        <div>
+          
+      <div id="youtube-player1">
+      </div>
+      
+    </div>
+   
+        <%= JSON.stringify(movieDetails.production_companies) %>
+     
+        <%= movieDetails.production_countries %>
+      </p>
+      <p class="section-header">Bedømmelse:</p>
+      <p class="vote-average">
+        <%= movieDetails.vote_average %>
+      </p>
+      <p class="section-header">Voksenindhold:</p>
+      <p class="adult-content">
+        <%= movieDetails.adult %>
+      </p>
+    </div>
+
+    <script>
+
+      var movie = <%= movieDetails.id %>
+
+        function getTrailer(movieId) {
+          return fetch(`/trailer/${movieId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              return data;
+            })
+            .catch((error) => {
+              console.log("Error fetching trailers", error);
+              throw error;
+            });
+        }
+
+      function initYouTubePlayer(videoId) {
+        const player = new YT.Player("youtube-player1", {
+          height: "360", 
+          width: "640", 
+          videoId: videoId, 
+        });
+      }
+
+      getTrailer(movie)
+        .then((data) => {
+          const trailer = data.results.find(
+            (item) =>
+              item.type === "Trailer" &&
+              item.name.toLowerCase().includes("trailer")
+          );
+
+          if (trailer) {
+            const trailerVideoId = trailer.key;
+            initYouTubePlayer(trailerVideoId);
+          }
+        });
+    </script>
+</body>
+
+</html>

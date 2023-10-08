@@ -55,7 +55,7 @@ function displayUpcoming(response){
         movieDiv.appendChild(title);
     
         const releaseDate = document.createElement("p");
-        releaseDate.textContent = `Udgivet: ${movie.release_date}`;
+        releaseDate.textContent = `Udgivelsesdato: ${movie.release_date}`;
         movieDiv.appendChild(releaseDate);
     
         const readMore = document.createElement("button")
@@ -118,6 +118,7 @@ function displayUpcoming(response){
               modalDescription.insertAdjacentHTML("afterbegin", `<h4>Sprog: ${movie.original_language} </br> Bedømmelse: ${movie.vote_average} stjerner</h4>`)
               closeModal.addEventListener("click", () => {
                 modal.style.display = "none";
+                youtubePlayer.destroy()
               });
             })
             .catch((error) => console.error("Error fetching trailers:", error))

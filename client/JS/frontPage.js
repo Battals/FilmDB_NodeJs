@@ -2,6 +2,7 @@ let youtubePlayer;
 
 window.onload = loadPage();
 
+
 function loadPage() {
   fetch("/movies")
     .then((response) => response.json())
@@ -12,26 +13,22 @@ function loadPage() {
 }
 
 function initYouTubePlayer(videoId) {
-
-    if (youtubePlayer) {
-        youtubePlayer.destroy();
-      }
+  if (youtubePlayer) {
+    youtubePlayer.destroy();
+  }
 
   youtubePlayer = new YT.Player("player", {
     height: "315",
     width: "560",
     videoId: videoId,
     playerVars: {
-      // Add any optional parameters as needed
     },
     events: {
-      // You can add event handlers here if necessary
     },
   });
 }
 function displayMovies(response) {
   const movieListDiv = document.querySelector(".movie-list");
-  
 
   const movies = response.results || [];
 
@@ -56,16 +53,16 @@ function displayMovies(response) {
     releaseDate.textContent = `Udgivet: ${movie.release_date}`;
     movieDiv.appendChild(releaseDate);
 
-    const readMore = document.createElement("button")
-    readMore.id = "buttonDivbtn"
-    readMore.textContent = "Læs mere"
-    buttonDiv.appendChild(readMore)
-    const buyTickets = document.createElement("button")
-    buyTickets.id = "buttonDivbtn"
-    buyTickets.textContent = "Køb biletter"
-    buttonDiv.appendChild(buyTickets)
+    const readMore = document.createElement("button");
+    readMore.id = "buttonDivbtn";
+    readMore.textContent = "Læs mere";
+    buttonDiv.appendChild(readMore);
+    const buyTickets = document.createElement("button");
+    buyTickets.id = "buttonDivbtn";
+    buyTickets.textContent = "Køb biletter";
+    buttonDiv.appendChild(buyTickets);
 
-    movieDiv.appendChild(buttonDiv)
+    movieDiv.appendChild(buttonDiv);
 
     movieListDiv.appendChild(movieDiv);
 
@@ -73,9 +70,8 @@ function displayMovies(response) {
       displayModal(movie.id);
     });
     readMore.addEventListener("click", function () {
-        displayModal(movie.id);
-      });
-
+      displayModal(movie.id);
+    });
 
     function getTrailer(movieId) {
       return fetch(`/trailer/${movieId}`)
@@ -100,7 +96,6 @@ function displayMovies(response) {
       const modalDescription = document.getElementById("modal-description");
       const closeModal = document.getElementById("modal-close");
 
-
       getTrailer(movieid)
         .then((data) => {
           const trailer = data.results.find(
@@ -117,12 +112,16 @@ function displayMovies(response) {
           modal.style.display = "block";
           modalTitle.textContent = movie.title;
           modalDescription.textContent = movie.overview;
-          modalDescription.insertAdjacentHTML("afterbegin", `<h4>Sprog: ${movie.original_language} </br> Bedømmelse: ${movie.vote_average} stjerner</h4>`)
+          modalDescription.insertAdjacentHTML(
+            "afterbegin",
+            `<h4>Sprog: ${movie.original_language} </br> Bedømmelse: ${movie.vote_average} stjerner</h4>`
+          );
           closeModal.addEventListener("click", () => {
             modal.style.display = "none";
+            youtubePlayer.destroy();
           });
         })
-        .catch((error) => console.error("Error fetching trailers:", error))
+        .catch((error) => console.error("Error fetching trailers:", error));
     }
   });
 }

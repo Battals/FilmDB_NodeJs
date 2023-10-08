@@ -1,0 +1,28 @@
+.movie-layout {
+    display: flex;
+    justify-content: space-between; /* Distribute space between the children */
+    align-items: flex-start; /* Align items at the top of the container */
+  }
+  
+  /* Style the poster */
+  .movie-poster {
+    flex: 1; /* Each child takes 1/3 of the available space */
+    max-width: 33%; /* Set a maximum width to ensure equal distribution */
+  }
+  
+  /* Style the YouTube player */
+  #youtube-player1 {
+    flex: 1; /* Each child takes 1/3 of the available space */
+    max-width: 33%; /* Set a maximum width to ensure equal distribution */
+    /* Add any other styles you need for the YouTube player */
+  }
+  
+  /* Style the movie details */
+  .movie-details {
+    flex: 1; /* Each child takes 1/3 of the available space */
+    max-width: 33%; /* Set a maximum width to ensure equal distribution */
+    padding: 1rem; /* Add padding as needed */
+    /* Add any other styles you need for the movie details */
+  }
+
+  

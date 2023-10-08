@@ -1,18 +1,38 @@
 import express from 'express'
 const router = express.Router();
 
+import {
+    displayProfile
+   } from "../controllers/profileController.js";
+import { isLoggedIn, isLoggedInHeader } from '../middleware/middleware.js';
 
-router.get('/', (req, res) => {
-    res.sendFile("frontPage.html", {root: 'client'})
+
+router.get('/', isLoggedIn, (req, res)  => {
+    res.render('frontPage', {isLoggedIn: res.locals.isLoggedIn})
 })
 
-router.get('/login', (req, res) => {
-    res.sendFile("loginPage.html", {root: 'client'})
+router.get('/findMovie', isLoggedIn, (req, res) => {
+    res.render('findMovie', {isLoggedIn: res.locals.isLoggedIn})
+})
+
+router.get('/upcomingMovies', isLoggedIn, (req, res) => {
+    res.render('upcomingMovies', {isLoggedIn: res.locals.isLoggedIn})
+})
+
+router.get("/myProfile", isLoggedIn, displayProfile)
+
+router.get('/login', (req, res) => { 
+    res.render('login', {req})
 })
 
 router.get('/register', (req, res) => {
-    res.sendFile("registerPage.html", {root: 'client'})
+    res.render('register', res)
 })
+
+
+
+
+
 
 
 

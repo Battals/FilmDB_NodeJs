@@ -6,17 +6,20 @@
 </head>
 
 <body>
-    <header>
-      <a href="frontPage.html">
-        <h1>KinoNu.dk</h1>
-      </a>
-        <nav>
-            <a href="loginPage.html">Login</a>
-            <a href="registerPage.html">Opret bruger</a>
-            <a href="#">Film i biograffen</a>
-            <a href="#">Kommende film</a>
-        </nav>
-    </header>
+  <header>
+    <a href="/">
+      <h1>KinoNu.dk</h1>
+    </a>
+    <nav>
+      <a href="login">Login</a>
+
+      <a href="registerPage.html">Opret bruger</a>
+      <a href="/">Film i biograffen</a>
+      <a href="upcomingMovies.html">Kommende film</a>
+      <a href="findMovie.html">Find film</a>
+    </nav>
+    <!-- <i class="fas fa-user"></i>-->
+  </header>
   <div class="loginContainer">
     <div class="glass-frame">
       <h1 style="font-size: smaller; text-align: inherit; color: #666; margin: revert;">Opret film</h1>
@@ -33,7 +36,7 @@
     
         <label for="image">Vælg et billede:</label>
         <input type="file" id="image" name="image" accept="image/*">
-    
+
         <button type="submit">Create Movie</button>
         
       </form>

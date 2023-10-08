@@ -3,19 +3,21 @@ body {
   padding: 0;
   font-family: Arial, sans-serif;
   background-color: #e8e5e5;
-  color: #fff;
+  color: black;
 }
 
 header {
   background-color: #b9b8b8;
   color: #fff;
   text-align: center;
-  padding: 1rem;
 }
 
 h1 {
+  text-align: center;
   margin: 0;
-  font-size: 2rem;
+  color: #333;
+  font-size: 28px;
+
 }
 
 .movie-list {
@@ -32,14 +34,14 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
+  width: 300px;
   padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   text-align: center;
 }
 
-.movie img {
+img {
   width: -webkit-fill-available;
   height: auto;
   object-fit: fill;
@@ -112,10 +114,6 @@ h1 {
   padding: 20px;
 }
 
-h1 {
-  text-align: center;
-  color: white;
-}
 
 .tabs {
   margin-top: 20px;
@@ -185,7 +183,7 @@ a {
 }
 
 a:hover {
-  background-color: #444;
+  background-color: #cccccc6a;
 }
 
 #headerLogo {
@@ -194,18 +192,11 @@ a:hover {
   position: fixed;
 }
 
-.weekday-picker {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin-top: 1rem;
-}
-
 .movie-description {
   margin-top: 10px;
 }
 
-.weekday-picker button {
+button {
   background-color: #e8e5e5;
   color: #444;
   border: 1px solid #ccc;
@@ -303,26 +294,240 @@ a:hover {
   cursor: pointer;
 }
 
-.weekday-container {
+#searchMovie{
+  text-align: center;
+  margin: 30px;
+}
+
+#searchMovie input[type="search"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+
+.movie-item {
+  display: -webkit-inline-box; 
+  align-items: center; 
+}
+
+.movie-details {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+  margin-right: 20px;
+}
+
+.movie-poster-trailer-container {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.weekday-picker {
+.movie-poster {
+  max-width: 100%;
+  height: auto;
+}
+
+.movie-container {
   display: flex;
-  gap: 25px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
-.weekday-picker button {
-  padding: 10px 20px;
-  color: white;
-  border: none;
-  cursor: pointer;
+.movie-container1 {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.movie-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.section-header {
+  font-size: 18px;
   font-weight: bold;
+  margin-top: 20px;
+}
+#youtube-player {
+  margin-top: 20px;
 }
 
-/* Add more styles for your buttons as needed */
+.section-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
 
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#button-div{
+  position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.movie-test {
+  display: flex;
+  width: 300px;
+  border-radius: 8px;
+  flex: 1.5;
+}
+
+.movie-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.movie-poster {
+  object-fit: cover; /* Maintain aspect ratio and fill the div */
+  border-top-left-radius: 8px; /* Rounded corners for the top */
+  border-top-right-radius: 8px;
+}
+
+#youtube-player {
+  width: 100%; /* Make the video fill the width of the div */
+  height: 50%; /* Set the height to half of the div's height */
+  border-bottom-left-radius: 8px; /* Rounded corners for the bottom */
+  border-bottom-right-radius: 8px;
+}
+
+.movie-layout {
+  display: flex;
+  margin-top: inherit;
+  padding: 20px;
+}
+
+
+#youtube-player1 {
+  flex: 1;
+  border-radius: 8px;
+}
+
+.firstMovieInfo, .secondMovieInfo {
+  display: inline-block; 
+  justify-content: space-around;
+  margin: 35px;
+}
+.genre-info, .language-info, .genre-info, .running-info {
+  display: flex; 
+  align-items: baseline; 
+  margin-bottom: 10px; 
+}
+
+.genre-info h4, .language-info h4, .genre-info h4, .running-info h4 {
+  margin-right: 10px; /* Add some spacing between icon and text */
+}
+
+.movie-section {
+  padding: 10px; /* Add padding for spacing */
+  border: 1px solid #ccc; /* Add borders for separation */
+  box-sizing: border-box; /* Include padding and border in the element's total width/height */
+}
+
+.movie-poster {
+  width: 100%; /* Ensure the movie poster fills its container */
+}
+
+/* Customize styling for the movie details section as needed */
+
+
+
+
+#movie-overview{
+  padding: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  height: 210px;
+}
+
+#movie-overview::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar track */
+  height: 1px;
+}
+
+/* Style for the scrollbar thumb (the draggable part) */
+#movie-overview::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the thumb */
+  border-radius: 8px; /* Rounded corners for the thumb */
+}
+
+/* Style for the scrollbar track (the non-draggable part) */
+#movie-overview::-webkit-scrollbar-track {
+  background-color: #e8e5e5; /* Color of the track */
+  border-radius: 8px; /* Rounded corners for the track */
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
+body {
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+#profile-sidebar {
+  width: 200px; /* Adjust the width as needed */
+  background-color: #333; /* Background color */
+  color: #fff; /* Text color */
+}
+
+/* Sidebar menu item styles */
+.list-group-item {
+  border: none; /* Remove border */
+  border-radius: 0; /* Remove border radius */
+}
+
+/* Menu item icon styles */
+.fa {
+  margin-right: 10px; /* Add space between icon and text */
+}
+
+/* Submenu styles */
+.sidebar-submenu {
+  background-color: #444; /* Submenu background color */
+  padding-left: 20px; /* Add left padding to submenu */
+}
+
+.submenu-icon::before {
+  content: '\f107'; /* FontAwesome down arrow icon */
+  font-family: FontAwesome;
+  display: inline-block;
+  padding-right: 10px;
+  vertical-align: middle;
+  transform: rotate(0deg);
+  transition: transform 0.2s;
+}
+
+.submenu-icon.collapsed::before {
+  transform: rotate(-90deg); /* Rotate the arrow icon when submenu is collapsed */
+}
+
+/* Styling for collapsed and expanded submenu items */
+.list-group-item.collapsed {
+  background-color: #555; /* Background color for collapsed items */
+}
+
+/* Hover effect for submenu items */
+.list-group-item:hover {
+  background-color: #555;
+}

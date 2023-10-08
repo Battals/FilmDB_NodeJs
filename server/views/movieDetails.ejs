@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details</title>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <link rel="stylesheet" href="../../client/CSS/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+</head>
+<body>
+  <header>
+    <a href="/">
+      <h1>KinoNu.dk</h1>
+    </a>
+    <nav>
+      <% if (isLoggedIn) { %>
+        <a href="/">Film i biograffen</a>
+        <a href="/upcomingMovies">Kommende film</a>
+        <a href="findMovie">Find film</a>
+        <a href="myProfile">Min Profil</a>
+        <a style="color: red;" href="/signout">Log ud</a>
+      <% 
+      } else {
+        %> 
+        <a href="/login">Login</a>
+        <a href="/registerPage.html">Opret bruger</a>
+        <a href="upcomingMovies">Kommende film</a>
+        <a href="findMovie">Find film</a>
+        
+     <% } %>
+    </nav>
+  </header>
+  <div class="movie-container1">
+    <div id="button-div">
+      <button style="color: #007bff;" onclick="saveMovie()">
+        <i class="fas fa-bookmark"> Favorit</i>
+      </button>
+      <button>
+        <i class="fas fa-plus-circle">Mark as watched</i>
+      </button>
+    </div>
+    <h1 class="movie-title">
+      <%= movieDetails.title %>
+    </h1>
+    <div class="movie-layout">
+      <div class="movie-test">
+        <img class="movie-poster" style="width: auto; height: 80%;"
+          src="https://image.tmdb.org/t/p/w200<%= movieDetails.poster_path %>" alt="Movie Poster">
+          <div style="padding: 15px; line-height: 1.5; color: #333; overflow: auto;" id="movie-overview">
+         <%=  movieDetails.overview%> 
+        </div>
+      </div>
+          
+      <div id="youtube">
+      <div id="youtube-player1" style="height: 80%;">
+      </div>
+    </div>
+  </div>
+
+      <div class="movie-section movie-details">
+        <!-- Your movie details content goes here -->
+        <!-- Example content: -->
+        <div style="height: 80%;" id="test">
+        <p class="section-header">Produktionsselskaber:</p>
+        <p class="production-companies">
+          <%= JSON.stringify(movieDetails.production_companies) %>
+        </p>
+        <p class="section-header">Produktionslande:</p>
+        <p class="production-countries">
+          <%= movieDetails.production_countries %>
+        </p>
+        <p class="section-header">Bedømmelse:</p>
+        <p class="vote-average">
+          <%= movieDetails.vote_average %>
+        </p>
+        <p class="section-header">Voksenindhold:</p>
+        <p class="adult-content">
+          <%= movieDetails.adult %>
+        </p>
+      </div>
+    </div>
+      </div>
+    <!--
+    <div>
+      </ul>
+      <p class="section-header">Produktionsselskaber:</p>
+      <p class="production-companies">
+        <%= JSON.stringify(movieDetails.production_companies) %>
+      </p>
+      <p class="section-header">Produktionslande:</p>
+      <p class="production-countries">
+        <%= movieDetails.production_countries %>
+      </p>
+      <p class="section-header">Bedømmelse:</p>
+      <p class="vote-average">
+        <%= movieDetails.vote_average %>
+      </p>
+      <p class="section-header">Voksenindhold:</p>
+      <p class="adult-content">
+        <%= movieDetails.adult %>
+      </p>
+    </div>  
+
+-->
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-top-right",
+  };
+</script>
+<script>
+  console.log("HER")
+  console.log(<%= isLoggedIn %>)
+function saveMovie() {
+  var movie = <%= movieDetails.id %>;
+  //var movieName = <%= movieDetails.title %>;
+   fetch(`/saveMovie/${movie}`, {
+    method: 'POST'
+  })
+  .then(response => {
+    if (response.status === 401) {
+      console.log("HER")
+      // Handle unauthorized, e.g., redirect to login page
+      window.location.href = "/login?error=unauthorized";
+    } else {
+      toastr.success("Gemt")
+      return response.json();
+    }
+  })
+  .then(data => console.log("DATA", data)) 
+  .catch(error => {
+    console.error('Fetch error:', error);
+  });
+}
+
+        function getTrailer(movieId) {
+          return fetch(`/trailer/${movieId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              return data;
+            })
+            .catch((error) => {
+              console.log("Error fetching trailers", error);
+              throw error;
+            });
+        }
+
+      function initYouTubePlayer(videoId) {
+        // Create a YouTube player
+        const player = new YT.Player("youtube-player1", {
+          height: "360", // Set the player height
+          width: "640", // Set the player width
+          videoId: videoId, // Set the video ID
+        });
+      }
+
+      // Call getTrailer with movieId
+      getTrailer(movie)
+        .then((data) => {
+          const trailer = data.results.find(
+            (item) =>
+              item.type === "Trailer" &&
+              item.name.toLowerCase().includes("trailer")
+          );
+
+          if (trailer) {
+            const trailerVideoId = trailer.key;
+            initYouTubePlayer(trailerVideoId);
+          }
+        });
+    </script>
+
+</html>

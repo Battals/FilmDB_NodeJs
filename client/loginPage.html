@@ -9,49 +9,81 @@
 
 <body>
   <header>
-    <a href="frontPage.html">
+    <a href="/">
       <h1>KinoNu.dk</h1>
     </a>
     <nav>
-      <a href="loginPage.html">Login</a>
+      <a href="login">Login</a>
+
       <a href="registerPage.html">Opret bruger</a>
-      <a href="frontPage.html">Film i biograffen</a>
+      <a href="/">Film i biograffen</a>
       <a href="upcomingMovies.html">Kommende film</a>
+      <a href="findMovie.html">Find film</a>
     </nav>
+    <!-- <i class="fas fa-user"></i>-->
   </header>
+  <div class="login-message">
+    <!-- Display the message if the "error" query parameter is present -->
+    <%if (req.query.error === 'unauthorized') { %>
+        <p>Please log in to access this page.</p>
+    <% } %>
+</div>
   <div class="loginContainer">
     <div class="glass-frame">
       <h1 style="font-size: smaller; text-align: inherit; color: #666; margin: revert;">Log ind på KinoNu</h1>
       <form id="loginForm" action="/login" method="POST">
-        <input type="text" placeholder="Brugernavn" name="username" required>
-        <input type="password" placeholder="Kode" name="password" required>
+        <input type="text" id="navn" placeholder="Brugernavn" name="username" required>
+        <input type="password" id="kode" placeholder="Kode" name="password" required>
         <button type="submit">Login</button>
       </form>
     </div>
   </div>
 
   <script>
-   document.querySelector('form').addEventListener('submit', async (event) => {
+  document.querySelector('form').addEventListener('submit', async (event) => {
   event.preventDefault();
 
-  const formData = new FormData(event.target);
-  
+  const navn = document.getElementById("navn").value;
+  const kode = document.getElementById("kode").value;
+
+  const credentials = {
+    username: navn,
+    password: kode
+  };
+
   try {
     const response = await fetch('/login', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json', // Set the Content-Type header
+      },
+      body: JSON.stringify(credentials), // Convert to JSON string
     });
+
+
+
 
     if (!response.ok) {
       const errorData = await response.json();
       toastr.error("Ugyldig brugernavn eller adgangskode")
-    } else {
-      // Handle successful login
+    } else if(response.ok) {
+      window.location.href = "myProfile"
+
+      const data = await response.json()
+
+    localStorage.setItem("user_id", data.userId)
+    localStorage.setItem("user_name", data.userName)
+    localStorage.setItem("access_token", data.token)
+
+
+    window.location.href = "myProfile"
+    
     }
   } catch (error) {
-    // Handle network errors or other exceptions
+
   }
 });
+
   </script>
 </body>
 

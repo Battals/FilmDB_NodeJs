@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kino</title>
+   <script src="https://www.youtube.com/iframe_api"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <a href="/">
+          <h1>KinoNu.dk</h1>
+        </a>
+        <nav>
+          <% if (isLoggedIn) { %>
+            <a href="/">Film i biograffen</a>
+            <a href="upcomingMovies">Kommende film</a>
+            <a href="findMovie">Find film</a>
+            <a href="myProfile">Min Profil</a>
+            <a style="color: red;" href="/signout">Log ud</a>
+          <% 
+          } else {
+            %> 
+            <a href="login">Login</a>
+            <a href="/registerPage.html">Opret bruger</a>
+            <a href="/">Film i biograffen</a>
+            <a href="upcomingMovies">Kommende film</a>
+            <a href="findMovie">Find film</a>
+            
+         <% } %>
+        </nav>
+        <!-- <i class="fas fa-user"></i>-->
+      </header>
+
+  <h1 style="margin: 15px;">Aktuelle film</h1>
+
+
+  
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <button id="modal-close" class="close">&times;</button>
+      <h2 id="modal-title">Movie Title</h2>
+      <div class="modal-description-container">
+        <div id="player"></div>
+        <p id="modal-description"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="movie-list">
+
+    <div class="button-div"></div>
+
+  </div>
+</body>
+<script src="/client/JS/frontPage.js"></script>
+<link rel="stylesheet" type="text/css" href="/client/CSS/style.css">
+
+
+</html>
