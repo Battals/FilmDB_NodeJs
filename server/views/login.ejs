@@ -46,7 +46,6 @@
     <script>
         document.querySelector('form').addEventListener('submit', async (event) => {
             event.preventDefault();
-
             const navn = document.getElementById("navn").value;
             const kode = document.getElementById("kode").value;
 
@@ -75,6 +74,8 @@
                     localStorage.setItem("user_id", data.userId)
                     localStorage.setItem("user_name", data.userName)
                     localStorage.setItem("access_token", data.token)
+
+                    console.log(data.userName + "username")
 
                     window.location.href = `myProfile/?userId=${data.userId}/&userName=${data.userName}`;
 

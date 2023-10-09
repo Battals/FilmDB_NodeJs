@@ -127,6 +127,25 @@ export const saveMovie = async (req, res) => {
   })
 }
 
+export const deleteMovie = (req, res) => {
+const token = req.cookies.token;
+const movieId = req.params.movieId
+const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+const userId = decodedToken.userId
+
+db.query("DELETE FROM user_movies WHERE user_id = ? AND movie_id = ?", 
+[userId, movieId], (error, results) => {
+  if (error) {
+    res.status(409)
+  } else {
+    console.log("Filmen blev slettet")
+    res.status(200).send({Succes: "Filmen blev slettet"})
+  }
+}
+)
+  
+}
+
 
 
 

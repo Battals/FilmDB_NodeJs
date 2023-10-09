@@ -19,8 +19,8 @@
       <% if (isLoggedIn) { %>
         <a href="/">Film i biograffen</a>
         <a href="/upcomingMovies">Kommende film</a>
-        <a href="findMovie">Find film</a>
-        <a href="myProfile">Min Profil</a>
+        <a href="/findMovie">Find film</a>
+        <a href="/myProfile">Min side</a>
         <a style="color: red;" href="/signout">Log ud</a>
       <% 
       } else {
@@ -61,8 +61,6 @@
   </div>
 
       <div class="movie-section movie-details">
-        <!-- Your movie details content goes here -->
-        <!-- Example content: -->
         <div style="height: 80%;" id="test">
         <p class="section-header">Produktionsselskaber:</p>
         <p class="production-companies">
@@ -83,7 +81,6 @@
       </div>
     </div>
       </div>
-    <!--
     <div>
       </ul>
       <p class="section-header">Produktionsselskaber:</p>
@@ -118,18 +115,13 @@
   };
 </script>
 <script>
-  console.log("HER")
-  console.log(<%= isLoggedIn %>)
 function saveMovie() {
   var movie = <%= movieDetails.id %>;
-  //var movieName = <%= movieDetails.title %>;
    fetch(`/saveMovie/${movie}`, {
     method: 'POST'
   })
   .then(response => {
     if (response.status === 401) {
-      console.log("HER")
-      // Handle unauthorized, e.g., redirect to login page
       window.location.href = "/login?error=unauthorized";
     } else {
       toastr.success("Gemt")
@@ -160,7 +152,6 @@ function saveMovie() {
         }
 
       function initYouTubePlayer(videoId) {
-        // Create a YouTube player
         const player = new YT.Player("youtube-player1", {
           height: "360", // Set the player height
           width: "640", // Set the player width
