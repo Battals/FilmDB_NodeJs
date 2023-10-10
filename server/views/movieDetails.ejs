@@ -27,8 +27,8 @@
         %> 
         <a href="/login">Login</a>
         <a href="/registerPage.html">Opret bruger</a>
-        <a href="upcomingMovies">Kommende film</a>
-        <a href="findMovie">Find film</a>
+        <a href="/upcomingMovies">Kommende film</a>
+        <a href="/findMovie">Find film</a>
         
      <% } %>
     </nav>
@@ -39,7 +39,7 @@
         <i class="fas fa-bookmark"> Favorit</i>
       </button>
       <button>
-        <i class="fas fa-plus-circle">Mark as watched</i>
+         <i class="fas fa-eye"> Set</i>
       </button>
     </div>
     <h1 class="movie-title">
@@ -115,16 +115,33 @@
   };
 </script>
 <script>
+
+function seenMovie(){
+  console.log()
+  var movieId = <%= movieDetails.id %>;
+//var movieTitle = <%= movieDetails.title %>
+toastr.success("test")
+
+  /*fetch(`/seenMovie/${movieId}`), {
+    method: 'POST'
+  }.then(response => {
+    if (response.ok){
+      toastr.success(`${movieTitle} markeret som set`)
+    }
+  })
+  */
+}
+  
 function saveMovie() {
-  var movie = <%= movieDetails.id %>;
-   fetch(`/saveMovie/${movie}`, {
+  var movieId = <%= movieDetails.id %>;
+   fetch(`/saveMovie/${movieId}`, {
     method: 'POST'
   })
   .then(response => {
     if (response.status === 401) {
       window.location.href = "/login?error=unauthorized";
     } else {
-      toastr.success("Gemt")
+      toastr.success(`${movieTitle} gemt til favoritter`)
       return response.json();
     }
   })
@@ -153,13 +170,12 @@ function saveMovie() {
 
       function initYouTubePlayer(videoId) {
         const player = new YT.Player("youtube-player1", {
-          height: "360", // Set the player height
-          width: "640", // Set the player width
-          videoId: videoId, // Set the video ID
+          height: "360",
+          width: "640", 
+          videoId: videoId, 
         });
       }
 
-      // Call getTrailer with movieId
       getTrailer(movie)
         .then((data) => {
           const trailer = data.results.find(

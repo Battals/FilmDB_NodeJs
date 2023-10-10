@@ -1,7 +1,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Min profil</title>
+  <title>Min side</title>
   <script src="https://www.youtube.com/iframe_api"></script>
   <link rel="stylesheet" href="../../client/CSS/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -30,14 +30,14 @@
   <h1>Velkommen, <%= data.username %></h1>
 
   <div id="savedMoviesContainer" style="padding: 150px;">
-    <h1 style="text-align: inherit;">Favoritter</h1>
+    <h1 style="text-align: inherit;">Favoritter <i style="color: #007bff;"class="fas fa-bookmark"></i></h1>
     <div class="movieList" id="movieListContainer">
 
     </div>
   </div>
 
   <div id="watchedMoviesContainer" style="padding: 150px;">
-    <h1 style="text-align: inherit;">Set </h1>
+    <h1 style="text-align: inherit;">Set <i class="fas fa-eye"></i></h1>
     <div class="movieList" id="movieListContainer">
 
     </div>
@@ -68,7 +68,7 @@ function displaySavedMovies() {
             <div class="movieItemBtns">
               <button style="border: none;" onclick="deleteMovie(${data.id}, '${data.title}')">
                 <i class="fa-solid fa-trash" style="color: #ea0000; border: none;"></i>
-              
+
               </button>
 
             </div>
