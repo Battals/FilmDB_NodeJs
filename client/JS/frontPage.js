@@ -12,6 +12,19 @@ function loadPage() {
     .catch((error) => console.error("Error fetching movies:", error));
 }
 
+function saveMovie(movieId){
+  fetch("/saveMovie/:movieId"), {
+method: "POST"
+  }.then(response => {
+    if(response.status === 401){
+      window.location.href = "/login?error=unauthorized"
+    } else {
+      toastr.success("Gemt til favoritter")
+    }
+  })
+}
+
+
 function initYouTubePlayer(videoId) {
   if (youtubePlayer) {
     youtubePlayer.destroy();
@@ -59,7 +72,6 @@ function displayMovies(response) {
     buttonDiv.appendChild(readMore);
     const buyTickets = document.createElement("button");
     buyTickets.id = "buttonDivbtn";
-    buyTickets.textContent = "Køb biletter";
     buttonDiv.appendChild(buyTickets);
 
     movieDiv.appendChild(buttonDiv);
@@ -95,6 +107,8 @@ function displayMovies(response) {
       const modalTitle = document.getElementById("modal-title");
       const modalDescription = document.getElementById("modal-description");
       const closeModal = document.getElementById("modal-close");
+      const favorit = document.getElementById("farvorit")
+      
 
       getTrailer(movieid)
         .then((data) => {
@@ -114,7 +128,7 @@ function displayMovies(response) {
           modalDescription.textContent = movie.overview;
           modalDescription.insertAdjacentHTML(
             "afterbegin",
-            `<h4>Sprog: ${movie.original_language} </br> Bedømmelse: ${movie.vote_average} stjerner</h4>`
+            `<h4>Sprog: ${movie.original_language}</br> Bedømmelse: ${movie.vote_average} stjerner</h4>`
           );
           closeModal.addEventListener("click", () => {
             modal.style.display = "none";

@@ -44,12 +44,11 @@
   </div>
   
 <script> 
-
-console.log('<%= data.username %>')
 function displaySavedMovies() {
   const API_KEY = '<%= apiKey %>';
   const test = JSON.parse('<%- results %>');
   const movieListContainer = document.getElementById("movieListContainer");
+  
 
   for (const item of test) {
     const movieId = item.movie_id;
@@ -89,8 +88,6 @@ method: 'POST'
 })
 .then(response => {
   if (response.ok){
-    //window.location.reload()
-    console.log("test")
     toastr.success(`${movieName} er blevet slettet fra din favoritliste.`)
   } else {
     toastr.error("Der opstod en fejl")

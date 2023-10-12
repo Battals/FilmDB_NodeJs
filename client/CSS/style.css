@@ -602,3 +602,11 @@ border-radius: 8px;
     border-radius: 4px;
   }
 
+  .iconButtons{
+    position: absolute;
+    right: 0;
+    padding: 10px;
+  }
+
+
+

@@ -4,6 +4,7 @@ import router from "./server/routes/pages.js";
 import mysql from "mysql2";
 import pagesRouter from "./server/routes/auth.js";
 import movieRouter from "./server/routes/movies.js";
+import {run} from "./server/db/dbConnection2.js"
 import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
@@ -43,6 +44,9 @@ db.connect((err) => {
     console.log("MYSQL connected");
   }
 });
+
+
+run()
 
 const PORT = 8080;
 

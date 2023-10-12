@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
+
 <body>
   <header>
     <a href="/">
@@ -22,15 +23,13 @@
         <a href="/findMovie">Find film</a>
         <a href="/myProfile">Min side</a>
         <a style="color: red;" href="/signout">Log ud</a>
-      <% 
-      } else {
-        %> 
-        <a href="/login">Login</a>
-        <a href="/registerPage.html">Opret bruger</a>
-        <a href="/upcomingMovies">Kommende film</a>
-        <a href="/findMovie">Find film</a>
-        
-     <% } %>
+        <% } else { %>
+          <a href="/login">Login</a>
+          <a href="/register">Opret bruger</a>
+          <a href="/upcomingMovies">Kommende film</a>
+          <a href="/findMovie">Find film</a>
+
+          <% } %>
     </nav>
   </header>
   <div class="movie-container1">
@@ -39,7 +38,7 @@
         <i class="fas fa-bookmark"> Favorit</i>
       </button>
       <button>
-         <i class="fas fa-eye"> Set</i>
+        <i class="fas fa-eye"> Set</i>
       </button>
     </div>
     <h1 class="movie-title">
@@ -49,19 +48,19 @@
       <div class="movie-test">
         <img class="movie-poster" style="width: auto; height: 80%;"
           src="https://image.tmdb.org/t/p/w200<%= movieDetails.poster_path %>" alt="Movie Poster">
-          <div style="padding: 15px; line-height: 1.5; color: #333; overflow: auto;" id="movie-overview">
-         <%=  movieDetails.overview%> 
+        <div style="padding: 15px; line-height: 1.5; color: #333; overflow: auto;" id="movie-overview">
+          <%= movieDetails.overview%>
         </div>
       </div>
-          
+
       <div id="youtube">
-      <div id="youtube-player1" style="height: 80%;">
+        <div id="youtube-player1" style="height: 80%;">
+        </div>
       </div>
     </div>
-  </div>
 
-      <div class="movie-section movie-details">
-        <div style="height: 80%;" id="test">
+    <div class="movie-section movie-details">
+      <div style="height: 80%;" id="test">
         <p class="section-header">Produktionsselskaber:</p>
         <p class="production-companies">
           <%= JSON.stringify(movieDetails.production_companies) %>
@@ -80,28 +79,28 @@
         </p>
       </div>
     </div>
-      </div>
-    <div>
-      </ul>
-      <p class="section-header">Produktionsselskaber:</p>
-      <p class="production-companies">
-        <%= JSON.stringify(movieDetails.production_companies) %>
-      </p>
-      <p class="section-header">Produktionslande:</p>
-      <p class="production-countries">
-        <%= movieDetails.production_countries %>
-      </p>
-      <p class="section-header">Bedømmelse:</p>
-      <p class="vote-average">
-        <%= movieDetails.vote_average %>
-      </p>
-      <p class="section-header">Voksenindhold:</p>
-      <p class="adult-content">
-        <%= movieDetails.adult %>
-      </p>
-    </div>  
+  </div>
+  <div>
+    </ul>
+    <p class="section-header">Produktionsselskaber:</p>
+    <p class="production-companies">
+      <%= JSON.stringify(movieDetails.production_companies) %>
+    </p>
+    <p class="section-header">Produktionslande:</p>
+    <p class="production-countries">
+      <%= movieDetails.production_countries %>
+    </p>
+    <p class="section-header">Bedømmelse:</p>
+    <p class="vote-average">
+      <%= movieDetails.vote_average %>
+    </p>
+    <p class="section-header">Voksenindhold:</p>
+    <p class="adult-content">
+      <%= movieDetails.adult %>
+    </p>
+  </div>
 
--->
+  -->
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -116,79 +115,80 @@
 </script>
 <script>
 
-function seenMovie(){
-  console.log()
-  var movieId = <%= movieDetails.id %>;
-//var movieTitle = <%= movieDetails.title %>
-toastr.success("test")
+  function seenMovie() {
+    console.log()
+    var movieId = <%= movieDetails.id %>;
+    //var movieTitle = <%= movieDetails.title %>
+    toastr.success("test")
 
-  /*fetch(`/seenMovie/${movieId}`), {
-    method: 'POST'
-  }.then(response => {
-    if (response.ok){
-      toastr.success(`${movieTitle} markeret som set`)
-    }
-  })
-  */
-}
-  
-function saveMovie() {
-  var movieId = <%= movieDetails.id %>;
-   fetch(`/saveMovie/${movieId}`, {
-    method: 'POST'
-  })
-  .then(response => {
-    if (response.status === 401) {
-      window.location.href = "/login?error=unauthorized";
-    } else {
-      toastr.success(`${movieTitle} gemt til favoritter`)
-      return response.json();
-    }
-  })
-  .then(data => console.log("DATA", data)) 
-  .catch(error => {
-    console.error('Fetch error:', error);
-  });
-}
-
-        function getTrailer(movieId) {
-          return fetch(`/trailer/${movieId}`)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Network response was not ok");
-              }
-              return response.json();
-            })
-            .then((data) => {
-              return data;
-            })
-            .catch((error) => {
-              console.log("Error fetching trailers", error);
-              throw error;
-            });
-        }
-
-      function initYouTubePlayer(videoId) {
-        const player = new YT.Player("youtube-player1", {
-          height: "360",
-          width: "640", 
-          videoId: videoId, 
-        });
+    /*fetch(`/seenMovie/${movieId}`), {
+      method: 'POST'
+    }.then(response => {
+      if (response.ok){
+        toastr.success(`${movieTitle} markeret som set`)
       }
+    })
+    */
+  }
 
-      getTrailer(movie)
-        .then((data) => {
-          const trailer = data.results.find(
-            (item) =>
-              item.type === "Trailer" &&
-              item.name.toLowerCase().includes("trailer")
-          );
+  function saveMovie() {
+    //const username = localStorage.getItem("username")
+    var movieId = <%= movieDetails.id %>;
+    fetch(`/saveMovie/${movieId}`, {
+      method: 'POST'
+    })
+      .then(response => {
+       return response.json()
+      })
+      .then(data => {
+        if(data.message) {
+          toastr.warning(data.message)
+        } else {
+          toastr.success("Gemt til favoritter")
+        }
+      })
+    }
 
-          if (trailer) {
-            const trailerVideoId = trailer.key;
-            initYouTubePlayer(trailerVideoId);
-          }
-        });
-    </script>
+
+
+  function getTrailer(movieId) {
+    return fetch(`/trailer/${movieId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log("Error fetching trailers", error);
+        throw error;
+      });
+  }
+
+  function initYouTubePlayer(videoId) {
+    const player = new YT.Player("youtube-player1", {
+      height: "360",
+      width: "640",
+      videoId: videoId,
+    });
+  }
+
+  getTrailer(movie)
+    .then((data) => {
+      const trailer = data.results.find(
+        (item) =>
+          item.type === "Trailer" &&
+          item.name.toLowerCase().includes("trailer")
+      );
+
+      if (trailer) {
+        const trailerVideoId = trailer.key;
+        initYouTubePlayer(trailerVideoId);
+      }
+    });
+</script>
 
 </html>

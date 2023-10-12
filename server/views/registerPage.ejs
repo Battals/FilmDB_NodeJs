@@ -1,0 +1,88 @@
+<html>
+<head>
+  <title>Register</title>
+  <link rel="stylesheet" type="text/css" href="/client/CSS/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <header>
+      <a href="/">
+        <h1>KinoNu.dk</h1>
+      </a>
+      <nav>
+        <a href="login">Login</a>
+        <a href="/register">Opret bruger</a>
+        <a href="/">Film i biograffen</a>
+        <a href="upcomingMovies">Kommende film</a>
+        <a href="findMovie">Find film</a>
+      </nav>
+
+    </header>
+    <div class="loginContainer">
+      <div class="glass-frame">
+        <h1 style="font-size: smaller; text-align: inherit; color: #666; margin: revert; text-align: center;">Opret
+          bruger</h1>
+        <form id="registrationForm">
+          <input type="text" placeholder="Brugernavn" id="username" name="username" required>
+          <input type="email" placeholder="Email" id="email" name="email" required>
+          <input type="password" placeholder="Adgangskode" id="password" name="password" required>
+          <button type="submit">Opret bruger</button>
+        </form>
+      </div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-top-right",
+  };
+</script>
+<script>
+ 
+
+  const registrationForm = document.getElementById('registrationForm')
+
+  registrationForm.addEventListener('submit', async (event) => {
+    const username = document.getElementById("username").value
+    const email = document.getElementById("email").value
+    const password = document.getElementById("password").value
+    event.preventDefault();
+
+    const data = {
+      username,
+      password,
+      email
+    }
+
+    const response = await fetch('/registerUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+
+      const responseData = await response.json()
+
+      localStorage.setItem("user_id", responseData.userId)
+      localStorage.setItem("user_name", responseData.username)
+      localStorage.setItem("access_token", responseData.token)
+      window.location.href = '/myProfile'
+    } else {
+      const errorData = await response.json()
+      toastr.error(errorData.message)
+    }
+
+  })
+</script>
+
+</html>

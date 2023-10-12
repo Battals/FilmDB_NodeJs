@@ -4,7 +4,7 @@ const router = express.Router();
 import {
     displayProfile
    } from "../controllers/profileController.js";
-import { isLoggedIn, isLoggedInHeader } from '../middleware/middleware.js';
+import { isLoggedIn } from '../middleware/middleware.js';
 
 
 router.get('/', isLoggedIn, (req, res)  => {
@@ -26,8 +26,9 @@ router.get('/login', (req, res) => {
 })
 
 router.get('/register', (req, res) => {
-    res.render('register', res)
+    res.render('registerPage', res)
 })
+
 
 
 export default router

@@ -2,6 +2,9 @@ import createDBConnection from "../db/dbConnection.js"
 import jwt, { decode } from 'jsonwebtoken'
 const db = createDBConnection()
 
+import {client} from '../db/dbConnection2.js'
+
+
 export const displaySingleMovie = async (req, res) => {
     try{
         const movieId = req.params.movieId
@@ -19,9 +22,6 @@ export const displaySingleMovie = async (req, res) => {
 
   export const displayProfile = async (req, res) => {
 
-    const isLoggedIn = res.locals.isLoggedIn
-    console.log(isLoggedIn)
-
     const token = req.cookies.token
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
 
@@ -35,9 +35,11 @@ export const displaySingleMovie = async (req, res) => {
 
 
         const data = {
-            username: req.cookies.userName,
+            username: req.cookies.username,
             id: userId
         };
+
+
     
         db.query('SELECT * FROM user_movies WHERE user_id = ?', [userId], (error, results) => {
             if (error) {

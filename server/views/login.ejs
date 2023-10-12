@@ -16,10 +16,10 @@
         <nav>
             <a href="login">Login</a>
 
-            <a href="registerPage.html">Opret bruger</a>
+            <a href="/register">Opret bruger</a>
             <a href="/">Film i biograffen</a>
             <a href="upcomingMovies.html">Kommende film</a>
-            <a href="findMovie.html">Find film</a>
+            <a href="/findMovie">Find film</a>
         </nav>
         <!-- <i class="fas fa-user"></i>-->
     </header>
@@ -65,11 +65,9 @@
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    toastr.error("Ugyldig brugernavn eller adgangskode")
+                    
                 } else if (response.ok) {
                     const data = await response.json()
-
-                    //setCookie("username", data.userName)
 
                     localStorage.setItem("user_id", data.userId)
                     localStorage.setItem("user_name", data.userName)

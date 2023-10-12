@@ -1,7 +1,8 @@
 const API_KEY = process.env.API_KEY;
 import createDbConnection from "../db/dbConnection.js";
 import jwt from 'jsonwebtoken'
-const db = createDbConnection()
+
+import {client} from '../db/dbConnection2.js'
 
 export const getMovies = async (req, res) => {
   const isLoggedIn = res.locals.isLoggedIn
@@ -112,19 +113,18 @@ export async function displayMovieDetails(movieId){
   }
 
 export const saveMovie = async (req, res) => {
+if(!res.locals.isLoggedIn){
+  return res.status(409).json({message: "Log venligst ind for at gemme denne film"})
+} else {
   const token = req.cookies.token;
   const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
   const userId = decodedToken.userId;
   const movieId = req.params.movieId
-  const values = [userId, movieId]
-  db.query("INSERT INTO user_movies (user_id, movie_id) VALUES (?, ?)", values, (error, results) => {
-  if(error){
-    res.status(409)
-  } else {
-    console.log("Data inserted into user_movies")
-    res.status(200).send({Succes: "Movie succesfully saves"})
-  }
-  })
+  const userName = req.params.userName
+  const userMovies = client.db("Cluster0").collection("savedMovies")
+  await userMovies.insertOne({userName, movieId})
+  return res.status(200).json("")
+}
 }
 
 export const deleteMovie = (req, res) => {
