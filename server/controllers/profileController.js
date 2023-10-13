@@ -21,42 +21,43 @@ export const displaySingleMovie = async (req, res) => {
 
 
   export const displayProfile = async (req, res) => {
-
-    const token = req.cookies.token
+    const token = req.cookies.token;
+    const username = req.cookies.username;
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-
-        if (err){
-            console.log(err)
-
-            return res.status(401).send('Unauthorized')
+        if (err) {
+            console.log(err);
+            return res.status(401).send('Unauthorized');
         }
 
-        const userId = decoded.userId
-
+        const userId = decoded.userId;
 
         const data = {
-            username: req.cookies.username,
-            id: userId
+            username: req.cookies.username, 
+            id: userId,
         };
 
+        const userMovies = client.db("Cluster0").collection("savedMovies");
 
-    
-        db.query('SELECT * FROM user_movies WHERE user_id = ?', [userId], (error, results) => {
-            if (error) {
-                console.error(error);
-                return res.status(500).send("An error occurred");
+
+        async function getUserMovies() {
+            try {
+                const results = await userMovies.find({ userName: username }).toArray();
+                console.log("Collection Data:", results);
+                res.render("myProfile", {results: JSON.stringify(results), apiKey, data})
+            } catch (error) {
+                console.log("Error:", error);
             }
-    
-    
-            const apiKey = process.env.API_KEY
-    
-    
-            res.render('myProfile', { results: JSON.stringify(results), apiKey, data });
-    
-        });
-    })
-    
-    }
+        }
 
 
-   
+        
+        getUserMovies();
+
+        
+
+      
+
+        const apiKey = process.env.API_KEY;
+
+
+    })}

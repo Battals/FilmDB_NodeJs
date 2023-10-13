@@ -47,18 +47,18 @@
 function displaySavedMovies() {
   const API_KEY = '<%= apiKey %>';
   const test = JSON.parse('<%- results %>');
-  const movieListContainer = document.getElementById("movieListContainer");
-  
+  const movieListContainer = document.getElementById("movieListContainer");  
 
   for (const item of test) {
-    const movieId = item.movie_id;
+    const movieId = item.movieId;
     const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=de`;
 
     fetch(url)
       .then(response => response.json())
       .then(data => {
         const movieItem = document.createElement("div");
-        movieItem.className = "movieItem";
+        movieItem.className = "movieItem"
+        movieItem.id = `movieItem-${data.id}`
 
         movieItem.innerHTML = `
           <img class="moviePoster" src="https://image.tmdb.org/t/p/w200${data.poster_path}" alt="${data.title} Poster">
@@ -80,24 +80,24 @@ function displaySavedMovies() {
 }
 
 
-function deleteMovie(movieId, movieName){
-console.log(movieId, movieName)
-fetch(`/deleteMovie/${movieId}`, {
-method: 'POST'
-
-})
-.then(response => {
-  if (response.ok){
-    toastr.success(`${movieName} er blevet slettet fra din favoritliste.`)
-  } else {
-    toastr.error("Der opstod en fejl")
-  } 
-})
-.catch(error => {
-  console.log(error)
-})
+function deleteMovie(movieId, movieName) {
+  const username = localStorage.getItem("user_name");
+  const movieItem = document.getElementById(`movieItem-${movieId}`);
+  fetch(`/deleteMovie/${movieId}/${username}`, {
+    method: 'POST'
+  })
+    .then(response => {
+    if(response.status === 200) {
+      toastr.success(`${movieName}: er fjernet fra dine favoritter`)
+      movieItem.remove()
+    } else {
+      toastr.error("Der opstod en fejl")
+    }
+    
+  })
 
 }
+
 
     displaySavedMovies();
   </script>

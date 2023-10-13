@@ -1,11 +1,15 @@
 const API_KEY = process.env.API_KEY;
 import createDbConnection from "../db/dbConnection.js";
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 
-import {client} from '../db/dbConnection2.js'
+import { client } from "../db/dbConnection2.js";
+
+const userMovies = client.db("Cluster0").collection("savedMovies");
+const seenMovies = client.db("Cluster0").collection("seenMovies");
+
 
 export const getMovies = async (req, res) => {
-  const isLoggedIn = res.locals.isLoggedIn
+  const isLoggedIn = res.locals.isLoggedIn;
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&include_adult=false&include_video=false&language=da&page=1&sort_by=popularity.desc`
@@ -18,7 +22,7 @@ export const getMovies = async (req, res) => {
     console.log("Movies fetched successfully!");
     res.json(data);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     console.error("Error fetching movies:", error.message);
     res.status(500).send("Error fetching movies");
   }
@@ -29,7 +33,7 @@ export const getTrailer = async (req, res) => {
     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`;
 
     const response = await fetch(apiUrl);
-    const data = await response.json(); 
+    const data = await response.json();
 
     if (response.ok) {
       res.json(data);
@@ -71,13 +75,13 @@ export const getMovieDetails = async (req, res) => {
     }
     const data = await response.json();
     res.json(data);
-    return data
-    } catch (error) {
+    return data;
+  } catch (error) {
     console.log(error.message);
   }
 };
 
-export async function displayMovieDetails(movieId){
+export async function displayMovieDetails(movieId) {
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=da`
@@ -87,68 +91,76 @@ export async function displayMovieDetails(movieId){
     }
 
     const data = await response.json();
-    return data
-    } catch (error) {
+    return data;
+  } catch (error) {
     console.log(error.message);
   }
 }
 
-  export const displaySingleMovie = async (req, res, next) => {
-    const isLoggedIn = res.locals.isLoggedIn
-    try{
-        const movieId = req.params.movieId
-        displayMovieDetails(movieId).then((data) => {
-            const movieDetails = data
-            res.render("movieDetails", {movieDetails, isLoggedIn})
-            next()
-          })
-          
-    }
-    catch (error){
-        console.log(error)
+export const displaySingleMovie = async (req, res, next) => {
+  const isLoggedIn = res.locals.isLoggedIn;
+  try {
+    const movieId = req.params.movieId;
+    displayMovieDetails(movieId).then((data) => {
+      const movieDetails = data;
+      res.render("movieDetails", { movieDetails, isLoggedIn });
+      next();
+    });
+  } catch (error) {
+    console.log(error);
 
-        next()
-    }
-
+    next();
   }
+};
 
 export const saveMovie = async (req, res) => {
-if(!res.locals.isLoggedIn){
-  return res.status(409).json({message: "Log venligst ind for at gemme denne film"})
-} else {
-  const token = req.cookies.token;
-  const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-  const userId = decodedToken.userId;
-  const movieId = req.params.movieId
+  if (!res.locals.isLoggedIn) {
+    return res
+      .status(409)
+      .json({ message: "Log venligst ind for at gemme denne film" });
+  } else {
+    const movieId = req.params.movieId;
+    const userName = req.params.userName;
+    const existingRecord = await userMovies.findOne({ userName, movieId });
+    if (existingRecord) {
+      return res
+        .status(409)
+        .json({
+          message: "Du har allerede tilføjet denne film til favoritter",
+        });
+    }
+    await userMovies.insertOne({ userName, movieId });
+    return res.status(200).json("");
+  }
+};
+
+export const seenMovie = async (req, res) => {
   const userName = req.params.userName
-  const userMovies = client.db("Cluster0").collection("savedMovies")
-  await userMovies.insertOne({userName, movieId})
+  const movieId = req.params.movieId;
+
+  const existingRecord = await seenMovies.findOne({userName, movieId})
+  if(existingRecord) {
+    return res.status(409).json("")
+  }
+
+  await seenMovies.insertOne({userName, movieId})
   return res.status(200).json("")
 }
-}
 
-export const deleteMovie = (req, res) => {
-const token = req.cookies.token;
-const movieId = req.params.movieId
-const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
-const userId = decodedToken.userId
+export const deleteMovie = async (req, res) => {
+  const username = req.params.userName
+  const token = req.cookies.token;
+  const movieId = req.params.movieId;
+  const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
 
-db.query("DELETE FROM user_movies WHERE user_id = ? AND movie_id = ?", 
-[userId, movieId], (error, results) => {
-  if (error) {
-    res.status(409)
-  } else {
-    console.log("Filmen blev slettet")
-    res.status(200).send({Succes: "Filmen blev slettet"})
-  }
-}
-)
+ const result = await userMovies.deleteOne({userName: username, movieId: movieId})
+ if(result.acknowledged == true){
+  return res.status(200).json({message: "Filmen er nu slettet"})
+ } else {
+  return res.status(500)
+ }
   
-}
+  } 
 
-
-
-
-
-
+  
 
