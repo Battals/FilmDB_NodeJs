@@ -63,38 +63,6 @@ img {
   font-size: smaller;
 }
 
-.date-picker {
-  text-align: center;
-  margin-top: 2rem;
-  background-color: #e8e5e5;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.date-picker label {
-  color: #fff;
-  font-size: 1.2rem;
-  margin-right: 1rem;
-}
-
-.date-picker input[type="date"] {
-  background-color: #e8e5e5;
-  color: #fff;
-  border: none;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.date-picker input[type="date"]::before {
-  content: none;
-}
-
-.movie-list {
-  margin-top: 0.5rem;
-}
-
 .container {
   width: 400px;
 }
@@ -114,33 +82,6 @@ img {
   padding: 20px;
 }
 
-
-.tabs {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.tab {
-  background: none;
-  border: none;
-  color: #fff;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 18px;
-  outline: none;
-  transition: 0.3s;
-}
-
-.tab:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-}
-
-.tab-content {
-  display: none;
-  margin-top: 20px;
-}
 
 input[type="text"],
 input[type="password"],
@@ -186,12 +127,6 @@ a:hover {
   background-color: #cccccc6a;
 }
 
-#headerLogo {
-  width: 35px;
-  height: 30px;
-  position: fixed;
-}
-
 .movie-description {
   margin-top: 10px;
 }
@@ -207,10 +142,6 @@ button {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.weekday-picker button:hover {
-  background-color: #ccc;
-}
-
 .modal {
   display: none;
   position: fixed;
@@ -220,18 +151,6 @@ button {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  overflow: auto;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1;
   overflow: auto;
 }
 
@@ -320,13 +239,6 @@ button {
   margin-right: 20px;
 }
 
-.movie-poster-trailer-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
 .movie-poster {
   max-width: 100%;
   height: auto;
@@ -358,11 +270,6 @@ button {
   margin-bottom: 10px;
 }
 
-.section-header {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 20px;
-}
 #youtube-player {
   margin-top: 20px;
 }
@@ -397,15 +304,15 @@ ul {
 }
 
 .movie-poster {
-  object-fit: cover; /* Maintain aspect ratio and fill the div */
-  border-top-left-radius: 8px; /* Rounded corners for the top */
+  object-fit: cover; 
+  border-top-left-radius: 8px; 
   border-top-right-radius: 8px;
 }
 
 #youtube-player {
-  width: 100%; /* Make the video fill the width of the div */
-  height: 50%; /* Set the height to half of the div's height */
-  border-bottom-left-radius: 8px; /* Rounded corners for the bottom */
+  width: 100%; 
+  height: 50%; 
+  border-bottom-left-radius: 8px; 
   border-bottom-right-radius: 8px;
 }
 
@@ -433,7 +340,7 @@ ul {
 }
 
 .genre-info h4, .language-info h4, .genre-info h4, .running-info h4 {
-  margin-right: 10px; /* Add some spacing between icon and text */
+  margin-right: 10px; 
 }
 
 .movie-section {
@@ -445,11 +352,6 @@ ul {
 .movie-poster {
   width: 100%; /* Ensure the movie poster fills its container */
 }
-
-/* Customize styling for the movie details section as needed */
-
-
-
 
 #movie-overview{
   padding: 15px;
@@ -485,52 +387,16 @@ body {
 }
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
-#profile-sidebar {
-  width: 200px; /* Adjust the width as needed */
-  background-color: #333; /* Background color */
-  color: #fff; /* Text color */
-}
+
 
 /* Sidebar menu item styles */
-.list-group-item {
-  border: none; /* Remove border */
-  border-radius: 0; /* Remove border radius */
-}
+
 
 /* Menu item icon styles */
 .fa {
   margin-right: 10px; /* Add space between icon and text */
 }
 
-/* Submenu styles */
-.sidebar-submenu {
-  background-color: #444; /* Submenu background color */
-  padding-left: 20px; /* Add left padding to submenu */
-}
-
-.submenu-icon::before {
-  content: '\f107'; /* FontAwesome down arrow icon */
-  font-family: FontAwesome;
-  display: inline-block;
-  padding-right: 10px;
-  vertical-align: middle;
-  transform: rotate(0deg);
-  transition: transform 0.2s;
-}
-
-.submenu-icon.collapsed::before {
-  transform: rotate(-90deg); /* Rotate the arrow icon when submenu is collapsed */
-}
-
-/* Styling for collapsed and expanded submenu items */
-.list-group-item.collapsed {
-  background-color: #555; /* Background color for collapsed items */
-}
-
-/* Hover effect for submenu items */
-.list-group-item:hover {
-  background-color: #555;
-}
 
 .container {
   max-width: 1200px;
@@ -550,13 +416,6 @@ margin: 20px 0;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 border-radius: 8px;
 }
-
-
-
-  .welcome {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
 
 
 
@@ -585,21 +444,6 @@ border-radius: 8px;
   .movieOverview {
     font-style: italic;
     margin-top: 5px;
-  }
-
-  .scrollButtons {
-    margin-top: 10px;
-  }
-
-  .scrollButtons button {
-    background-color: #3498db;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 10px;
-    border-radius: 4px;
   }
 
   .iconButtons{

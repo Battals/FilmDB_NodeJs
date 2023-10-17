@@ -12,16 +12,26 @@ function loadPage() {
     .catch((error) => console.error("Error fetching movies:", error));
 }
 
-function saveMovie(movieId){
-  fetch("/saveMovie/:movieId"), {
-method: "POST"
-  }.then(response => {
-    if(response.status === 401){
-      window.location.href = "/login?error=unauthorized"
-    } else {
-      toastr.success("Gemt til favoritter")
-    }
+function saveMovie(movieId, movieName){
+  const username = localStorage.getItem("user_name")
+  fetch(`/saveMovie/${movieId}/${username}`, {
+    method: 'POST'
   })
+  .then(response => {
+    return response.json()
+  })
+  .then(data => toastr.info(data.message, `${movieName}`))
+}
+
+function seenMovie(movieId, movieName){
+  const username = localStorage.getItem("user_name")
+  fetch(`/seenMovie/${movieId}/${username}`, {
+    method: 'POST'
+  })
+  .then(response => {
+    return response.json()
+  })
+  .then(data => toastr.info(data.message, `${movieName}`))
 }
 
 
@@ -79,10 +89,10 @@ function displayMovies(response) {
     movieListDiv.appendChild(movieDiv);
 
     image.addEventListener("click", function () {
-      displayModal(movie.id);
+      displayModal(movie.id, movie.title);
     });
     readMore.addEventListener("click", function () {
-      displayModal(movie.id);
+      displayModal(movie.id, movie.title);
     });
 
     function getTrailer(movieId) {
@@ -102,14 +112,20 @@ function displayMovies(response) {
         });
     }
 
-    function displayModal(movieid) {
+    function displayModal(movieid, movieName) {
       const modal = document.getElementById("myModal");
       const modalTitle = document.getElementById("modal-title");
       const modalDescription = document.getElementById("modal-description");
       const closeModal = document.getElementById("modal-close");
-      const favorit = document.getElementById("farvorit")
+      const favorit = document.getElementById("favorit")
+      const set = document.getElementById("set")
+      favorit.onclick = function() {
+        saveMovie(movieid, movieName)
+      }
+      set.onclick = function(){
+        seenMovie(movieid, movieName)
+      }
       
-
       getTrailer(movieid)
         .then((data) => {
           const trailer = data.results.find(

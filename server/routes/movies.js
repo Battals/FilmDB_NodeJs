@@ -8,20 +8,24 @@ import {
   displaySingleMovie,
   saveMovie,
   deleteMovie,
-  seenMovie
+  seenMovie,
+  deleteSeenMovie
 } from "../controllers/movieController.js";
 import { isLoggedIn} from "../middleware/middleware.js";
 const router = express.Router();
 
 router.get("/movies", isLoggedIn, getMovies);
 router.get("/comingMovies", isLoggedIn, getUpcomingMovies);
-
 router.get("/trailer/:movieId", getTrailer);
 router.get("/findMovie/:movieId", isLoggedIn, getMovieDetails);
 router.get("/movieDetails/:movieId", isLoggedIn, displaySingleMovie)
 router.post("/saveMovie/:movieId/:userName", isLoggedIn, saveMovie)
 router.post("/seenMovie/:movieId/:userName", isLoggedIn, seenMovie)
 router.post("/deleteMovie/:movieId/:userName", deleteMovie)
+router.post("/deleteSeenMovie/:movieId/:userName", deleteSeenMovie)
+
+
+
 
 
 

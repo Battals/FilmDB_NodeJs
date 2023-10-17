@@ -7,9 +7,6 @@ function comingMovies() {
     .then((res) => res.json())
     .then((data) => displayUpcoming(data))
     .catch((error) => console.log(error));
-
-
-
 }
 
 function initYouTubePlayer(videoId) {
@@ -21,13 +18,7 @@ function initYouTubePlayer(videoId) {
   youtubePlayer = new YT.Player("player", {
     height: "315",
     width: "560",
-    videoId: videoId,
-    playerVars: {
-      // Add any optional parameters as needed
-    },
-    events: {
-      // You can add event handlers here if necessary
-    },
+    videoId: videoId
   });
 }
 

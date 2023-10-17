@@ -1,11 +1,7 @@
 import { fileURLToPath } from "url";
-import { dirname } from "path";
-import mysql from "mysql2";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import path from "path";
-import createDbConnection from "../db/dbConnection.js";
-import { MongoClient } from "mongodb";
 import {client} from '../db/dbConnection2.js'
 
 const __dirname = fileURLToPath(
@@ -53,12 +49,12 @@ export const login = async (req, res) => {
   const user = await usersCollection.findOne({ username: username });
 
   if (!user) {
-
     return res.status(400).json({ error: "Ugyldig adgangskode eller brugernavn" });
   }
 
   const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
+    console.log("her1")
     return res.status(400).json({ error: "Ugyldig adgangskode" });
   }
 

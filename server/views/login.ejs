@@ -44,44 +44,42 @@
     </div>
 
     <script>
-        document.querySelector('form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const navn = document.getElementById("navn").value;
-            const kode = document.getElementById("kode").value;
+     document.querySelector('form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const navn = document.getElementById("navn").value;
+    const kode = document.getElementById("kode").value;
 
-            const credentials = {
-                username: navn,
-                password: kode
-            };
+    const credentials = {
+        username: navn,
+        password: kode
+    };
 
-            try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(credentials),
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    
-                } else if (response.ok) {
-                    const data = await response.json()
-
-                    localStorage.setItem("user_id", data.userId)
-                    localStorage.setItem("user_name", data.userName)
-                    localStorage.setItem("access_token", data.token)
-
-                    console.log(data.userName + "username")
-
-                    window.location.href = `myProfile/?userId=${data.userId}/&userName=${data.userName}`;
-
-                }
-            } catch (error) {
-
-            }
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(credentials),
         });
+
+        const data = await response.json();
+
+        if (response.status === 400) {
+            toastr.error(data.error);
+        } else {
+            localStorage.setItem("user_id", data.userId);
+            localStorage.setItem("user_name", data.userName);
+            localStorage.setItem("access_token", data.token);
+
+            console.log(data.userName + " username");
+
+            window.location.href = `/myProfile/?userId=${data.userId}&userName=${data.userName}`;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+});
 
     </script>
 </body>

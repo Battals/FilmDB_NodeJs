@@ -7,8 +7,9 @@
   <title>Movie Details</title>
   <script src="https://www.youtube.com/iframe_api"></script>
   <link rel="stylesheet" href="../../client/CSS/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="/client/JS/frontPage.js"></script>
 </head>
 
 <body>
@@ -34,16 +35,20 @@
   </header>
   <div class="movie-container1">
     <div id="button-div">
-      <button style="color: #007bff;" onclick="saveMovie()">
-        <i class="fas fa-bookmark"> Favorit</i>
-      </button>
-      <button onclick="seenMovie()" >
+      <button id="favorit" onclick="saveMovie('<%= movieDetails.id %>', '<%= movieDetails.title %>')">
+        <i style="color: #007bff; "class="fas fa-bookmark"> Favorit</i>
+            </button>
+      <button onclick="seenMovie('<%= movieDetails.id %>', '<%= movieDetails.title %>')" >
         <i class="fas fa-eye"> Set</i>
       </button>
+
+      
     </div>
+    
     <h1 class="movie-title">
       <%= movieDetails.title %>
     </h1>
+
     <div class="movie-layout">
       <div class="movie-test">
         <img class="movie-poster" style="width: auto; height: 80%;"
@@ -112,41 +117,6 @@
   };
 </script>
 <script>
-
-  function saveMovie() {
-    const username = localStorage.getItem("user_name")
-    var movieId = <%= movieDetails.id %>;
-    fetch(`/saveMovie/${movieId}/${username}`, {
-      method: 'POST'
-    })
-      .then(response => {
-       return response.json()
-      })
-      .then(data => {
-        if(data.message) {
-          toastr.warning(data.message)
-        } else {
-          toastr.success(`<%= movieDetails.title %> gemt til Favorit-liste`)
-        }
-      })
-    }
-
-    function seenMovie(){
-      var username = localStorage.getItem("user_name")
-      var movieId = <%= movieDetails.id %>
-      fetch(`/seenMovie/${movieId}/${username}`, {
-        method: 'POST'
-      })
-      .then(response => {
-        if(response.status === 409) {
-          toastr.error("Filmen er allerede markeret som set")
-        } else {
-          toastr.success("Gemt til Set-liste")
-        }
-      })
-    }
-
-
 
   function getTrailer(movieId) {
     return fetch(`/trailer/${movieId}`)

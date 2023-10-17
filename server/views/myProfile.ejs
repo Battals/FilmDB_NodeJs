@@ -8,8 +8,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  <script type="module" src="/client/JS/toastr-config.js"></script>
-
 </head>
 
 <header>
@@ -31,28 +29,29 @@
 
   <div id="savedMoviesContainer" style="padding: 150px;">
     <h1 style="text-align: inherit;">Favoritter <i style="color: #007bff;"class="fas fa-bookmark"></i></h1>
-    <div class="movieList" id="movieListContainer">
+    <div class="movieList" id="movieListContainer1">
 
     </div>
   </div>
 
   <div id="watchedMoviesContainer" style="padding: 150px;">
     <h1 style="text-align: inherit;">Set <i class="fas fa-eye"></i></h1>
-    <div class="movieList" id="movieListContainer">
+    <div class="movieList" id="movieListContainer2">
 
     </div>
   </div>
   
 <script> 
+const API_KEY = '<%= apiKey %>';
 function displaySavedMovies() {
-  const API_KEY = '<%= apiKey %>';
-  const test = JSON.parse('<%- results %>');
-  const movieListContainer = document.getElementById("movieListContainer");  
+  const favoriteMovies = JSON.parse('<%- savedMovies %>');
+  const seenMovies = JSON.parse('<%- seenMovies %>')
+  const movieListContainer = document.getElementById("movieListContainer1");  
+  const movieListContainer2 = document.getElementById("movieListContainer2")
 
-  for (const item of test) {
+  for (const item of favoriteMovies) {
     const movieId = item.movieId;
     const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=de`;
-
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -65,7 +64,7 @@ function displaySavedMovies() {
           <div>
             <span class="movieTitle">${data.title}</span><br>
             <div class="movieItemBtns">
-              <button style="border: none;" onclick="deleteMovie(${data.id}, '${data.title}')">
+              <button style="border: none;" onclick="deleteMovie('${data.id}', '${data.title}')">
                 <i class="fa-solid fa-trash" style="color: #ea0000; border: none;"></i>
 
               </button>
@@ -77,8 +76,34 @@ function displaySavedMovies() {
         movieListContainer.appendChild(movieItem);
       });
   }
-}
 
+  for(const item of seenMovies){
+    const movieId = item.movieId
+    const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=de`;
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const movieItem = document.createElement("div")
+      movieItem.className = "movieItem"
+      movieItem.id = `movieItem-${data.id}`
+
+      movieItem.innerHTML = `<img class="moviePoster" src="https://image.tmdb.org/t/p/w200${data.poster_path}" alt="${data.title} Poster">
+          <div>
+            <span class="movieTitle">${data.title}</span><br>
+            <div class="movieItemBtns">
+              <button style="border: none;" onclick="deleteSeenMovie('${data.id}', '${data.title}')">
+                <i class="fa-solid fa-trash" style="color: #ea0000; border: none;"></i>
+
+              </button>
+
+            </div>
+          </div>
+        `;
+
+        movieListContainer2.appendChild(movieItem)
+    })
+  }
+}
 
 function deleteMovie(movieId, movieName) {
   const username = localStorage.getItem("user_name");
@@ -88,16 +113,31 @@ function deleteMovie(movieId, movieName) {
   })
     .then(response => {
     if(response.status === 200) {
-      toastr.success(`${movieName}: er fjernet fra dine favoritter`)
       movieItem.remove()
+      toastr.success(`${movieName}: er fjernet fra dine favoritter`)
     } else {
       toastr.error("Der opstod en fejl")
     }
-    
   })
 
 }
 
+function deleteSeenMovie(movieId, movieName){
+const movieItem = document.getElementById(`movieItem-${movieId}`);
+var userName = localStorage.getItem("user_name")
+fetch(`/deleteSeenMovie/${movieId}/${userName}`, {
+  method: 'POST'
+})
+.then(response => {
+  if(response.status === 200){
+    movieItem.remove()
+    toastr.success(`${movieName} er nu slettet fra din Set-liste`)
+  } else {
+    toastr.error("Der opstod en fejl")
+  }
+})
+
+}
 
     displaySavedMovies();
   </script>

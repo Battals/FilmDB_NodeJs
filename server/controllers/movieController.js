@@ -1,6 +1,4 @@
 const API_KEY = process.env.API_KEY;
-import createDbConnection from "../db/dbConnection.js";
-import jwt from "jsonwebtoken";
 
 import { client } from "../db/dbConnection2.js";
 
@@ -130,7 +128,7 @@ export const saveMovie = async (req, res) => {
         });
     }
     await userMovies.insertOne({ userName, movieId });
-    return res.status(200).json("");
+    return res.status(200).json({message: "Tilføjet til favorit"});
   }
 };
 
@@ -140,27 +138,50 @@ export const seenMovie = async (req, res) => {
 
   const existingRecord = await seenMovies.findOne({userName, movieId})
   if(existingRecord) {
-    return res.status(409).json("")
+    return res.status(409).json({message: "Er i forvejen gemt i din Set-liste"})
   }
 
   await seenMovies.insertOne({userName, movieId})
-  return res.status(200).json("")
+  return res.status(200).json({message: "Gemt til din Set-liste"})
 }
 
 export const deleteMovie = async (req, res) => {
   const username = req.params.userName
   const token = req.cookies.token;
   const movieId = req.params.movieId;
-  const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
 
  const result = await userMovies.deleteOne({userName: username, movieId: movieId})
  if(result.acknowledged == true){
-  return res.status(200).json({message: "Filmen er nu slettet"})
+  return res.status(200).json({message: "Filmen er nu slettet fra din Favorit-liste"})
  } else {
   return res.status(500)
  }
   
-  } 
+  }
+
+  export const deleteSeenMovie = async (req, res) => {
+    const username = req.params.userName
+    const movieId = req.params.movieId
+
+    console.log(username)
+    console.log(movieId)
+
+    const result = await seenMovies.deleteOne({userName: username, movieId: movieId})
+    console.log(result)
+    if(result.acknowledged === true){
+      return res.status(200).json({message: "Filmen er nu slettet fra din Set-liste"})
+    }
+    else {
+      res.status(409).json({message: "Der opstod en fejl"})
+  }
+}
+  
+  /*
+  export const deleteSeenMovie = async (req, res) {
+username = req.params.userName
+movieid = req.params.movieId
+  }
+  */
 
   
 

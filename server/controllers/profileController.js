@@ -1,8 +1,10 @@
-import createDBConnection from "../db/dbConnection.js"
 import jwt, { decode } from 'jsonwebtoken'
-const db = createDBConnection()
 
 import {client} from '../db/dbConnection2.js'
+
+
+const userMovies = client.db("Cluster0").collection("savedMovies");
+const seenMovies = client.db("Cluster0").collection("seenMovies")
 
 
 export const displaySingleMovie = async (req, res) => {
@@ -23,6 +25,7 @@ export const displaySingleMovie = async (req, res) => {
   export const displayProfile = async (req, res) => {
     const token = req.cookies.token;
     const username = req.cookies.username;
+    const apiKey = process.env.API_KEY;
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) {
             console.log(err);
@@ -36,28 +39,18 @@ export const displaySingleMovie = async (req, res) => {
             id: userId,
         };
 
-        const userMovies = client.db("Cluster0").collection("savedMovies");
-
-
-        async function getUserMovies() {
+        async function getProfileData() {
             try {
-                const results = await userMovies.find({ userName: username }).toArray();
-                console.log("Collection Data:", results);
-                res.render("myProfile", {results: JSON.stringify(results), apiKey, data})
+                const savedMovies = await userMovies.find({ userName: username}).toArray();
+                const seenMovies1 = await seenMovies.find({userName: username}).toArray();
+                console.log("Collection Data:", seenMovies1);
+
+                res.render("myProfile", {savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies1), apiKey, data})
             } catch (error) {
                 console.log("Error:", error);
             }
         }
-
-
         
-        getUserMovies();
-
+        getProfileData();
         
-
-      
-
-        const apiKey = process.env.API_KEY;
-
-
     })}
