@@ -50,7 +50,10 @@ function initYouTubePlayer(videoId) {
     },
   });
 }
+
 function displayMovies(response) {
+  console.log("response")
+  console.log(response)
   const movieListDiv = document.querySelector(".movie-list");
 
   const movies = response.results || [];
@@ -77,23 +80,21 @@ function displayMovies(response) {
     movieDiv.appendChild(releaseDate);
 
     const readMore = document.createElement("button");
-    readMore.id = "buttonDivbtn";
     readMore.textContent = "Læs mere";
     buttonDiv.appendChild(readMore);
-    const buyTickets = document.createElement("button");
-    buyTickets.id = "buttonDivbtn";
-    buttonDiv.appendChild(buyTickets);
 
     movieDiv.appendChild(buttonDiv);
-
     movieListDiv.appendChild(movieDiv);
 
     image.addEventListener("click", function () {
-      displayModal(movie.id, movie.title);
+      displayModal(movie);
     });
+
     readMore.addEventListener("click", function () {
-      displayModal(movie.id, movie.title);
+      displayModal(movie);
     });
+  });
+}
 
     function getTrailer(movieId) {
       return fetch(`/trailer/${movieId}`)
@@ -111,8 +112,9 @@ function displayMovies(response) {
           throw error;
         });
     }
+  
 
-    function displayModal(movieid, movieName) {
+    function displayModal(movie) {
       const modal = document.getElementById("myModal");
       const modalTitle = document.getElementById("modal-title");
       const modalDescription = document.getElementById("modal-description");
@@ -120,13 +122,15 @@ function displayMovies(response) {
       const favorit = document.getElementById("favorit")
       const set = document.getElementById("set")
       favorit.onclick = function() {
-        saveMovie(movieid, movieName)
+        saveMovie(movie.id, movie.title)
       }
       set.onclick = function(){
-        seenMovie(movieid, movieName)
+        seenMovie(movie.id, movie.title)
       }
+
+      modalDescription.innerHTML = "";
       
-      getTrailer(movieid)
+      getTrailer(movie.id)
         .then((data) => {
           const trailer = data.results.find(
             (item) =>
@@ -139,19 +143,32 @@ function displayMovies(response) {
             initYouTubePlayer(trailerVideoId);
           }
 
-          modal.style.display = "block";
-          modalTitle.textContent = movie.title;
-          modalDescription.textContent = movie.overview;
-          modalDescription.insertAdjacentHTML(
-            "afterbegin",
-            `<h4>Sprog: ${movie.original_language}</br> Bedømmelse: ${movie.vote_average} stjerner</h4>`
-          );
+
+
+      modal.style.display = "block";
+      modalTitle.textContent = movie.title + `(${movie.release_date})`; 
+      const movieInfoDiv = document.createElement("div");
+      movieInfoDiv.classList.add("movie-info"); 
+
+      const movieOverview = document.createElement("p");
+      movieOverview.textContent = movie.overview;
+
+      movieInfoDiv.appendChild(movieOverview);
+
+      movieInfoDiv.insertAdjacentHTML(
+        "beforeend",
+        `<h4>Sprog - ${movie.original_language}</br> Bedømmelse - ${movie.vote_average} <i class="fa-solid fa-star"></i> </br> Udgivelsesdato - ${movie.release_date}</h4>`
+      );
+
+      modalDescription.appendChild(movieInfoDiv);
           closeModal.addEventListener("click", () => {
             modal.style.display = "none";
             youtubePlayer.destroy();
           });
         })
+
         .catch((error) => console.error("Error fetching trailers:", error));
     }
-  });
-}
+
+  
+

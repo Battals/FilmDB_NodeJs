@@ -10,7 +10,7 @@ export const getMovies = async (req, res) => {
   const isLoggedIn = res.locals.isLoggedIn;
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&include_adult=false&include_video=false&language=da&page=1&sort_by=popularity.desc`
+      `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&include_adult=false&include_video=true&language=da&page=1&sort_by=popularity.desc`
     );
 
     if (!response.ok) {
@@ -133,6 +133,9 @@ export const saveMovie = async (req, res) => {
 };
 
 export const seenMovie = async (req, res) => {
+  if(!res.locals.isLoggedIn){
+    return res.status(409).json({message: "Log venligst ind for at gemme denne film"})
+  }
   const userName = req.params.userName
   const movieId = req.params.movieId;
 
@@ -146,6 +149,9 @@ export const seenMovie = async (req, res) => {
 }
 
 export const deleteMovie = async (req, res) => {
+  if(!res.locals.isLoggedIn){
+    return res.status(409).send({message: "Log venligst ind for at slette denne film"})
+  }
   const username = req.params.userName
   const token = req.cookies.token;
   const movieId = req.params.movieId;

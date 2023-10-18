@@ -29,30 +29,13 @@ app.use(router);
 app.use(pagesRouter);
 app.use(movieRouter);
 
-
-const db = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.DATABASE_USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
-});
-
-db.connect((err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("MYSQL connected");
-  }
-});
-
-
 run()
 
 const PORT = 8080;
 
 app.listen(PORT, (error) => {
-  if (error) {
-    console.log(error);
+  if(error) {
+    console.log(error)
   }
-  console.log("Server running on port: " + PORT);
-});
+  console.log("Server running on " + PORT)
+})

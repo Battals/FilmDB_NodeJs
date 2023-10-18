@@ -87,6 +87,7 @@ function displayUpcoming(response){
           const modal = document.getElementById("myModal");
           const modalTitle = document.getElementById("modal-title");
           const modalDescription = document.getElementById("modal-description");
+          const movieInfo = document.getElementById("movie-info");
           const closeModal = document.getElementById("modal-close");
     
     
@@ -104,9 +105,10 @@ function displayUpcoming(response){
               }
     
               modal.style.display = "block";
+            
               modalTitle.textContent = movie.title;
               modalDescription.textContent = movie.overview;
-              modalDescription.insertAdjacentHTML("afterbegin", `<h4>Sprog: ${movie.original_language} </br> Bedømmelse: ${movie.vote_average} stjerner</h4>`)
+              modalDescription.insertAdjacentHTML("afterbegin", `<h4>Sprog: ${movie.original_language} </br> Bedømmelse: ${movie.vote_average} test/h4>`)
               closeModal.addEventListener("click", () => {
                 modal.style.display = "none";
                 youtubePlayer.destroy()

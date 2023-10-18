@@ -45,28 +45,25 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
-
   const user = await usersCollection.findOne({ username: username });
-
   if (!user) {
     return res.status(400).json({ error: "Ugyldig adgangskode eller brugernavn" });
   }
 
   const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
-    console.log("her1")
     return res.status(400).json({ error: "Ugyldig adgangskode" });
   }
 
   const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 
   res.cookie("username", username, {
-    expires: new Date(Date.now() + 24 * 3600000),
+    expires: new Date(Date.now() + 3 * 3600000),
     httpOnly: true,
   });
 
   res.cookie("token", token, {
-    expires: new Date(Date.now() + 24 * 3600000),
+    expires: new Date(Date.now() + 3 + 3600000),
     httpOnly: true,
   });
 
