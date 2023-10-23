@@ -10,7 +10,7 @@ export const getMovies = async (req, res) => {
   const isLoggedIn = res.locals.isLoggedIn;
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&include_adult=false&include_video=true&language=da&page=1&sort_by=popularity.desc`
+      `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=da&page=1`
     );
 
     if (!response.ok) {
@@ -66,7 +66,7 @@ export const getMovieDetails = async (req, res) => {
   const { movieId } = req.params;
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=da`
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=da&append_to_response=credits,videos,watch/providers`
     );
     if (!response.ok) {
       throw new Error(`Request failed with status code ${response.status}`);

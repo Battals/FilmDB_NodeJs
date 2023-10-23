@@ -1,39 +1,39 @@
+
 let youtubePlayer;
 
 window.onload = loadPage();
 
-
 function loadPage() {
-  fetch("/movies")
+  fetch("/popularMovies")
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       displayMovies(data);
     })
     .catch((error) => console.error("Error fetching movies:", error));
 }
 
-function saveMovie(movieId, movieName){
-  const username = localStorage.getItem("user_name")
+function saveMovie(movieId, movieName) {
+  const username = localStorage.getItem("user_name");
   fetch(`/saveMovie/${movieId}/${username}`, {
-    method: 'POST'
+    method: "POST",
   })
-  .then(response => {
-    return response.json()
-  })
-  .then(data => toastr.info(data.message, `${movieName}`))
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => toastr.info(data.message, `${movieName}`));
 }
 
-function seenMovie(movieId, movieName){
-  const username = localStorage.getItem("user_name")
+function seenMovie(movieId, movieName) {
+  const username = localStorage.getItem("user_name");
   fetch(`/seenMovie/${movieId}/${username}`, {
-    method: 'POST'
+    method: "POST",
   })
-  .then(response => {
-    return response.json()
-  })
-  .then(data => toastr.info(data.message, `${movieName}`))
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => toastr.info(data.message, `${movieName}`));
 }
-
 
 function initYouTubePlayer(videoId) {
   if (youtubePlayer) {
@@ -44,16 +44,12 @@ function initYouTubePlayer(videoId) {
     height: "315",
     width: "560",
     videoId: videoId,
-    playerVars: {
-    },
-    events: {
-    },
+    playerVars: {},
+    events: {},
   });
 }
 
 function displayMovies(response) {
-  console.log("response")
-  console.log(response)
   const movieListDiv = document.querySelector(".movie-list");
 
   const movies = response.results || [];
@@ -87,88 +83,110 @@ function displayMovies(response) {
     movieListDiv.appendChild(movieDiv);
 
     image.addEventListener("click", function () {
-      displayModal(movie);
+      displayModal(movie.id, movie.title);
     });
 
     readMore.addEventListener("click", function () {
-      displayModal(movie);
+      displayModal(movie.id, movie.title);
     });
   });
 }
 
-    function getTrailer(movieId) {
-      return fetch(`/trailer/${movieId}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          return data;
-        })
-        .catch((error) => {
-          console.log("Error fetching trailers", error);
-          throw error;
-        });
-    }
+function getTrailer(movieId) {
+  return fetch(`/trailer/${movieId}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.log("Error fetching trailers", error);
+      throw error;
+    });
+}
+
+function displayModal(movieId) {
+  
+  const modal = document.getElementById("myModal");
+  const modalTitle = document.getElementById("modal-title");
+  const closeModal = document.getElementById("modal-close");
+  const descriptionContainer = document.getElementById("test1");
+  const favorit = document.getElementById("favorit");
+  const set = document.getElementById("set");
+  const movieInfo = document.getElementById("movieInfo");
+  const movieOverview = document.getElementById("movieOverview");
+
   
 
-    function displayModal(movie) {
-      const modal = document.getElementById("myModal");
-      const modalTitle = document.getElementById("modal-title");
-      const modalDescription = document.getElementById("modal-description");
-      const closeModal = document.getElementById("modal-close");
-      const favorit = document.getElementById("favorit")
-      const set = document.getElementById("set")
-      favorit.onclick = function() {
-        saveMovie(movie.id, movie.title)
-      }
-      set.onclick = function(){
-        seenMovie(movie.id, movie.title)
-      }
-
-      modalDescription.innerHTML = "";
-      
-      getTrailer(movie.id)
-        .then((data) => {
-          const trailer = data.results.find(
-            (item) =>
-              item.type === "Trailer" &&
-              item.name.toLowerCase().includes("trailer")
-          );
-
-          if (trailer) {
-            const trailerVideoId = trailer.key;
-            initYouTubePlayer(trailerVideoId);
-          }
-
-
-
+  fetch(`/findMovie/${movieId}`)
+    .then((response) => response.json())
+    .then((data) => {
       modal.style.display = "block";
-      modalTitle.textContent = movie.title + `(${movie.release_date})`; 
-      const movieInfoDiv = document.createElement("div");
-      movieInfoDiv.classList.add("movie-info"); 
+        modalTitle.innerHTML = data.title;
+     
 
-      const movieOverview = document.createElement("p");
-      movieOverview.textContent = movie.overview;
+      getTrailer(movieId).then((data1) => {
+        const trailer = data1.results.find(
+          (item) =>
+            item.type === "Trailer" &&
+            item.name.toLowerCase().includes("trailer")
+        );
 
-      movieInfoDiv.appendChild(movieOverview);
+        if (trailer) {
+          const trailerVideoId = trailer.key;
+          initYouTubePlayer(trailerVideoId);
+        }
+      
+        favorit.onclick = () => saveMovie(data.id, data.title);
+        set.onclick = () => seenMovie(data.id, data.title);
 
-      movieInfoDiv.insertAdjacentHTML(
-        "beforeend",
-        `<h4>Sprog - ${movie.original_language}</br> Bedømmelse - ${movie.vote_average} <i class="fa-solid fa-star"></i> </br> Udgivelsesdato - ${movie.release_date}</h4>`
-      );
+        const movieOverviewText = document.getElementById("movieOverviewText")
+        movieOverview.classList.add("movieInfoElements");
+        movieOverviewText.textContent = data.overview || "Information ikke tilgængelig";
+        movieOverview.appendChild(movieOverviewText);
+        movieInfo.appendChild(movieOverview);
 
-      modalDescription.appendChild(movieInfoDiv);
-          closeModal.addEventListener("click", () => {
-            modal.style.display = "none";
-            youtubePlayer.destroy();
-          });
-        })
+        const actorInfoDiv = document.createElement("div");
+        actorInfoDiv.classList.add("actorDiv");
 
-        .catch((error) => console.error("Error fetching trailers:", error));
-    }
+        data.credits.cast.forEach((actor) => {
+          if (actor.profile_path === null) {
+            return;
+          }
 
-  
+          const actorElement = document.createElement("div");
+          actorElement.classList.add("actor");
+          const actorName = document.createElement("h4");
+          actorName.textContent = actor.name;
+          actorName.classList.add("actor-name");
 
+          const actorImage = document.createElement("img");
+          actorImage.src = `https://image.tmdb.org/t/p/w500${actor.profile_path}`;
+          actorElement.appendChild(actorName);
+          actorElement.appendChild(actorImage);
+          actorInfoDiv.appendChild(actorElement);
+        });
+
+        descriptionContainer.appendChild(actorInfoDiv);
+        actorInfoDiv.insertAdjacentHTML('beforebegin', '<h3 id="actors">Medvirkende</h3>');
+
+        closeModal.addEventListener("click", () => {
+          modal.style.display = "none";
+          descriptionContainer.removeChild(actorInfoDiv)
+           const medvirkende = document.getElementById("actors")
+           descriptionContainer.removeChild(medvirkende)
+           descriptionContainer.removeChild(movieOverview)
+           
+
+          youtubePlayer.destroy();
+        });
+      })
+
+      
+      .catch((error) => console.error("Error fetching trailers:", error));
+  });
+}

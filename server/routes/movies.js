@@ -14,7 +14,7 @@ import {
 import { isLoggedIn} from "../middleware/middleware.js";
 const router = express.Router();
 
-router.get("/movies", isLoggedIn, getMovies);
+router.get("/popularMovies", isLoggedIn, getMovies);
 router.get("/comingMovies", isLoggedIn, getUpcomingMovies);
 router.get("/trailer/:movieId", getTrailer);
 router.get("/findMovie/:movieId", isLoggedIn, getMovieDetails);

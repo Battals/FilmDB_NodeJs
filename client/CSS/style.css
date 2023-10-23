@@ -164,13 +164,6 @@ button {
   position: relative;
 }
 
-.modal-description-container {
-  max-height: 60%;
-  overflow-y: auto;
-  color: black;
-  display: -webkit-box;
-}
-
 #modal-description {
   height: 300px;
   width: 50%;
@@ -451,11 +444,40 @@ body {
 }
 
 .iconButtons {
-  position: absolute;
   right: 0;
   padding: 10px;
 }
 
 .movie-info{
   padding: 10px;
+}
+
+.actorDiv{
+  display: flex;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  overflow: auto;
+  
+}
+
+.actor {
+  max-width: 160px;
+  margin: 5px;
+}
+
+.actor-name{
+  font-size: smaller;
+}
+
+#movieInfo{
+flex: 1;
+padding: 10px;
+}
+
+.movieInfo1 {
+  display: flex;
+}
+
+.movieInfoElements{
+  max-width: 60%;
 }

@@ -17,7 +17,7 @@
         </a>
         <nav>
           <% if (isLoggedIn) { %>
-            <a href="/">Aktuelle film</a>
+            <a href="/">Populære film</a>
             <a href="upcomingMovies">Kommende film</a>
             <a href="findMovie">Find film</a>
             <a href="myProfile">Min side</a>
@@ -27,23 +27,29 @@
             %> 
             <a href="login">Login</a>
             <a href="/register">Opret bruger</a>
-            <a href="/">Aktuelle film</a>
+            <a href="/">Populære film</a>
             <a href="upcomingMovies">Kommende film</a>
             <a href="findMovie">Find film</a>
          <% } %>
         </nav>
       </header>
       <body>
-  <h1 style="margin: 15px;">Aktuelle film</h1>
+  <h1 style="margin: 15px;">Populære film</h1>
   
   <div id="myModal" class="modal">
     <div class="modal-content">
       <button id="modal-close" class="close">&times;</button>
       <h2 id="modal-title">Movie Title</h2>
-      <div class="modal-description-container">
+      <div class="modal-description-container" id="test1">
+        <div class="movieInfo1">
+        <div id="movieInfo">
+          <h3>Filmbeskrivelse</h3>
+          <div id="movieOverview">
+            <p id="movieOverviewText"></p>
+            </div>
+          </div>
         <div id="player"></div>
-        <p id="modal-description"></p>
-      
+      </div>
         <div class="iconButtons">
           <button id="favorit" class="markBtns">
         <i style="color: #007bff; "class="fas fa-bookmark"> Favorit</i>
