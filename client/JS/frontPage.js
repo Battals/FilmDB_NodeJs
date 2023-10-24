@@ -120,12 +120,12 @@ function displayModal(movieId) {
   const movieInfo = document.getElementById("movieInfo");
   const movieOverview = document.getElementById("movieOverview");
 
-  
+  modal.classList.add("active")
+
 
   fetch(`/findMovie/${movieId}`)
     .then((response) => response.json())
     .then((data) => {
-      modal.style.display = "block";
         modalTitle.innerHTML = data.title;
      
 
@@ -175,13 +175,11 @@ function displayModal(movieId) {
         actorInfoDiv.insertAdjacentHTML('beforebegin', '<h3 id="actors">Medvirkende</h3>');
 
         closeModal.addEventListener("click", () => {
-          modal.style.display = "none";
+          modal.classList.remove("active")
           descriptionContainer.removeChild(actorInfoDiv)
            const medvirkende = document.getElementById("actors")
            descriptionContainer.removeChild(medvirkende)
            descriptionContainer.removeChild(movieOverview)
-           
-
           youtubePlayer.destroy();
         });
       })

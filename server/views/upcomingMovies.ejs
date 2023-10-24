@@ -4,8 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kino</title>
+  <title>FilmDB</title>
   <script src="https://www.youtube.com/iframe_api"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </head>
 <body>
   <header>
@@ -40,9 +44,24 @@
     <div class="modal-content">
       <button id="modal-close" class="close">&times;</button>
       <h2 id="modal-title">Movie Title</h2>
-      <div class="modal-description-container">
+      <div class="modal-description-container" id="test1">
+        <div class="movieInfo1">
+        <div id="movieInfo">
+          <h3>Filmbeskrivelse</h3>
+          <div id="movieOverview">
+            <p id="movieOverviewText"></p>
+            </div>
+          </div>
         <div id="player"></div>
-        <p id="modal-description"></p>        
+      </div>
+        <div class="iconButtons">
+          <button id="favorit" class="markBtns">
+        <i style="color: #007bff; "class="fas fa-bookmark"> Favorit</i>
+      </button>
+      <button id="set" class="markBtns">
+        <i class="fas fa-eye"> Set</i>
+      </button>
+      </div>
       </div>
     </div>
   </div>

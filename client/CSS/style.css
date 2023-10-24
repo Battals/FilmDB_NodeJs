@@ -152,6 +152,13 @@ button {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   overflow: auto;
+  opacity: 0; /* Start with opacity 0 */
+  transition: opacity 0.5s; /* Add a transition for opacity */
+}
+
+.modal.active {
+  display: block; /* Display the modal when it has the 'active' class */
+  opacity: 1; /* Change the opacity to 1 for the fade-in effect */
 }
 
 .modal-content {
@@ -481,3 +488,4 @@ padding: 10px;
 .movieInfoElements{
   max-width: 60%;
 }
+

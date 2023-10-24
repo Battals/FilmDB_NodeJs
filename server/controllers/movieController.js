@@ -182,12 +182,6 @@ export const deleteMovie = async (req, res) => {
   }
 }
   
-  /*
-  export const deleteSeenMovie = async (req, res) {
-username = req.params.userName
-movieid = req.params.movieId
-  }
-  */
 
   
 
