@@ -1,4 +1,3 @@
-
 let youtubePlayer;
 
 window.onload = loadPage();
@@ -119,13 +118,14 @@ function displayModal(movieId) {
   const set = document.getElementById("set");
   const movieInfo = document.getElementById("movieInfo");
   const movieOverview = document.getElementById("movieOverview");
+  const movieInfos = document.getElementById("movieInfos")
 
   modal.classList.add("active")
-
 
   fetch(`/findMovie/${movieId}`)
     .then((response) => response.json())
     .then((data) => {
+      console.log("Data", data)
         modalTitle.innerHTML = data.title;
      
 
@@ -149,6 +149,31 @@ function displayModal(movieId) {
         movieOverviewText.textContent = data.overview || "Information ikke tilgængelig";
         movieOverview.appendChild(movieOverviewText);
         movieInfo.appendChild(movieOverview);
+
+
+        const results = data.similar.results
+
+        const similarInfoDiv = document.createElement("div");
+        similarInfoDiv.classList.add("similarDiv");
+
+        for(let i = 0; i < 7; i++){
+          const item = results[i]
+          const similarElement = document.createElement("div")
+          similarElement.classList.add("similar")
+          const similarMovieName = document.createElement("h4")
+          similarMovieName.textContent = item.title
+          similarMovieName.classList.add("similar-name")
+          const similarMovieImage = document.createElement("img")
+          similarMovieImage.src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+          similarElement.appendChild(similarMovieName)
+          similarElement.appendChild(similarMovieImage)
+          similarInfoDiv.appendChild(similarElement)
+          
+
+        }
+        movieInfos.appendChild(similarInfoDiv)
+
+        movieInfo.appendChild(movieInfos)
 
         const actorInfoDiv = document.createElement("div");
         actorInfoDiv.classList.add("actorDiv");
@@ -177,9 +202,14 @@ function displayModal(movieId) {
         closeModal.addEventListener("click", () => {
           modal.classList.remove("active")
           descriptionContainer.removeChild(actorInfoDiv)
+          movieInfos.removeChild(similarInfoDiv)
            const medvirkende = document.getElementById("actors")
            descriptionContainer.removeChild(medvirkende)
+           descriptionContainer.removeChild(movieInfo)
            descriptionContainer.removeChild(movieOverview)
+           
+
+
           youtubePlayer.destroy();
         });
       })

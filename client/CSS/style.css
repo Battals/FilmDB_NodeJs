@@ -143,7 +143,6 @@ button {
 }
 
 .modal {
-  display: none;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -152,13 +151,15 @@ button {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   overflow: auto;
-  opacity: 0; /* Start with opacity 0 */
-  transition: opacity 0.5s; /* Add a transition for opacity */
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
 }
 
 .modal.active {
-  display: block; /* Display the modal when it has the 'active' class */
-  opacity: 1; /* Change the opacity to 1 for the fade-in effect */
+  opacity: 1;
+  display: block;
+
 }
 
 .modal-content {
@@ -464,16 +465,34 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 20px;
   overflow: auto;
-  
 }
+.similarDiv{
+  display: inline-flex;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  overflow: auto;
+}
+
 
 .actor {
   max-width: 160px;
   margin: 5px;
 }
 
+
+.similar {
+  max-width: 100px;
+  text-align: center;
+  margin-right: 35px;
+}
+
 .actor-name{
   font-size: smaller;
+}
+
+.similar-name{
+  font-size: x-small;
+  text-wrap: nowrap;
 }
 
 #movieInfo{

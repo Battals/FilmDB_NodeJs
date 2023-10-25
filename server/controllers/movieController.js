@@ -52,7 +52,6 @@ export const getUpcomingMovies = async (req, res) => {
     if (!response.ok) {
       throw new Error(`Request failed with status ${response.status}`);
     }
-
     const data = await response.json();
     console.log("Movies fetched successfully!");
     res.json(data);
@@ -64,9 +63,10 @@ export const getUpcomingMovies = async (req, res) => {
 
 export const getMovieDetails = async (req, res) => {
   const { movieId } = req.params;
+
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=da&append_to_response=credits,videos,watch/providers`
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=da&append_to_response=credits,similar,details,recommendations,latest`
     );
     if (!response.ok) {
       throw new Error(`Request failed with status code ${response.status}`);
