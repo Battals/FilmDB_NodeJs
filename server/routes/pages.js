@@ -8,18 +8,20 @@ import { isLoggedIn } from '../middleware/middleware.js';
 
 
 router.get('/', isLoggedIn, (req, res)  => {
-    res.render('frontPage', {isLoggedIn: res.locals.isLoggedIn})
+    res.render('frontPage', {isLoggedIn: res.isLoggedIn})
 })
 
 router.get('/findMovie', isLoggedIn, (req, res) => {
-    res.render('findMovie', {isLoggedIn: res.locals.isLoggedIn})
+    res.render('findMovie', {isLoggedIn: res.isLoggedIn})
 })
 
 router.get('/upcomingMovies', isLoggedIn, (req, res) => {
-    res.render('upcomingMovies', {isLoggedIn: res.locals.isLoggedIn})
+    res.render('upcomingMovies', {isLoggedIn: res.isLoggedIn})
 })
 
 router.get("/myProfile", isLoggedIn, displayProfile)
+
+router.get("/myAccount", isLoggedIn, displayAccount )
 
 router.get('/login', (req, res) => { 
     res.render('login', {req})

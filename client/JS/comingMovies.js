@@ -1,13 +1,5 @@
 let youtubePlayer;
 
-window.onload = comingMovies();
-
-function comingMovies() {
-  fetch("/comingMovies")
-    .then((res) => res.json())
-    .then((data) => displayUpcoming(data))
-    .catch((error) => console.log(error));
-}
 
 function saveMovie(movieId, movieName) {
   const username = localStorage.getItem("user_name");
@@ -68,7 +60,7 @@ function displayUpcoming(response) {
     movieDiv.appendChild(title);
 
     const releaseDate = document.createElement("p");
-    releaseDate.textContent = `Udgivet: ${movie.release_date}`;
+    releaseDate.textContent = `Udgivelse: ${movie.release_date}`;
     movieDiv.appendChild(releaseDate);
 
     const readMore = document.createElement("button");

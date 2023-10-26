@@ -54,3 +54,8 @@ export const displaySingleMovie = async (req, res) => {
         getProfileData();
         
     })}
+
+    function displayAccount(){
+        const token = req.cookies.token
+        
+    }

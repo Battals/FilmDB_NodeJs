@@ -1,15 +1,51 @@
 let youtubePlayer;
 
-window.onload = loadPage();
+async function fetchMovieSuggestions(query) {
+  const searchInput = document.getElementById("searchInput");
+  const suggestionList = document.getElementById("suggestions");
+  const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
+  const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${API_KEY}`;
 
-function loadPage() {
-  fetch("/popularMovies")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      displayMovies(data);
-    })
-    .catch((error) => console.error("Error fetching movies:", error));
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+
+    const movies = data.results || [];
+    const first5Movies = movies.slice(0, 5);
+
+    suggestionList.innerHTML = "";
+
+    if (first5Movies.length > 0) {
+      first5Movies.forEach((movie) => {
+        const movieId = movie.id;
+        const listItem = document.createElement("li");
+        listItem.classList.add("movie-item");
+        const posterImg = document.createElement("img");
+        posterImg.style.width = "150px";
+posterImg.style.height = "225px";
+        posterImg.src = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
+        posterImg.alt = `${movie.title} Poster`;
+        const movieDetails = document.createElement("div");
+        movieDetails.classList.add("movie-details");
+        const titlePara = document.createElement("p");
+        titlePara.textContent = movie.title;
+        titlePara.style = "color: black";
+        movieDetails.appendChild(titlePara);
+        movieDetails.appendChild(posterImg);
+        listItem.appendChild(movieDetails);
+
+        listItem.addEventListener("click", () => {
+                displayModal(movieId)
+        });
+
+        suggestionList.appendChild(listItem);
+      });
+    } else {
+      suggestionList.innerHTML = "<li>Ingen resultater fundet..</li>";
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function saveMovie(movieId, movieName) {
@@ -71,7 +107,7 @@ function displayMovies(response) {
     movieDiv.appendChild(title);
 
     const releaseDate = document.createElement("p");
-    releaseDate.textContent = `Udgivet: ${movie.release_date}`;
+    releaseDate.textContent = `Udgivelse: ${movie.release_date}`;
     movieDiv.appendChild(releaseDate);
 
     const readMore = document.createElement("button");
@@ -108,26 +144,32 @@ function getTrailer(movieId) {
     });
 }
 
+function displayRating(data){
+ let stars = ""
+ for(let i = 0; i < data; i++){
+  stars += "⭐"
+ }
+
+ return stars
+}
+
 function displayModal(movieId) {
-  
   const modal = document.getElementById("myModal");
   const modalTitle = document.getElementById("modal-title");
   const closeModal = document.getElementById("modal-close");
-  const descriptionContainer = document.getElementById("test1");
   const favorit = document.getElementById("favorit");
   const set = document.getElementById("set");
-  const movieInfo = document.getElementById("movieInfo");
   const movieOverview = document.getElementById("movieOverview");
-  const movieInfos = document.getElementById("movieInfos")
-
+  const similarMovies = document.getElementById("similarMovies")
+  
   modal.classList.add("active")
 
   fetch(`/findMovie/${movieId}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log("Data", data)
+      console.log("Data", data.similar)
         modalTitle.innerHTML = data.title;
-     
+        console.log(data)
 
       getTrailer(movieId).then((data1) => {
         const trailer = data1.results.find(
@@ -145,19 +187,25 @@ function displayModal(movieId) {
         set.onclick = () => seenMovie(data.id, data.title);
 
         const movieOverviewText = document.getElementById("movieOverviewText")
-        movieOverview.classList.add("movieInfoElements");
         movieOverviewText.textContent = data.overview || "Information ikke tilgængelig";
-        movieOverview.appendChild(movieOverviewText);
-        movieInfo.appendChild(movieOverview);
+
+        const movieDetails = document.createElement("div")
+        movieDetails.classList.add("movieDetails")
+        const rating = document.getElementById("rating")
+        rating.innerHTML = "<h5>Bedømmelse </h5>" + displayRating(data.vote_average)
+        movieOverview.appendChild(movieDetails)
 
 
-        const results = data.similar.results
 
-        const similarInfoDiv = document.createElement("div");
-        similarInfoDiv.classList.add("similarDiv");
+        const similarResults = data.similar.results
+        const similarInfoDiv = document.getElementById("similarDiv")
 
+
+        if(similarResults.length === 0){
+          similarInfoDiv.textContent = "Information ikke tilgængelig"
+        } else {
         for(let i = 0; i < 7; i++){
-          const item = results[i]
+          const item = similarResults[i]
           const similarElement = document.createElement("div")
           similarElement.classList.add("similar")
           const similarMovieName = document.createElement("h4")
@@ -168,15 +216,13 @@ function displayModal(movieId) {
           similarElement.appendChild(similarMovieName)
           similarElement.appendChild(similarMovieImage)
           similarInfoDiv.appendChild(similarElement)
-          
-
         }
-        movieInfos.appendChild(similarInfoDiv)
+      }
+        similarMovies.appendChild(similarInfoDiv)    
 
-        movieInfo.appendChild(movieInfos)
 
-        const actorInfoDiv = document.createElement("div");
-        actorInfoDiv.classList.add("actorDiv");
+        const actorDiv = document.getElementById("actorDiv")
+        
 
         data.credits.cast.forEach((actor) => {
           if (actor.profile_path === null) {
@@ -193,23 +239,14 @@ function displayModal(movieId) {
           actorImage.src = `https://image.tmdb.org/t/p/w500${actor.profile_path}`;
           actorElement.appendChild(actorName);
           actorElement.appendChild(actorImage);
-          actorInfoDiv.appendChild(actorElement);
+          actorDiv.appendChild(actorElement);
         });
 
-        descriptionContainer.appendChild(actorInfoDiv);
-        actorInfoDiv.insertAdjacentHTML('beforebegin', '<h3 id="actors">Medvirkende</h3>');
-
         closeModal.addEventListener("click", () => {
+
           modal.classList.remove("active")
-          descriptionContainer.removeChild(actorInfoDiv)
-          movieInfos.removeChild(similarInfoDiv)
-           const medvirkende = document.getElementById("actors")
-           descriptionContainer.removeChild(medvirkende)
-           descriptionContainer.removeChild(movieInfo)
-           descriptionContainer.removeChild(movieOverview)
-           
-
-
+          similarInfoDiv.innerHTML = ""
+          actorDiv.innerHTML = ""
           youtubePlayer.destroy();
         });
       })

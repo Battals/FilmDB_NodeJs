@@ -157,9 +157,8 @@ button {
 }
 
 .modal.active {
-  opacity: 1;
   display: block;
-
+  opacity: 1;
 }
 
 .modal-content {
@@ -168,7 +167,6 @@ button {
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
-  max-height: 80%;
   position: relative;
 }
 
@@ -363,24 +361,17 @@ ul {
 
 #movie-overview::-webkit-scrollbar {
   width: 8px;
-  /* Width of the scrollbar track */
   height: 1px;
 }
 
-/* Style for the scrollbar thumb (the draggable part) */
 #movie-overview::-webkit-scrollbar-thumb {
   background-color: #888;
-  /* Color of the thumb */
   border-radius: 8px;
-  /* Rounded corners for the thumb */
 }
 
-/* Style for the scrollbar track (the non-draggable part) */
 #movie-overview::-webkit-scrollbar-track {
   background-color: #e8e5e5;
-  /* Color of the track */
   border-radius: 8px;
-  /* Rounded corners for the track */
 }
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
@@ -395,13 +386,10 @@ body {
 
 
 
-/* Sidebar menu item styles */
 
 
-/* Menu item icon styles */
 .fa {
   margin-right: 10px;
-  /* Add space between icon and text */
 }
 
 
@@ -452,12 +440,21 @@ body {
 }
 
 .iconButtons {
-  right: 0;
+  padding: 10px;
+  text-align: end;
+}
+
+#movieOverview{
+  flex: 1;
   padding: 10px;
 }
 
 .movie-info{
   padding: 10px;
+}
+
+#movieOverviewText{
+  max-width: 80%;
 }
 
 .actorDiv{
@@ -488,6 +485,8 @@ body {
 
 .actor-name{
   font-size: smaller;
+  text-wrap: nowrap;
+  text-align: center;
 }
 
 .similar-name{
@@ -496,8 +495,8 @@ body {
 }
 
 #movieInfo{
-flex: 1;
 padding: 10px;
+display: flex;
 }
 
 .movieInfo1 {
@@ -507,4 +506,6 @@ padding: 10px;
 .movieInfoElements{
   max-width: 60%;
 }
+
+
 

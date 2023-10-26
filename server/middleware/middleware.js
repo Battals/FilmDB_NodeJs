@@ -4,9 +4,9 @@ export const isLoggedIn = (req, res, next) => {
     const token = req.cookies.token;
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
-        res.locals.isLoggedIn = false; 
+        res.isLoggedIn = false; 
       } else {
-        res.locals.isLoggedIn = true;
+        res.isLoggedIn = true;
       }
       next()
     });
