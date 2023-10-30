@@ -67,7 +67,7 @@ img {
   width: 400px;
 }
 
-.loginContainer {
+.loginContainer, .updateProfile {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,6 +80,14 @@ img {
   backdrop-filter: blur(10px);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   padding: 20px;
+}
+
+label{
+  font-size: smaller;
+}
+
+.input-field-myAccount{
+  margin: 30px;
 }
 
 

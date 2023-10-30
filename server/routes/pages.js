@@ -2,7 +2,8 @@ import express from 'express'
 const router = express.Router();
 
 import {
-    displayProfile
+    displayProfile,
+    displayAccount
    } from "../controllers/profileController.js";
 import { isLoggedIn } from '../middleware/middleware.js';
 
@@ -21,7 +22,7 @@ router.get('/upcomingMovies', isLoggedIn, (req, res) => {
 
 router.get("/myProfile", isLoggedIn, displayProfile)
 
-router.get("/myAccount", isLoggedIn, displayAccount )
+router.get("/myAccount", isLoggedIn, displayAccount)
 
 router.get('/login', (req, res) => { 
     res.render('login', {req})

@@ -19,8 +19,74 @@
       <a href="/upcomingMovies">Kommende film</a>
       <a href="/findMovie">Find film</a>
       <a href="/myProfile">Min side</a>
+      <a href="/myAccount">Min profil</a>
       <a style="color: red;" href="/signout">Log ud</a>
     </nav>
+    </header>
     <body>
+
+      <div class="updateProfile">
+        <div class="glass-frame">
+            <h1 style="font-size: smaller; text-align: inherit; color: #666; margin: revert;">Opdater profil</h1>
+    
+            <form id="updateProfileForm">
+                <div class="input-field-myAccount" style="margin: 30px;">
+                    <label for="username">Ændre brugernavn</label>
+                    <input type="text" id="username" style="text-align: center;" placeholder="<%= userName %>">
+                </div>
+    
+                <div class="input-field-myAccount">
+                    <label for="email">Ændre email</label>
+                    <input type="email" id="email" style="text-align: center;" placeholder="<%= email %>">
+                </div>
+    
+                <div class="input-field-myAccount">
+                    <label for="password">Skift adgangskode</label>
+                    <input type="password" id="password" style="text-align: center;">
+                </div>
+                <button type="submit">Opdater profil</button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+const updateProfileForm = document.getElementById("updateProfileForm")
+
+
+      updateProfileForm.addEventListener("submit", async (event) => {
+        event.preventDefault()
+
+      const password = document.getElementById("password").value
+      const email = document.getElementById("email").value
+      const username = document.getElementById("username").value
+
+        const data = {
+          username,
+          email,
+          password
+        }
+
+        try {
+        const response = await fetch(`/updateProfile`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            toastr.success("Opdateret");
+        } else {
+            toastr.error("Det indtastede brugernavn eller e-mail eksisterer allerede.");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+    </script>
         
     </body>

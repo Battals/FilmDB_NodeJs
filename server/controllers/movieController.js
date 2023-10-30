@@ -7,7 +7,6 @@ const seenMovies = client.db("Cluster0").collection("seenMovies");
 
 
 export const getMovies = async (req, res) => {
-  const isLoggedIn = res.locals.isLoggedIn;
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=da&page=1`
@@ -96,7 +95,7 @@ export async function displayMovieDetails(movieId) {
 }
 
 export const displaySingleMovie = async (req, res, next) => {
-  const isLoggedIn = res.locals.isLoggedIn;
+  const isLoggedIn = res.isLoggedIn;
   try {
     const movieId = req.params.movieId;
     displayMovieDetails(movieId).then((data) => {
@@ -112,7 +111,7 @@ export const displaySingleMovie = async (req, res, next) => {
 };
 
 export const saveMovie = async (req, res) => {
-  if (!res.locals.isLoggedIn) {
+  if (!res.isLoggedIn) {
     return res
       .status(409)
       .json({ message: "Log venligst ind for at gemme denne film" });
@@ -133,7 +132,7 @@ export const saveMovie = async (req, res) => {
 };
 
 export const seenMovie = async (req, res) => {
-  if(!res.locals.isLoggedIn){
+  if(!res.isLoggedIn){
     return res.status(409).json({message: "Log venligst ind for at gemme denne film"})
   }
   const userName = req.params.userName
@@ -149,14 +148,21 @@ export const seenMovie = async (req, res) => {
 }
 
 export const deleteMovie = async (req, res) => {
-  if(!res.locals.isLoggedIn){
+console.log("test")
+
+  if(!res.isLoggedIn){
     return res.status(409).send({message: "Log venligst ind for at slette denne film"})
   }
+  console.log("test")
+
   const username = req.params.userName
   const token = req.cookies.token;
   const movieId = req.params.movieId;
 
+  console.log("RESULTAT1")
  const result = await userMovies.deleteOne({userName: username, movieId: movieId})
+ console.log("RESULTAT")
+ console.log(result)
  if(result.acknowledged == true){
   return res.status(200).json({message: "Filmen er nu slettet fra din Favorit-liste"})
  } else {
