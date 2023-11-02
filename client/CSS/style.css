@@ -347,16 +347,12 @@ ul {
 
 .movie-section {
   padding: 10px;
-  /* Add padding for spacing */
   border: 1px solid #ccc;
-  /* Add borders for separation */
   box-sizing: border-box;
-  /* Include padding and border in the element's total width/height */
 }
 
 .movie-poster {
   width: 100%;
-  /* Ensure the movie poster fills its container */
 }
 
 #movie-overview {

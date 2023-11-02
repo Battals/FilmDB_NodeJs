@@ -148,21 +148,15 @@ export const seenMovie = async (req, res) => {
 }
 
 export const deleteMovie = async (req, res) => {
-console.log("test")
 
   if(!res.isLoggedIn){
     return res.status(409).send({message: "Log venligst ind for at slette denne film"})
   }
-  console.log("test")
 
   const username = req.params.userName
-  const token = req.cookies.token;
   const movieId = req.params.movieId;
 
-  console.log("RESULTAT1")
  const result = await userMovies.deleteOne({userName: username, movieId: movieId})
- console.log("RESULTAT")
- console.log(result)
  if(result.acknowledged == true){
   return res.status(200).json({message: "Filmen er nu slettet fra din Favorit-liste"})
  } else {
@@ -175,11 +169,7 @@ console.log("test")
     const username = req.params.userName
     const movieId = req.params.movieId
 
-    console.log(username)
-    console.log(movieId)
-
     const result = await seenMovies.deleteOne({userName: username, movieId: movieId})
-    console.log(result)
     if(result.acknowledged === true){
       return res.status(200).json({message: "Filmen er nu slettet fra din Set-liste"})
     }

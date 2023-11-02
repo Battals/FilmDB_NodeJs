@@ -1,6 +1,7 @@
 import jwt, { decode } from 'jsonwebtoken'
 
 import {client} from '../db/dbConnection2.js'
+import bcrypt from 'bcrypt'
 
 
 const userMovies = client.db("Cluster0").collection("savedMovies");
@@ -25,18 +26,20 @@ export const displaySingleMovie = async (req, res) => {
 
   export const displayProfile = async (req, res) => {
     const token = req.cookies.token;
-    const username = req.cookies.username;
     const apiKey = process.env.API_KEY;
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) {
             console.log(err);
             return res.status(401).send('Unauthorized');
         }
-        const userId = decoded.userId;
+        const username = decoded.userName
+        const userId = decoded.userId
         const data = {
-            username: req.cookies.username,
+            username: username,
             id: userId,
         };
+
+        console.log("Data", data)
 
         async function getProfileData() {
             try {
@@ -81,17 +84,25 @@ export const displaySingleMovie = async (req, res) => {
                 delete newUserValues[key]
             }
         }
-    
 
-        const updatedUsername = await users.findOne({username: newUserValues.username})
-        const updatedEmail = await users.findOne({email: newUserValues.email})
-        if(updatedUsername || updatedEmail){
-            return res.status(409)
+        if(newUserValues.password){
+            const hashedPassword = await bcrypt.hash(newUserValues.password, 8)
+            newUserValues.password = hashedPassword
         }
 
 
 
+        const updatedUsername = await users.findOne({username: newUserValues.username})
+        const updatedEmail = await users.findOne({email: newUserValues.email})
+        if(updatedUsername || updatedEmail){
+            return res.status(409).send("")
+        }
 
-
-    
+        try{
+        await users.updateOne({username: username}, {$set: newUserValues})
+        return res.status(200).send("")
+    } catch(error){
+        return res.status(500).send("")
     }
+
+}

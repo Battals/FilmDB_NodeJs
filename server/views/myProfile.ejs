@@ -41,10 +41,11 @@
 
     </div>
   </div>
-  
+  <script src="/client/JS/client.js"></script>
 <script> 
-const API_KEY = '<%= apiKey %>';
+
 function displaySavedMovies() {
+  const API_KEY = '<%= apiKey %>';
   const favoriteMovies = JSON.parse('<%- savedMovies %>');
   const seenMovies = JSON.parse('<%- seenMovies %>')
   const movieListContainer = document.getElementById("movieListContainer1");  
@@ -104,40 +105,6 @@ function displaySavedMovies() {
         movieListContainer2.appendChild(movieItem)
     })
   }
-}
-
-function deleteMovie(movieId, movieName) {
-  const username = localStorage.getItem("user_name");
-  const movieItem = document.getElementById(`movieItem-${movieId}`);
-  fetch(`/deleteMovie/${movieId}/${username}`, {
-    method: 'POST'
-  })
-    .then(response => {
-    if(response.status === 200) {
-      movieItem.remove()
-      toastr.success(`${movieName}: er fjernet fra dine favoritter`)
-    } else {
-      toastr.error("Der opstod en fejl")
-    }
-  })
-
-}
-
-function deleteSeenMovie(movieId, movieName){
-const movieItem = document.getElementById(`movieItem-${movieId}`);
-var userName = localStorage.getItem("user_name")
-fetch(`/deleteSeenMovie/${movieId}/${userName}`, {
-  method: 'POST'
-})
-.then(response => {
-  if(response.status === 200){
-    movieItem.remove()
-    toastr.success(`${movieName} er nu slettet fra din Set-liste`)
-  } else {
-    toastr.error("Der opstod en fejl")
-  }
-})
-
 }
 
     displaySavedMovies();

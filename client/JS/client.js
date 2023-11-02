@@ -1,9 +1,9 @@
 let youtubePlayer;
+const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
 
 async function fetchMovieSuggestions(query) {
   const searchInput = document.getElementById("searchInput");
   const suggestionList = document.getElementById("suggestions");
-  const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
   const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${API_KEY}`;
 
   try {
@@ -255,3 +255,38 @@ function displayModal(movieId) {
       .catch((error) => console.error("Error fetching trailers:", error));
   });
 }
+
+function deleteMovie(movieId, movieName) {
+  const username = localStorage.getItem("user_name");
+  const movieItem = document.getElementById(`movieItem-${movieId}`);
+  fetch(`/deleteMovie/${movieId}/${username}`, {
+    method: 'POST'
+  })
+    .then(response => {
+    if(response.status === 200) {
+      movieItem.remove()
+      toastr.success(`${movieName}: er fjernet fra dine favoritter`)
+    } else {
+      toastr.error("Der opstod en fejl")
+    }
+  })
+
+}
+
+function deleteSeenMovie(movieId, movieName){
+const movieItem = document.getElementById(`movieItem-${movieId}`);
+var userName = localStorage.getItem("user_name")
+fetch(`/deleteSeenMovie/${movieId}/${userName}`, {
+  method: 'POST'
+})
+.then(response => {
+  if(response.status === 200){
+    movieItem.remove()
+    toastr.success(`${movieName} er nu slettet fra din Set-liste`)
+  } else {
+    toastr.error("Der opstod en fejl")
+  }
+})
+
+}
+
