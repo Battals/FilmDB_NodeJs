@@ -76,11 +76,10 @@ const updateProfileForm = document.getElementById("updateProfileForm")
             },
             body: JSON.stringify(data)
         });
-
-        console.log("test")
-        console.log(response)
         if (response.ok) {
-          console.log("aaa")
+          const responseData = await response.json()
+          localStorage.setItem("user_name", responseData.username)
+          localStorage.setItem("access_token", responseData.token)
             toastr.success("Opdateret");
         } else {
             toastr.error("Det indtastede brugernavn eller e-mail eksisterer allerede.");

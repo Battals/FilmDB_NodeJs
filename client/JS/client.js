@@ -256,6 +256,8 @@ function displayModal(movieId) {
   });
 }
 
+
+
 function deleteMovie(movieId, movieName) {
   const username = localStorage.getItem("user_name");
   const movieItem = document.getElementById(`movieItem-${movieId}`);

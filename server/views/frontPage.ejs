@@ -92,9 +92,8 @@
 
 
   const urlParams = new URLSearchParams(window.location.search);
-  if(urlParams.has('loggedOut')) {
+  if(urlParams.has('loggedOut')) {    
     localStorage.removeItem("user_name")
-    localStorage.removeItem("user_id")
     localStorage.removeItem("access_token")
     
     toastr.success("Du er nu logget ud")

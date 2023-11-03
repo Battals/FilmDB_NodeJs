@@ -72,8 +72,6 @@
     if (response.ok) {
 
       const responseData = await response.json()
-
-      localStorage.setItem("user_id", responseData.userId)
       localStorage.setItem("user_name", responseData.username)
       localStorage.setItem("access_token", responseData.token)
       window.location.href = '/myProfile'

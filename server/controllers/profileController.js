@@ -4,7 +4,7 @@ import {client} from '../db/dbConnection2.js'
 import bcrypt from 'bcrypt'
 
 
-const userMovies = client.db("Cluster0").collection("savedMovies");
+const favoriteMovies = client.db("Cluster0").collection("savedMovies");
 const seenMovies = client.db("Cluster0").collection("seenMovies")
 const users = client.db("Cluster0").collection("users")
 
@@ -14,7 +14,6 @@ export const displaySingleMovie = async (req, res) => {
         const movieId = req.params.movieId
         displayMovieDetails(movieId).then((data) => {
             const movieDetails = data
-            console.log(data)
             res.render("movieDetails", {movieDetails})
           })
     }
@@ -33,19 +32,15 @@ export const displaySingleMovie = async (req, res) => {
             return res.status(401).send('Unauthorized');
         }
         const username = decoded.userName
-        const userId = decoded.userId
         const data = {
             username: username,
-            id: userId,
         };
 
-        console.log("Data", data)
 
         async function getProfileData() {
             try {
-                const savedMovies = await userMovies.find({ userName: username }).toArray();
+                const savedMovies = await favoriteMovies.find({ userName: username }).toArray();
                 const seenMovies1 = await seenMovies.find({ userName: username }).toArray();
-                console.log("Collection Data:", seenMovies1);
 
                 res.render("myProfile", { savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies1), apiKey, data });
             } catch (error) {
@@ -59,24 +54,46 @@ export const displaySingleMovie = async (req, res) => {
 
 
     export const displayAccount = async (req, res) => {
-        const username = req.cookies.username
+        const token = req.cookies.token
+        jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+            if(err){
+                console.log(err)
+            }
+
+           const username = decoded.userName
+
+        
         async function getAccountData(){
             try{
                 const userInfo = await users.find({username: username}).toArray();
                 const user = userInfo[0]
-                res.render("myAccount", {userName: user.username, email: user.email})
+                res.render("myAccount", {userName: username, email: user.email})
             }
             catch(error){
                 console.log("Error", error)
             }
+        
         }
 
+
         getAccountData()
+
+    } )
         
     }
 
     export const updateProfile = async (req, res) => {
-        const username = req.cookies.username
+        let username;
+        const token = req.cookies.token
+        try {
+            const decoded = jwt.verify(token, process.env.SECRET_KEY);
+             username = decoded.userName;
+
+
+        } catch (err) {
+
+            console.log(err);
+        }
 
         const newUserValues = req.body;
         for(const key in newUserValues){
@@ -99,9 +116,27 @@ export const displaySingleMovie = async (req, res) => {
         }
 
         try{
+
         await users.updateOne({username: username}, {$set: newUserValues})
-        return res.status(200).send("")
+
+
+        const token = jwt.sign({userName: newUserValues.username }, process.env.SECRET_KEY);
+
+        if(newUserValues.username){
+
+            res.cookie("token", token, {
+              expires: new Date(Date.now() + 3 + 3600000),
+              httpOnly: true,
+            });
+            await favoriteMovies.updateMany({userName: username}, {$set: {userName:newUserValues.username} })
+            await seenMovies.updateMany({userName: username}, {$set: {userName: newUserValues.username}})
+        }
+
+
+
+        return res.status(200).json({token: token, username: newUserValues.username})
     } catch(error){
+        console.log(error)
         return res.status(500).send("")
     }
 

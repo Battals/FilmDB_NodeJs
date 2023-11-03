@@ -24,7 +24,7 @@ export const register = async (req, res) => {
   
 
   const user = await usersCollection.findOne({username: username})
-  const token = jwt.sign({userId: user._id, userName: username}, process.env.SECRET_KEY)
+  const token = jwt.sign({userName: username}, process.env.SECRET_KEY)
   res.cookie("token", token, {
     expires: new Date(Date.now() + 24 + 3600000),
     httpOnly: true
@@ -52,7 +52,7 @@ export const login = async (req, res) => {
     return res.status(400).json({ error: "Ugyldig adgangskode" });
   }
 
-  const token = jwt.sign({ userId: user._id, userName: username }, process.env.SECRET_KEY);
+  const token = jwt.sign({userName: username }, process.env.SECRET_KEY);
 
   res.cookie("token", token, {
     expires: new Date(Date.now() + 3 + 3600000),
@@ -61,7 +61,6 @@ export const login = async (req, res) => {
 
   return res.status(200).json({
     message: "Login success",
-    userId: user._id,
     userName: user.username,
     token: token,
   });
@@ -69,7 +68,6 @@ export const login = async (req, res) => {
 
 export const signOut = (req, res) => {
   res.clearCookie('token')
-  res.clearCookie('username')
   res.redirect("/?loggedOut=true");
 }
 
