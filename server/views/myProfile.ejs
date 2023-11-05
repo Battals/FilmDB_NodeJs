@@ -121,7 +121,7 @@ function displaySavedMovies() {
             <span class="movieTitle">${data.title}</span><br>
             <div class="movieItemBtns">
               <button style="border: none;" onclick="deleteMovie('${data.id}', '${data.title}')">
-                <i class="fa-solid fa-trash" style="color: #B30000; border: none;"></i>
+                <i class="fa-solid fa-trash" border: none;"></i>
 
               </button>
               <button style="border: none;" onclick="shareMovie('${data.id}')">
@@ -155,8 +155,8 @@ function displaySavedMovies() {
           <div>
             <span class="movieTitle">${data.title}</span><br>
             <div class="movieItemBtns">
-              <button style="border: none;" onclick="deleteSeenMovie('${data.id}', '${data.title}')">
-                <i class="fa-solid fa-trash" style="color: #ea0000; border: none;"></i>
+              <button class="button" data-tooltip="Slet film fra Set-liste" style="border: none;" onclick="deleteSeenMovie('${data.id}', '${data.title}')">
+                <i class="fa-solid fa-trash" border: none;"></i>
               </button>
 
             </div>

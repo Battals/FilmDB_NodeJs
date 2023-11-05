@@ -14,7 +14,6 @@ header {
 
 h1 {
   text-align: center;
-  margin: 0;
   color: #333;
   font-size: 28px;
 }
@@ -171,12 +170,18 @@ button {
 
 .modal-content {
   background-color: #e8e5e5;
-  margin: 10% auto;
+  margin: 5% auto;
   padding: 20px;
   border: 1px solid #888;
   max-width: 90%;
   position: relative;
 }
+
+.fa-solid.fa-trash{
+  color: #B30000;
+    border: none;
+}
+
 
 #modal-description {
   height: 300px;

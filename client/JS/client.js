@@ -169,7 +169,6 @@ function displayModal(movieId) {
     .then((data) => {
       console.log("Data", data.similar)
         modalTitle.innerHTML = data.title;
-        console.log(data)
 
       getTrailer(movieId).then((data1) => {
         const trailer = data1.results.find(
