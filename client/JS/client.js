@@ -102,7 +102,7 @@ function displayMovies(response) {
     image.alt = movie.title;
     movieDiv.appendChild(image);
 
-    const title = document.createElement("h2");
+    const title = document.createElement("h3");
     title.textContent = movie.title;
     movieDiv.appendChild(title);
 
@@ -118,11 +118,11 @@ function displayMovies(response) {
     movieListDiv.appendChild(movieDiv);
 
     image.addEventListener("click", function () {
-      displayModal(movie.id, movie.title);
+      displayModal(movie.id);
     });
 
     readMore.addEventListener("click", function () {
-      displayModal(movie.id, movie.title);
+      displayModal(movie.id);
     });
   });
 }
@@ -290,5 +290,9 @@ fetch(`/deleteSeenMovie/${movieId}/${userName}`, {
   }
 })
 
+}
+
+function shareMovie(){
+  console.log("shareMovie")
 }
 

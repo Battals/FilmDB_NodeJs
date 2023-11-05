@@ -148,7 +148,6 @@ export const seenMovie = async (req, res) => {
 }
 
 export const deleteMovie = async (req, res) => {
-
   if(!res.isLoggedIn){
     return res.status(409).send({message: "Log venligst ind for at slette denne film"})
   }
@@ -162,7 +161,6 @@ export const deleteMovie = async (req, res) => {
  } else {
   return res.status(500)
  }
-  
   }
 
   export const deleteSeenMovie = async (req, res) => {
@@ -176,6 +174,10 @@ export const deleteMovie = async (req, res) => {
     else {
       res.status(409).json({message: "Der opstod en fejl"})
   }
+} 
+
+export const shareMovie = (req, res) => {
+console.log(req)
 }
   
 

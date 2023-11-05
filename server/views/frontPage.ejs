@@ -13,7 +13,7 @@
 </head>
     <header>
         <a href="/">
-          <h1>FilmDB.dk</h1>
+          <h1 style="font-family: FontAwesome;">FilmDB.dk</h1>
         </a>
         <nav>
           <% if (isLoggedIn) { %>
@@ -37,44 +37,43 @@
       <body>
   <h1 style="margin: 15px;">Populære film</h1>
   
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <button id="modal-close" class="close">&times;</button>
-      <h2 id="modal-title">Movie Title</h2>
-      <div class="modal-description-container" id="test1">
-        <div class="iconButtons">
-          <button id="favorit" class="markBtns">
-        <i style="color: #007bff; "class="fas fa-bookmark"> Favorit</i>
-      </button>
-      <button id="set" class="markBtns">
-        <i class="fas fa-eye"> Set</i>
-      </button>
-      </div>
-        <div id="movieInfo">
-          <div id="movieOverview">
-            <h3>Filmbeskrivelse</h3>
-            <p id="movieOverviewText"></p>
-            <p id="rating"></p>
-            </div>
-              <div id="player"></div>
-          </div>
-          <div id="similarMovies">
-                <h5>Lignende film</h5>
-                <div class="similarDiv" id="similarDiv">
-                  
-                  </div>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <button id="modal-close" class="close">&times;</button>
+        <h2 id="modal-title">Movie Title</h2>
+        <div class="modal-description-container" id="test1">
+          <div class="iconButtons">
+            <button id="favorit" class="markBtns">
+          <i style="color: #007bff; "class="fas fa-bookmark"> Favorit</i>
+        </button>
+        <button id="set" class="markBtns">
+          <i class="fas fa-eye"> Set</i>
+        </button>
+        </div>
+          <div id="movieInfo">
+            <div id="movieOverview">
+              <h3>Filmbeskrivelse</h3>
+              <p id="movieOverviewText"></p>
+              <p id="rating"></p>
               </div>
-          <h3 id="actors">Medvirkende</h3>
-          <div class="actorDiv" id="actorDiv"></div>
+                <div id="player"></div>
+            </div>
+            <div id="similarMovies">
+                  <h5>Lignende film</h5>
+                  <div class="similarDiv" id="similarDiv">
+                    </div>
+                </div>
+            <h3 id="actors">Medvirkende</h3>
+            <div class="actorDiv" id="actorDiv"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="movie-list">
+    <div class="movie-list">
 
-    <div class="button-div"></div>
+      <div class="button-div"></div>
 
-  </div>
+    </div>
 </body>
 <script src="/client/JS/client.js"></script>
 <link rel="stylesheet" type="text/css" href="/client/CSS/style.css">
@@ -95,7 +94,7 @@
   if(urlParams.has('loggedOut')) {    
     localStorage.removeItem("user_name")
     localStorage.removeItem("access_token")
-    
+
     toastr.success("Du er nu logget ud")
   }
 

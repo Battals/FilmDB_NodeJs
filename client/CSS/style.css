@@ -17,7 +17,6 @@ h1 {
   margin: 0;
   color: #333;
   font-size: 28px;
-
 }
 
 .movie-list {
@@ -56,6 +55,7 @@ img {
   font-family: initial;
   color: black;
 }
+
 
 .movie p {
   margin: 1;
@@ -174,7 +174,7 @@ button {
   margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  max-width: 90%;
   position: relative;
 }
 
