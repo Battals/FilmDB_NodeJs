@@ -1,11 +1,11 @@
 {
   "name": "node_r2",
   "version": "0.0.1",
-  "description": "NodeR1",
+  "description": "Nodejs",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",

@@ -2,13 +2,13 @@ let youtubePlayer;
 const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
 
 async function fetchMovieSuggestions(query) {
-  const searchInput = document.getElementById("searchInput");
   const suggestionList = document.getElementById("suggestions");
   const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${API_KEY}`;
 
   try {
     const response = await fetch(API_URL);
     const data = await response.json();
+    
 
     const movies = data.results || [];
     const first5Movies = movies.slice(0, 5);
@@ -17,6 +17,10 @@ async function fetchMovieSuggestions(query) {
 
     if (first5Movies.length > 0) {
       first5Movies.forEach((movie) => {
+
+        if(movie.poster_path === null){
+          return;
+        }
         const movieId = movie.id;
         const listItem = document.createElement("li");
         listItem.classList.add("movie-item");
@@ -79,8 +83,6 @@ function initYouTubePlayer(videoId) {
     height: "315",
     width: "560",
     videoId: videoId,
-    playerVars: {},
-    events: {},
   });
 }
 
@@ -136,7 +138,10 @@ function getTrailer(movieId) {
       return response.json();
     })
     .then((data) => {
-      return data;
+      const trailer = data.results.find((item) => 
+      item.name.toLowerCase().includes("trailer")
+      )
+      return trailer;
     })
     .catch((error) => {
       console.log("Error fetching trailers", error);
@@ -146,9 +151,13 @@ function getTrailer(movieId) {
 
 function displayRating(data){
  let stars = ""
+ if(data == 0){
+  stars = "Bedømmelse ikke tilgængelig"
+ } else {
  for(let i = 0; i < data; i++){
   stars += "⭐"
  }
+}
 
  return stars
 }
@@ -167,20 +176,16 @@ function displayModal(movieId) {
   fetch(`/findMovie/${movieId}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log("Data", data.similar)
         modalTitle.innerHTML = data.title;
 
-      getTrailer(movieId).then((data1) => {
-        const trailer = data1.results.find(
-          (item) =>
-            item.type === "Trailer" &&
-            item.name.toLowerCase().includes("trailer")
-        );
 
-        if (trailer) {
-          const trailerVideoId = trailer.key;
-          initYouTubePlayer(trailerVideoId);
-        }
+getTrailer(movieId)
+.then((trailer) => {
+  initYouTubePlayer(trailer.key)
+})
+.catch((error) => {
+  console.log(error)
+})
       
         favorit.onclick = () => saveMovie(data.id, data.title);
         set.onclick = () => seenMovie(data.id, data.title);
@@ -191,7 +196,7 @@ function displayModal(movieId) {
         const movieDetails = document.createElement("div")
         movieDetails.classList.add("movieDetails")
         const rating = document.getElementById("rating")
-        rating.innerHTML = "<h5>Bedømmelse </h5>" + displayRating(data.vote_average)
+        rating.textContent = displayRating(data.vote_average)
         movieOverview.appendChild(movieDetails)
 
 
@@ -205,6 +210,9 @@ function displayModal(movieId) {
         } else {
         for(let i = 0; i < 7; i++){
           const item = similarResults[i]
+          if(item.poster_path === null){
+           continue;
+          }
           const similarElement = document.createElement("div")
           similarElement.classList.add("similar")
           const similarMovieName = document.createElement("h4")
@@ -251,13 +259,13 @@ function displayModal(movieId) {
       })
 
       
-      .catch((error) => console.error("Error fetching trailers:", error));
-  });
-}
+  };
+
 
 
 
 function deleteMovie(movieId, movieName) {
+  console.log("MovieId", movieId)
   const username = localStorage.getItem("user_name");
   const movieItem = document.getElementById(`movieItem-${movieId}`);
   fetch(`/deleteMovie/${movieId}/${username}`, {
@@ -291,7 +299,9 @@ fetch(`/deleteSeenMovie/${movieId}/${userName}`, {
 
 }
 
-function shareMovie(){
-  console.log("shareMovie")
+function shareMovie(movieId){
+const clipboardString = `https://www.themoviedb.org/movie/${movieId}`
+navigator.clipboard.writeText(clipboardString)
+toastr.success("Kopieret til udklipsholderen")
 }
 

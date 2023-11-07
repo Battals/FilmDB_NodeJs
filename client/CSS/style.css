@@ -182,7 +182,6 @@ button {
     border: none;
 }
 
-
 #modal-description {
   height: 300px;
   width: 50%;
@@ -191,6 +190,8 @@ button {
   overflow: overlay;
   box-shadow: 5px 5px 10px #888;
 }
+
+
 
 .close {
   position: absolute;

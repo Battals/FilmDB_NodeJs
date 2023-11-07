@@ -4,7 +4,6 @@ import {
   getTrailer,
   getUpcomingMovies,
   getMovieDetails,
-  displayMovieDetails,
   displaySingleMovie,
   saveMovie,
   deleteMovie,

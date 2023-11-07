@@ -62,7 +62,7 @@ export const displaySingleMovie = async (req, res) => {
 
            const username = decoded.userName
 
-           
+
         async function getAccountData(){
             try{
                 const userInfo = await users.find({username: username}).toArray();
@@ -75,7 +75,7 @@ export const displaySingleMovie = async (req, res) => {
         
         }
 
-
+        
         getAccountData()
 
     } )
