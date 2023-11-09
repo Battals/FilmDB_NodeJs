@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
+  <script src="/client/JS/client.js"></script>
+<link rel="stylesheet" type="text/css" href="/client/CSS/style.css">
 </head>
 <body>
   <header>
@@ -30,6 +31,7 @@
         <a href="/">Populære film</a>
         <a href="upcomingMovies">Kommende film</a>
         <a href="findMovie">Find film</a>
+        <a href="/movieChat">Film-chat</a>
       <% } %>
     </nav>
   </header>
@@ -75,8 +77,6 @@
 
   </div>
 </body>
-<script src="/client/JS/client.js"></script>
-<link rel="stylesheet" type="text/css" href="/client/CSS/style.css">
 <script>
   fetch("/comingMovies")
     .then((res) => res.json())

@@ -1,6 +1,7 @@
 let youtubePlayer;
 const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
 
+
 async function fetchMovieSuggestions(query) {
   const suggestionList = document.getElementById("suggestions");
   const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${API_KEY}`;

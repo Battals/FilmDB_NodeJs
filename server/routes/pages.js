@@ -20,17 +20,20 @@ router.get('/upcomingMovies', isLoggedIn, (req, res) => {
     res.render('upcomingMovies', {isLoggedIn: res.isLoggedIn})
 })
 
-router.get("/myProfile", isLoggedIn, displayProfile)
+router.get("/myProfile", displayProfile)
 
-router.get("/myAccount", isLoggedIn, displayAccount)
+router.get("/myAccount", displayAccount)
 
 router.get('/login', (req, res) => { 
-    res.render('login', {req})
+    res.render('login')
 })
 
 router.get('/register', (req, res) => {
+    console.log(res)
     res.render('registerPage', res)
 })
+
+router.get("/movieChat", )
 
 
 

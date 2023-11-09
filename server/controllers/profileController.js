@@ -57,7 +57,7 @@ export const displaySingleMovie = async (req, res) => {
         const token = req.cookies.token
         jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
             if(err){
-                console.log(err)
+               return res.status(401).send('Unauthorized')
             }
 
            const username = decoded.userName
@@ -91,7 +91,6 @@ export const displaySingleMovie = async (req, res) => {
 
 
         } catch (err) {
-
             console.log(err);
         }
 

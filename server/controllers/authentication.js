@@ -1,13 +1,7 @@
-import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import path from "path";
 import {client} from '../db/dbConnection2.js'
 
-const __dirname = fileURLToPath(
-  "file:///C:/Users/Battal/Desktop/MovieDB/Node_r2-1"
-);
-const publicDir = path.join(__dirname, "server/views");
 const usersCollection = client.db("Cluster0").collection("users");
 
 export const register = async (req, res) => {
