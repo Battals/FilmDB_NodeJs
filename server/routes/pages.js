@@ -33,7 +33,9 @@ router.get('/register', (req, res) => {
     res.render('registerPage', res)
 })
 
-router.get("/movieChat", )
+router.get("/movieChat", isLoggedIn, (req, res) => {
+    res.render("movieChat", {isLoggedIn: res.isLoggedIn})
+})
 
 
 

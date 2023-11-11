@@ -24,7 +24,6 @@
               <a href="/findMovie">Find film</a>
               <a href="/myProfile">Min side</a>
               <a href="/myAccount">Min profil</a>
-              <a href="movie-chat">Film chat</a>
               <a style="color: red;" href="/signout">Log ud</a>
           <% 
           } else {
@@ -34,10 +33,13 @@
             <a href="/">Populære film</a>
             <a href="upcomingMovies">Kommende film</a>
             <a href="findMovie">Find film</a>
-            <a href="movieChat">Film-chat</a>
          <% } %>
   
+         <span id="connectedClientsCount"></span>
+         <span class="green-dot"></span>
         </nav>
+
+      
       </header>
       <body>
   <h1 style="margin: 15px;">Populære film</h1>
@@ -111,47 +113,29 @@
   }
 
 
-  
+
   </script>
+
+
   <script src="/socket.io/socket.io.js"></script>
 
   <script>
-  const socket = io()
+    
+    const socket = io()
 
-  const object = [1, 2]
 
+    socket.on("connect", () => {
+      console.log("A user connected")
 
-  
+      socket.emit("clientConnected")
 
-  socket.on("connect", () => {
-    console.log("Connected")
+    socket.on("connectedClientsCount", (connectedClients) => {
+      document.getElementById("connectedClientsCount").innerText = "Besøgende: " + connectedClients
+    })
+
   })
 
-  const comment = document.getElementById("postComment")
-  const commentInput = document.getElementById("commentInput")
-
-  comment.addEventListener("click", () => {
-  
-socket.emit("comment", commentInput.value)
-  })
-
-  socket.on("commentResponse", (comment) => {
-  const comments = document.getElementById("Comments")
-  const userComment = document.createElement("p")
-  userComment.textContent = comment
-  comments.appendChild(userComment)
-  
-  })
-
-
-  
-
-
-
-
-  
 
     </script>
-  
 
 </html>

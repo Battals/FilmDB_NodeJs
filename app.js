@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import dotenv from "dotenv/config";
 import router from "./server/routes/pages.js";
 import pagesRouter from "./server/routes/auth.js";
@@ -15,23 +15,17 @@ const app = express();
 const server = http.createServer(app)
 const io = new Server(server)
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(cookieParser())
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "server/views"));
-app.use(express.static("client"));
-
 
 app.use("/client/JS", express.static(path.join(__dirname, "client/JS")));
 app.use("/client/CSS", express.static(path.join(__dirname, "client/CSS")));
-
-
 
 app.use(router);
 app.use(pagesRouter);
@@ -48,16 +42,18 @@ server.listen(PORT, (error) => {
   console.log("Server running on " + PORT)
 })
 
+let clientsConnected = 0;
 io.on("connection", (socket) => {
-  console.log("A user connected " + socket.id)
+  console.log("A user connected ")
 
-
-  socket.on("comment", (comment) => {
-    socket.broadcast.emit("commentResponse", comment)
+  socket.on("clientConnected", () => {
+    clientsConnected++
+    io.emit("connectedClientsCount", clientsConnected)
   })
 
   socket.on("disconnect", () => {
-    console.log("A user disconnected")
+    clientsConnected--
+    io.emit("connectedClientsCount", clientsConnected)
   })
 })
 
