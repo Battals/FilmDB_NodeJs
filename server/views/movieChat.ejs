@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,10 +53,10 @@
             <button id="send-button" style="height: fit-content;">Send</button>
         </div>
             <div id="chatBtns">
-            <button id="favoriteBtn" onclick="shareMovieList('favorit')">
+            <button id="favoriteBtn" onclick="shareMovieList('Favorit')">
                 <i style="color: #007bff; font-size: smaller;" class="fas fa-bookmark"> Del Favorit-liste</i>
               </button>
-              <button id="seenBtn" onclick="shareMovieList('set')">
+              <button id="seenBtn" onclick="shareMovieList('Set')">
                 <i class="fas fa-eye" style="font-size: smaller;"> Del Set-liste</i>
               </button>
             </div>
@@ -102,6 +101,7 @@
 
         chatBox.appendChild(chatMessage);
 
+
         socket.emit("sendMessage", (messageObject))
 
     })
@@ -120,7 +120,6 @@
         chatBox.appendChild(chatMessage);
     });
 
-
     async function shareMovieList(type) {
   try {
       const response = await fetch(`/getUserMovies/${type}`);
@@ -131,17 +130,28 @@
 
       const messageObject = {
         username: user,
-        message: `Tjek disse film ud : `,
+        message: `${type}-liste: `,
       };
 
       for (const movieId of movieList) {
         const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=da`);
         const movieData = await movieResponse.json();
-        messageObject.message += movieData.title + ` (${movieData.release_date})` + " - "
+        messageObject.message += `( <strong>${movieData.title}</strong> / <em>${movieData.release_date}</em> ) `
 
         console.log("movieData", movieData)
         
       }
+      const chatMessage = document.createElement("p");
+        chatMessage.id = "chatElement";
+
+        const usernameSpan = document.createElement("span");
+        usernameSpan.style.fontWeight = "600";
+        usernameSpan.textContent = `${messageObject.username}: `
+
+        chatMessage.appendChild(usernameSpan);
+        chatMessage.innerHTML += messageObject.message;
+
+        chatBox.appendChild(chatMessage);
       socket.emit("sendMessage", (messageObject));
 
       } else {
@@ -154,7 +164,6 @@
 
 }
     
-
 </script>
 
 </html>

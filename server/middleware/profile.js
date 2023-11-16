@@ -150,9 +150,9 @@ export const shareMovies = async (req, res) => {
     const username = res.username;
     let movieList, movieIds;
 
-    if (type === "favorit") {
+    if (type === "Favorit") {
         movieList = await favoriteMovies.find({ userName: username }).toArray();
-    } else if (type === "set") {
+    } else if (type === "Set") {
         movieList = await seenMovies.find({ userName: username }).toArray();
     }
 
