@@ -22,7 +22,6 @@ export const displaySingleMovie = async (req, res) => {
     }
   }
 
-
   export const displayProfile = async (req, res) => {
     const token = req.cookies.token;
     const apiKey = process.env.API_KEY;
@@ -84,7 +83,7 @@ export const displaySingleMovie = async (req, res) => {
 
     export const updateProfile = async (req, res) => {
         let username;
-        const token = req.cookies.token
+        
         try {
             const decoded = jwt.verify(token, process.env.SECRET_KEY);
              username = decoded.userName;
@@ -140,3 +139,34 @@ export const displaySingleMovie = async (req, res) => {
     }
 
 }
+
+export const shareMovies = async (req, res) => {
+    const type = req.params.type;
+
+    if (!res.isLoggedIn) {
+        return res.status(401).json({ errorMessage: `Du skal logge ind for at dele din ${type}-liste` });
+    }
+
+    const username = res.username;
+    let movieList, movieIds;
+
+    if (type === "favorit") {
+        movieList = await favoriteMovies.find({ userName: username }).toArray();
+    } else if (type === "set") {
+        movieList = await seenMovies.find({ userName: username }).toArray();
+    }
+
+    if (movieList) {
+        movieIds = movieList.map(document => document.movieId);
+        return res.status(200).json({movies: movieIds}) 
+    }
+};
+
+
+
+
+
+
+
+
+

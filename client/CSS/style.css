@@ -81,11 +81,11 @@ img {
   padding: 20px;
 }
 
-label{
+label {
   font-size: smaller;
 }
 
-.input-field-myAccount{
+.input-field-myAccount {
   margin: 30px;
 }
 
@@ -177,9 +177,9 @@ button {
   position: relative;
 }
 
-.fa-solid.fa-trash{
+.fa-solid.fa-trash {
   color: #B30000;
-    border: none;
+  border: none;
 }
 
 #modal-description {
@@ -454,26 +454,27 @@ body {
   text-align: end;
 }
 
-#movieOverview{
+#movieOverview {
   flex: 1;
   padding: 10px;
 }
 
-.movie-info{
+.movie-info {
   padding: 10px;
 }
 
-#movieOverviewText{
+#movieOverviewText {
   max-width: 80%;
 }
 
-.actorDiv{
+.actorDiv {
   display: flex;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 20px;
   overflow: auto;
 }
-.similarDiv{
+
+.similarDiv {
   display: inline-flex;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 20px;
@@ -493,27 +494,97 @@ body {
   margin-right: 35px;
 }
 
-.actor-name{
+.actor-name {
   font-size: smaller;
   text-wrap: nowrap;
   text-align: center;
 }
 
-.similar-name{
+.similar-name {
   font-size: x-small;
   text-wrap: nowrap;
 }
 
-#movieInfo{
-padding: 10px;
-display: flex;
+#movieInfo {
+  padding: 10px;
+  display: flex;
 }
 
 .movieInfo1 {
   display: flex;
 }
 
-.movieInfoElements{
+#activeUsers {
+  font-size: smaller;
+  color: grey;
+  margin: 10px;
+}
+
+#chat-container {
+  max-width: 400px;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+#chat-header {
+  background-color: #b9b8b8;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+}
+
+#input-box {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  display: flex;
+}
+
+#message-input {
+  width: 80%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+#chatElement{
+  background-color: #f2f2f2;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 10px 0;
+        max-width: 70%;
+        font-size: small;
+        
+}
+
+#chatBtns {
+  display: flex;
+  justify-content: center;
+}
+
+#chatBtns button {
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+#chatBtns button i {
+  margin-right: 5px;
+}
+
+
+#chat-messages {
+  height: 300px;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+.movieInfoElements {
   max-width: 60%;
 }
 
@@ -523,7 +594,6 @@ display: flex;
   height: 10px;
   background-color: green;
   border-radius: 50%;
-  margin-left: 5px; 
   animation: blink 1s infinite;
 }
 
@@ -531,10 +601,8 @@ display: flex;
   0%, 50%, 100% {
     opacity: 1;
   }
+
   25%, 75% {
     opacity: 0;
   }
 }
-
-
-

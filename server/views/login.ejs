@@ -48,8 +48,6 @@
         username: navn,
         password: kode
     };
-    
-    try {
         const response = await fetch('/login', {
             method: 'POST',
             headers: {
@@ -68,12 +66,8 @@
 
             window.location.href = `/myProfile/?userId=${data.userId}&userName=${data.userName}`;
         }
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-
+    } 
+);
     </script>
 </body>
 

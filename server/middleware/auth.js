@@ -1,6 +1,19 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt";
 import {client} from '../db/dbConnection2.js'
+
+export const isLoggedIn = (req, res, next) => {
+  const token = req.cookies.token;
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) {
+      res.isLoggedIn = false; 
+    } else {
+      res.isLoggedIn = true;
+      res.username = decoded.userName
+    }
+    next()
+  });
+};
 
 const usersCollection = client.db("Cluster0").collection("users");
 
@@ -30,9 +43,7 @@ export const register = async (req, res) => {
     username: username,
     token: token
   })
-
-}
-};
+}};
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
@@ -67,3 +78,4 @@ export const signOut = (req, res) => {
 
 
 
+  

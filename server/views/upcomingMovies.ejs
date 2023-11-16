@@ -20,18 +20,20 @@
     <nav>
       <% if (isLoggedIn) { %>
         <a href="/">Populære film</a>
-        <a href="upcomingMovies">Kommende film</a>
-        <a href="findMovie">Find film</a>
-        <a href="myProfile">Min side</a>
-        <a href="myAccount">Min profil</a>
+        <a href="/upcomingMovies">Kommende film</a>
+        <a href="/findMovie">Find film</a>
+        <a href="/myProfile">Min side</a>
+        <a href="/myAccount">Min profil</a>
+        <a href="/movieChat">Chat</a>
         <a style="color: red;" href="/signout">Log ud</a>
-      <% } else { %>
+    <% } else { %> 
         <a href="login">Login</a>
         <a href="/register">Opret bruger</a>
         <a href="/">Populære film</a>
         <a href="upcomingMovies">Kommende film</a>
         <a href="findMovie">Find film</a>
-      <% } %>
+        <a href="/movieChat">Chat</a>
+    <% } %>
     </nav>
   </header>
 
@@ -75,7 +77,7 @@
   </div>
 </body>
 <script>
-  fetch("/comingMovies")
+    fetch("/comingMovies")
     .then((res) => res.json())
     .then((data) => displayMovies(data))
     .catch((error) => console.log(error));

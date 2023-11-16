@@ -24,6 +24,8 @@ export const getMovies = async (req, res) => {
     res.status(500).send("Error fetching movies");
   }
 };
+
+
 export const getTrailer = async (req, res) => {
   try {
     const movieId = req.params.movieId;
@@ -174,10 +176,6 @@ export const deleteMovie = async (req, res) => {
     else {
       res.status(409).json({message: "Der opstod en fejl"})
   }
-} 
-
-export const shareMovie = (req, res) => {
-console.log(req)
 }
   
 
