@@ -23,43 +23,37 @@ export const displaySingleMovie = async (req, res) => {
   }
 
   export const displayProfile = async (req, res) => {
-    const token = req.cookies.token;
+
     const apiKey = process.env.API_KEY;
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-        if (err) {
-            console.log(err);
-            return res.status(401).send('Unauthorized');
-        }
-        const username = decoded.userName
-        const data = {
-            username: username,
-        };
 
+    if(!res.isLoggedIn){
+        return res.status(401).send("Unauthorized")
+    }
+    const username = res.username;
 
-        async function getProfileData() {
-            try {
-                const savedMovies = await favoriteMovies.find({ userName: username }).toArray();
-                const seenMovies1 = await seenMovies.find({ userName: username }).toArray();
+    const data = {
+        username: username,
+    };
 
-                res.render("myProfile", { savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies1), apiKey, data });
-            } catch (error) {
-                console.log("Error:", error);
-            }
-        }
+    try {
+        const savedMovies = await favoriteMovies.find({ userName: username }).toArray();
+        const seenMovies1 = await seenMovies.find({ userName: username }).toArray();
 
-        getProfileData();
-    });
+        res.render("myProfile", { savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies1), apiKey, data });
+    } catch (error) {
+        console.log("Error:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 };
 
 
-    export const displayAccount = async (req, res) => {
-        const token = req.cookies.token
-        jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-            if(err){
-               return res.status(401).send('Unauthorized')
-            }
 
-           const username = decoded.userName
+    export const displayAccount = async (req, res) => {
+        if(!res.isLoggedIn){
+            return res.status(401).send("Unauthorized")
+        }
+
+           const username = res.username
 
 
         async function getAccountData(){
@@ -77,21 +71,18 @@ export const displaySingleMovie = async (req, res) => {
         
         getAccountData()
 
-    } )
+    } 
         
-    }
 
     export const updateProfile = async (req, res) => {
-        let username;
-        
-        try {
-            const decoded = jwt.verify(token, process.env.SECRET_KEY);
-             username = decoded.userName;
 
-
-        } catch (err) {
-            console.log(err);
+        if(!res.isLoggedIn){
+            return res.status(401).send("Unauthorized")
         }
+
+        
+        let username = res.username
+
 
         const newUserValues = req.body;
         for(const key in newUserValues){

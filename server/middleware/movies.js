@@ -107,9 +107,7 @@ export const displaySingleMovie = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-
-    next();
-  }
+}
 };
 
 export const saveMovie = async (req, res) => {
@@ -119,7 +117,7 @@ export const saveMovie = async (req, res) => {
       .json({ message: "Log venligst ind for at gemme denne film" });
   } else {
     const movieId = req.params.movieId;
-    const userName = req.params.userName;
+    const userName = res.username;
     const existingRecord = await userMovies.findOne({ userName, movieId });
     if (existingRecord) {
       return res
@@ -137,7 +135,7 @@ export const seenMovie = async (req, res) => {
   if(!res.isLoggedIn){
     return res.status(409).json({message: "Log venligst ind for at gemme denne film"})
   }
-  const userName = req.params.userName
+  const userName = res.username;
   const movieId = req.params.movieId;
 
   const existingRecord = await seenMovies.findOne({userName, movieId})
@@ -151,10 +149,10 @@ export const seenMovie = async (req, res) => {
 
 export const deleteMovie = async (req, res) => {
   if(!res.isLoggedIn){
-    return res.status(409).send({message: "Log venligst ind for at slette denne film"})
+    return res.status(403).send({message: "Log venligst ind for at slette denne film"})
   }
 
-  const username = req.params.userName
+  const username = res.username
   const movieId = req.params.movieId;
 
  const result = await userMovies.deleteOne({userName: username, movieId: movieId})
@@ -166,7 +164,10 @@ export const deleteMovie = async (req, res) => {
   }
 
   export const deleteSeenMovie = async (req, res) => {
-    const username = req.params.userName
+    if(!res.isLoggedIn){
+      return res.status(403).send("Du skal logge ind for at udføre denne handling")
+    }
+    const username = res.username
     const movieId = req.params.movieId
 
     const result = await seenMovies.deleteOne({userName: username, movieId: movieId})

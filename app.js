@@ -3,12 +3,15 @@ import dotenv from "dotenv/config";
 import router from "./server/routes/pages.js";
 import pagesRouter from "./server/routes/auth.js";
 import movieRouter from "./server/routes/movies.js";
-import {client, run} from "./server/db/dbConnection2.js"
+import protectedRoutes from "./server/routes/protectedRoutes.js"
+import {run} from "./server/db/dbConnection2.js"
 import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import http from "http"
 import {Server} from "socket.io"
+
+//TO DO - Fix projekt strukur, ryd op i client,
 
 const app = express();
 
@@ -32,6 +35,7 @@ app.use("/client/CSS", express.static(path.join(__dirname, "client/CSS")));
 app.use(router);
 app.use(pagesRouter);
 app.use(movieRouter);
+app.use(protectedRoutes)
 
 run()
 

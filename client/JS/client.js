@@ -1,8 +1,6 @@
 let youtubePlayer;
 const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
 
-
-
 async function fetchMovieSuggestions(query) {
   const suggestionList = document.getElementById("suggestions");
   const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${API_KEY}`;
@@ -54,8 +52,7 @@ posterImg.style.height = "225px";
 }
 
 function saveMovie(movieId, movieName) {
-  const username = localStorage.getItem("user_name");
-  fetch(`/saveMovie/${movieId}/${username}`, {
+  fetch(`/saveMovie/${movieId}`, {
     method: "POST",
   })
     .then((response) => {
@@ -65,8 +62,7 @@ function saveMovie(movieId, movieName) {
 }
 
 function seenMovie(movieId, movieName) {
-  const username = localStorage.getItem("user_name");
-  fetch(`/seenMovie/${movieId}/${username}`, {
+  fetch(`/seenMovie/${movieId}`, {
     method: "POST",
   })
     .then((response) => {
@@ -266,10 +262,9 @@ getTrailer(movieId)
 
 
 function deleteMovie(movieId, movieName) {
-  const username = localStorage.getItem("user_name");
   const movieItem = document.getElementById(`movieItem-${movieId}`);
-  fetch(`/deleteMovie/${movieId}/${username}`, {
-    method: 'POST'
+  fetch(`/deleteMovie/${movieId}`, {
+    method: 'DELETE'
   })
     .then(response => {
     if(response.status === 200) {
@@ -284,9 +279,8 @@ function deleteMovie(movieId, movieName) {
 
 function deleteSeenMovie(movieId, movieName){
 const movieItem = document.getElementById(`movieItem-${movieId}`);
-var userName = localStorage.getItem("user_name")
-fetch(`/deleteSeenMovie/${movieId}/${userName}`, {
-  method: 'POST'
+fetch(`/deleteSeenMovie/${movieId}`, {
+  method: 'DELETE'
 })
 .then(response => {
   if(response.status === 200){

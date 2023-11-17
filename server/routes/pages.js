@@ -1,10 +1,5 @@
 import express from "express";
 const router = express.Router();
-
-import {
-  displayProfile,
-  displayAccount,
-} from "../middleware/profile.js";
 import { isLoggedIn } from "../middleware/auth.js";
 
 router.get("/", isLoggedIn, (req, res) => {
@@ -19,16 +14,11 @@ router.get("/upcomingMovies", isLoggedIn, (req, res) => {
   res.render("upcomingMovies", { isLoggedIn: res.isLoggedIn });
 });
 
-router.get("/myProfile", displayProfile);
-
-router.get("/myAccount", displayAccount);
-
 router.get("/login", (req, res) => {
   res.render("login");
 });
 
 router.get("/register", (req, res) => {
-  console.log(res);
   res.render("registerPage", res);
 });
 

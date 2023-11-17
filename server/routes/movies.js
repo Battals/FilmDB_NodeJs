@@ -19,10 +19,6 @@ router.get("/comingMovies", isLoggedIn, getUpcomingMovies);
 router.get("/trailer/:movieId", getTrailer);
 router.get("/findMovie/:movieId", isLoggedIn, getMovieDetails);
 router.get("/movieDetails/:movieId", isLoggedIn, displaySingleMovie);
-router.post("/saveMovie/:movieId/:userName", isLoggedIn, saveMovie);
-router.post("/seenMovie/:movieId/:userName", isLoggedIn, seenMovie);
-router.post("/deleteMovie/:movieId/:userName", isLoggedIn, deleteMovie);
-router.post("/deleteSeenMovie/:movieId/:userName", isLoggedIn, deleteSeenMovie);
-router.get("/getUserMovies/:type", isLoggedIn, shareMovies);
+
 
 export default router;
