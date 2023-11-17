@@ -14,12 +14,13 @@
   <link rel="stylesheet" type="text/css" href="/client/CSS/style.css">
 </head>
 
-<header>
-  <a href="/">
-    <h1 style="font-family: FontAwesome;">FilmDB.dk</h1>
-  </a>
-  <nav>
-    <% if (isLoggedIn) { %>
+<body>
+  <header>
+    <a href="/">
+      <h1 style="font-family: FontAwesome;">FilmDB.dk</h1>
+    </a>
+    <nav>
+      <% if (isLoggedIn) { %>
       <a href="/">Populære film</a>
       <a href="/upcomingMovies">Kommende film</a>
       <a href="/findMovie">Find film</a>
@@ -27,52 +28,23 @@
       <a href="/myAccount">Min profil</a>
       <a href="/movieChat">Chat</a>
       <a style="color: red;" href="/signout">Log ud</a>
-    <% 
-          } else {
-            %> 
+      <% 
+      } else {
+      %> 
       <a href="login">Login</a>
       <a href="/register">Opret bruger</a>
       <a href="/">Populære film</a>
       <a href="upcomingMovies">Kommende film</a>
       <a href="findMovie">Find film</a>
       <a href="/movieChat">Chat</a>
-    <% } %>
-  </nav>
-</header>
+      <% } %>
+    </nav>
+  </header>
 
-<body>
   <h1 style="margin: 15px;">Populære film</h1>
 
   <div id="myModal" class="modal">
-    <div class="modal-content">
-      <button id="modal-close" class="close">&times;</button>
-      <h2 id="modal-title">Movie Title</h2>
-      <div class="modal-description-container" id="test1">
-        <div class="iconButtons">
-          <button id="favorit" class="markBtns">
-            <i style="color: #007bff;" class="fas fa-bookmark"> Favorit</i>
-          </button>
-          <button id="set" class="markBtns">
-            <i class="fas fa-eye"> Set</i>
-          </button>
-        </div>
-        <div id="movieInfo">
-          <div id="movieOverview">
-            <h4>Filmbeskrivelse</h4>
-            <p id="movieOverviewText"></p>
-            <h4>Bedømmelse: </h4>
-            <p id="rating"></p>
-          </div>
-          <div id="player"></div>
-        </div>
-        <div id="similarMovies">
-          <h5>Lignende film</h5>
-          <div class="similarDiv" id="similarDiv"></div>
-        </div>
-        <h3 id="actors">Medvirkende</h3>
-        <div class="actorDiv" id="actorDiv"></div>
-      </div>
-    </div>
+    <!-- ... (your modal content) ... -->
   </div>
 
   <div class="movie-list">
@@ -80,19 +52,23 @@
   </div>
 
   <script>
-    fetch("/popularMovies")
-      .then((response) => response.json())
-      .then((data) => {
+    async function displayPopular() {
+      const response = await fetch("/popularMovies");
+      if (response.ok) {
+        const data = await response.json();
         displayMovies(data);
-      })
-      .catch((error) => console.error("Error fetching movies:", error));
+      } else {
+        toastr.error("Der opstod en fejl i indlæsningen af Populære film");
+      }
+    }
+
+    displayPopular();
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('loggedOut')) {
-      localStorage.removeItem("user_name")
-      localStorage.removeItem("access_token")
-
-      toastr.success("Du er nu logget ud")
+      localStorage.removeItem("user_name");
+      localStorage.removeItem("access_token");
+      toastr.success("Du er nu logget ud");
     }
   </script>
 </body>

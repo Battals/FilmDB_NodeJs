@@ -14,16 +14,17 @@ router.get("/upcomingMovies", isLoggedIn, (req, res) => {
   res.render("upcomingMovies", { isLoggedIn: res.isLoggedIn });
 });
 
-router.get("/login", (req, res) => {
-  res.render("login");
-});
-
-router.get("/register", (req, res) => {
-  res.render("registerPage", res);
-});
-
 router.get("/movieChat", isLoggedIn, (req, res) => {
   res.render("movieChat", { isLoggedIn: res.isLoggedIn });
 });
+
+router.get("/login", (req, res) => {
+  res.sendFile("login.html", {root: "client/public"})
+});
+
+router.get("/register", (req, res) => {
+  res.sendFile("register.html", {root: "client/public"})
+});
+
 
 export default router;

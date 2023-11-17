@@ -11,7 +11,7 @@ import cookieParser from "cookie-parser";
 import http from "http"
 import {Server} from "socket.io"
 
-//TO DO - Fix projekt strukur, ryd op i client,
+//TO DO - Fix projekt strukur, ryd op i client.js, gør alle fetch requests ens / Gør projektet ensartet og konsistent
 
 const app = express();
 
