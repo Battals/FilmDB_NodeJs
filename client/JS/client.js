@@ -1,6 +1,7 @@
 let youtubePlayer;
 const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
 
+
 async function fetchMovieSuggestions(query) {
   const suggestionList = document.getElementById("suggestions");
   const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${API_KEY}`;
@@ -20,6 +21,9 @@ async function fetchMovieSuggestions(query) {
         if(movie.poster_path === null){
           return;
         }
+
+
+
         const movieId = movie.id;
         const listItem = document.createElement("li");
         listItem.classList.add("movie-item");
@@ -51,24 +55,31 @@ posterImg.style.height = "225px";
   }
 }
 
-function saveMovie(movieId, movieName) {
-  fetch(`/saveMovie/${movieId}`, {
-    method: "POST",
+async function saveMovie(movieId, movieName){
+  const response = await fetch(`/saveMovie/${movieId}`, {
+    method: 'POST'
   })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => toastr.info(data.message, `${movieName}`));
+
+  if(response.ok){
+    return await response.json()
+  }
+  else if(!response.ok){
+  const data = await response.json()
+  toastr.error(data.message, `${movieName}`)
+  }
 }
 
-function seenMovie(movieId, movieName) {
-  fetch(`/seenMovie/${movieId}`, {
-    method: "POST",
+async function seenMovie(movieId, movieName){
+  const response = await fetch(`/seenMovie/${movieId}`, {
+    method: 'POST'
   })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => toastr.info(data.message, `${movieName}`));
+
+  if(response.ok){
+    return await response.json()
+  } else if(!response.ok){
+    const data = await response.json()
+    toastr.error(data.message, `${movieName}`)
+  }
 }
 
 function initYouTubePlayer(videoId) {
@@ -167,9 +178,9 @@ function displayModal(movieId) {
   const set = document.getElementById("set");
   const movieOverview = document.getElementById("movieOverview");
   const similarMovies = document.getElementById("similarMovies")
-  
-  modal.classList.add("active")
 
+  modal.classList.add("active")
+  
   fetch(`/findMovie/${movieId}`)
     .then((response) => response.json())
     .then((data) => {
@@ -258,9 +269,6 @@ getTrailer(movieId)
       
   };
 
-
-
-
 function deleteMovie(movieId, movieName) {
   const movieItem = document.getElementById(`movieItem-${movieId}`);
   fetch(`/deleteMovie/${movieId}`, {
@@ -269,7 +277,7 @@ function deleteMovie(movieId, movieName) {
     .then(response => {
     if(response.status === 200) {
       movieItem.remove()
-      toastr.success(`${movieName}: er fjernet fra dine favoritter`)
+      toastr.success(`${movieName}: er nu slettet fra din Favorit-liste`)
     } else {
       toastr.error("Der opstod en fejl")
     }
@@ -290,7 +298,6 @@ fetch(`/deleteSeenMovie/${movieId}`, {
     toastr.error("Der opstod en fejl")
   }
 })
-
 }
 
 function shareMovie(movieId){

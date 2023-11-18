@@ -29,17 +29,18 @@
 
 </header>
 
-<body>
-  <h1>Velkommen, <%= data.username %></h1>
 
-  <div id="savedMoviesContainer" style="padding: 150px;">
+<body>
+  <h3 style="text-align: center;">Velkommen, <%= data.username %></h3>
+  <div style="text-align: center; margin-top: 20px;">
+    <p>Se, og tilpas dine Film-lister</p>
+  </div>
+  <div id="savedMoviesContainer" >
     <h1 style="text-align: inherit;">Favoritter <i style="color: #007bff;"class="fas fa-bookmark"></i></h1>
     <div class="movieList" id="movieListContainer1">
-
     </div>
   </div>
-
-  <div id="watchedMoviesContainer" style="padding: 150px;">
+  <div id="watchedMoviesContainer">
     <h1 style="text-align: inherit;">Set <i class="fas fa-eye"></i></h1>
     <div class="movieList" id="movieListContainer2">
 

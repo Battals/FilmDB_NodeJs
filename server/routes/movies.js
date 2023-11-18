@@ -11,7 +11,6 @@ import {
   deleteSeenMovie,
 } from "../middleware/movies.js";
 import { isLoggedIn } from "../middleware/auth.js";
-import {shareMovies} from "../middleware/profile.js"
 const router = express.Router();
 
 router.get("/popularMovies", isLoggedIn, getMovies);

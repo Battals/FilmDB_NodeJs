@@ -1,4 +1,4 @@
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 import {client} from '../db/dbConnection2.js'
 import bcrypt from 'bcrypt'
@@ -22,6 +22,8 @@ export const displaySingleMovie = async (req, res) => {
     }
   }
 
+
+
   export const displayProfile = async (req, res) => {
 
     const apiKey = process.env.API_KEY;
@@ -38,6 +40,7 @@ export const displaySingleMovie = async (req, res) => {
     try {
         const savedMovies = await favoriteMovies.find({ userName: username }).toArray();
         const seenMovies1 = await seenMovies.find({ userName: username }).toArray();
+        console.log("test")
 
         res.render("myProfile", { savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies1), apiKey, data });
     } catch (error) {
@@ -56,11 +59,11 @@ export const displaySingleMovie = async (req, res) => {
            const username = res.username
 
 
-        async function getAccountData(){
             try{
                 const userInfo = await users.find({username: username}).toArray();
                 const user = userInfo[0]
-                res.render("myAccount", {userName: username, email: user.email})
+                console.log(user)
+                res.render("myAccount", {username: username, email: user.email})
             }
             catch(error){
                 console.log("Error", error)
@@ -69,10 +72,7 @@ export const displaySingleMovie = async (req, res) => {
         }
 
         
-        getAccountData()
-
-    } 
-        
+    
 
     export const updateProfile = async (req, res) => {
 
@@ -80,7 +80,7 @@ export const displaySingleMovie = async (req, res) => {
             return res.status(401).send("Unauthorized")
         }
 
-        
+
         let username = res.username
 
 

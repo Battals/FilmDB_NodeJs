@@ -2,6 +2,9 @@ import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt";
 import {client} from '../db/dbConnection2.js'
 
+
+const usersCollection = client.db("Cluster0").collection("users");
+
 export const isLoggedIn = (req, res, next) => {
   const token = req.cookies.token;
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
@@ -15,8 +18,6 @@ export const isLoggedIn = (req, res, next) => {
   });
 };
 
-const usersCollection = client.db("Cluster0").collection("users");
-
 export const register = async (req, res) => {
   const { username, password, email } = req.body;
 
@@ -28,12 +29,10 @@ export const register = async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 8);
   await usersCollection.insertOne({ username, password: hashedPassword, email });
 
-  
-
   const user = await usersCollection.findOne({username: username})
   const token = jwt.sign({userName: username}, process.env.SECRET_KEY)
   res.cookie("token", token, {
-    expires: new Date(Date.now() + 24 + 3600000),
+    expires: 0,
     httpOnly: true
   })
 
@@ -60,7 +59,7 @@ export const login = async (req, res) => {
   const token = jwt.sign({userName: username }, process.env.SECRET_KEY);
 
   res.cookie("token", token, {
-    expires: new Date(Date.now() + 3 + 3600000),
+    expires: 0,
     httpOnly: true,
   });
 

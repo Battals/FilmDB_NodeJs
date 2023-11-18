@@ -37,6 +37,7 @@ app.use(pagesRouter);
 app.use(movieRouter);
 app.use(protectedRoutes)
 
+
 run()
 
 const PORT = 8080;
@@ -50,7 +51,6 @@ server.listen(PORT, (error) => {
 
 let clientsConnected = 0;
 io.on("connection", (socket) => {
-  console.log("A user connected ")
   clientsConnected++
   
     io.emit("connectedClientsCount", clientsConnected)  
@@ -66,4 +66,5 @@ io.on("connection", (socket) => {
     io.emit("connectedClientsCount", clientsConnected)
   })
 })
+
 

@@ -23,11 +23,14 @@
       <a href="/myProfile">Min side</a>
       <a href="/myAccount">Min profil</a>
       <a href="/movieChat">Chat</a>
-      <a style="color: red;" href="/signout">Log ud</a>
+      <a style="color: red;" hre  ="/signout">Log ud</a>
     </nav>
     </header>
     <body>
-
+      <h3 style="text-align: center;">Velkommen, <%= username %></h3>
+      <div style="text-align: center; margin-top: 20px;">
+        <p>Opdater dine profiloplysninger</p>
+      </div>
       <div class="updateProfile">
         <div class="glass-frame">
             <h1 style="font-size: smaller; text-align: inherit; color: #666; margin: revert;">Opdater profil</h1>
@@ -35,7 +38,7 @@
             <form id="updateProfileForm">
                 <div class="input-field-myAccount" style="margin: 30px;">
                     <label for="username">Ændre brugernavn</label>
-                    <input type="text" id="username" style="text-align: center;" placeholder="<%= userName %>">
+                    <input type="text" id="username" style="text-align: center;" placeholder="<%= username %>">
                 </div>
     
                 <div class="input-field-myAccount">

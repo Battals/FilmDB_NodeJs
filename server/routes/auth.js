@@ -1,6 +1,5 @@
 import express from "express";
-import { register, login, signOut, isLoggedIn } from "../middleware/auth.js"
-import { updateProfile } from "../middleware/profile.js";
+import { register, login, signOut} from "../middleware/auth.js"
 
 
 const router = express.Router();

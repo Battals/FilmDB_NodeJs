@@ -28,6 +28,8 @@ export const getMovies = async (req, res) => {
 
 export const getTrailer = async (req, res) => {
   try {
+
+    console.log(req.query)
     const movieId = req.params.movieId;
     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`;
 

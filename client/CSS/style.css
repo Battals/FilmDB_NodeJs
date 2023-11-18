@@ -66,11 +66,13 @@ img {
   width: 400px;
 }
 
-.loginContainer, .updateProfile {
+.loginContainer,
+.updateProfile {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 50vh; /* Use 100% of the viewport height */
+  margin: 0; /* Remove default margin to center accurately */
 }
 
 .glass-frame {
@@ -224,12 +226,18 @@ button {
   margin: 30px;
 }
 
+#savedMoviesContainer, #watchedMoviesContainer{
+  padding: 50px;
+}
+
 #searchMovie input[type="search"] {
-  width: 100%;
+  width: 50%;
   padding: 10px;
   border: none;
   border-radius: 5px;
   outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 
@@ -535,6 +543,10 @@ body {
   padding: 10px;
   text-align: center;
   font-size: 18px;
+}
+
+p{
+  font-family: system-ui;
 }
 
 #input-box {

@@ -77,9 +77,22 @@
   </div>
 </body>
 <script>
-    fetch("/comingMovies")
-    .then((res) => res.json())
-    .then((data) => displayMovies(data))
-    .catch((error) => console.log(error));
+async function comingMovies(){
+  const response = await fetch("/comingMovies")
+try{
+  if(response.ok){
+    const data = await response.json()
+    displayMovies(data)
+  } else {
+    console.log(response.status)
+  }
+}
+catch(error){
+  console.log(error)
+}
+}
+
+comingMovies()
+
 </script>
 </html>

@@ -1,5 +1,3 @@
-<html>
-
 <head>
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="/client/CSS/style.css">
@@ -7,7 +5,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="/client/JS/client.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="module" src="/client/JS/client.js"></script>
 </head>
 
 <body>
@@ -16,20 +15,21 @@
             <h1 style="font-family: FontAwesome;">FilmDB.dk</h1>
         </a>
         <nav>
-            <a href="login">Login</a>
+            <a href="/login">Login</a>
             <a href="/register">Opret bruger</a>
             <a href="/">Populære film</a>
-            <a href="upcomingMovies.html">Kommende film</a>
+            <a href="/upcomingMovies">Kommende film</a>
             <a href="/findMovie">Find film</a>
             <a href="/movieChat">Chat</a>
         </nav>
     </header>
+
     <div class="loginContainer">
         <div class="glass-frame">
-            <h1 style="font-size: smaller; text-align: inherit; color: #666; margin: revert;">Log ind på FilmDB</h1>
-            <form id="loginForm" action="/login" method="POST">
-                <input type="text" id="navn" placeholder="Brugernavn" name="username" required>
-                <input type="password" id="kode" placeholder="Adgangskode" name="password" required>
+            <h4 style="color: #666; margin: revert; text-align: center;">Log ind på FilmDB</h4>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Brugernavn" name="username" required>
+                <input type="password" id="password" placeholder="Adgangskode" name="password" required>
                 <button type="submit">Login</button>
             </form>
             <a style="color: #666;
@@ -37,37 +37,35 @@
         </div>
     </div>
 
-
     <script>
-        
-     document.querySelector('form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const navn = document.getElementById("navn").value;
-    const kode = document.getElementById("kode").value;
+        document.querySelector('form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
 
-    const credentials = {
-        username: navn,
-        password: kode
-    };
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
-        });
+            const credentials = {
+                username: username,
+                password: password
+            };
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(credentials),
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (response.status === 400) {
-            toastr.error(data.error);
-        } else {
-            localStorage.setItem("user_name", data.userName);
-            localStorage.setItem("access_token", data.token);
-            window.location.href = `/myProfile`;
+            if (response.status === 400) {
+                toastr.error(data.error);
+            } else {
+                localStorage.setItem("user_name", data.userName);
+                localStorage.setItem("access_token", data.token);
+                window.location.href = `/myProfile`;
+            }
         }
-    } 
-);
+        );
     </script>
 </body>
 
