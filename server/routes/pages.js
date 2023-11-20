@@ -10,10 +10,6 @@ router.get("/findMovie", isLoggedIn, (req, res) => {
   res.render("findMovie", { isLoggedIn: res.isLoggedIn });
 });
 
-router.get("/upcomingMovies", isLoggedIn, (req, res) => {
-  res.render("upcomingMovies", { isLoggedIn: res.isLoggedIn });
-});
-
 router.get("/movieChat", isLoggedIn, (req, res) => {
   res.render("movieChat", { isLoggedIn: res.isLoggedIn });
 });
@@ -24,6 +20,10 @@ router.get("/login", (req, res) => {
 
 router.get("/register", (req, res) => {
   res.sendFile("register.html", {root: "client/public"})
+});
+
+router.get("/movies/coming", isLoggedIn, (req, res) => {
+  res.render("upcomingMovies", { isLoggedIn: res.isLoggedIn });
 });
 
 

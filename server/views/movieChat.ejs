@@ -18,10 +18,10 @@
     <nav>
         <% if (isLoggedIn) { %>
             <a href="/">Populære film</a>
-            <a href="/upcomingMovies">Kommende film</a>
+            <a href="/movies/coming">Kommende film</a>
             <a href="/findMovie">Find film</a>
-            <a href="/myProfile">Min side</a>
-            <a href="/myAccount">Min profil</a>
+            <a href="/profile">Min side</a>
+            <a href="/account">Min profil</a>
             <a href="/movieChat">Chat</a>
             <a style="color: red;" href="/signout">Log ud</a>
             <% } else { %>
@@ -122,7 +122,7 @@ const user = localStorage.getItem("user_name")
 
     async function shareMovieList(type) {
   try {
-      const response = await fetch(`/userMovies/${type}`);
+      const response = await fetch(`/user/movies/${type}`);
 
       if (response.status === 200) {
       const result = await response.json();

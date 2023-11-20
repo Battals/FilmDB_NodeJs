@@ -18,10 +18,10 @@
     </a>
     <nav>
       <a href="/">Populære film</a>
-      <a href="/upcomingMovies">Kommende film</a>
+      <a href="/movies/coming">Kommende film</a>
       <a href="/findMovie">Find film</a>
-      <a href="/myProfile">Min side</a>
-      <a href="/myAccount">Min profil</a>
+      <a href="/profile">Min side</a>
+      <a href="/account">Min profil</a>
       <a href="/movieChat">Chat</a>
       <a style="color: red;" hre  ="/signout">Log ud</a>
     </nav>
@@ -76,7 +76,7 @@ const updateProfileForm = document.getElementById("updateProfileForm")
         }
 
         try {
-        const response = await fetch(`/updateProfile`, {
+        const response = await fetch(`/profile/update`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

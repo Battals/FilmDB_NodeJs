@@ -111,7 +111,7 @@ function displayModal(movieId) {
 
   modal.classList.add("active")
   
-  fetch(`/findMovie/${movieId}`)
+  fetch(`/movie/${movieId}`)
     .then((response) => response.json())
     .then((data) => {
         modalTitle.innerHTML = data.title;
@@ -234,10 +234,8 @@ function displayRating(data){
  return stars
 }
 
-
-
   async function saveMovie(movieId, movieName){
-    const response = await fetch(`/saveMovie/${movieId}`, {
+    const response = await fetch(`/movie/save/${movieId}`, {
       method: 'POST'
     })
   
@@ -252,7 +250,7 @@ function displayRating(data){
   }
   
   async function seenMovie(movieId, movieName){
-    const response = await fetch(`/seenMovie/${movieId}`, {
+    const response = await fetch(`/movie/seen/${movieId}`, {
       method: 'POST'
     })
   
@@ -267,7 +265,7 @@ function displayRating(data){
 
 function deleteMovie(movieId, movieName) {
   const movieItem = document.getElementById(`movieItem-${movieId}`);
-  fetch(`/deleteMovie/${movieId}`, {
+  fetch(`/movie/delete/${movieId}`, {
     method: 'DELETE'
   })
     .then(response => {
@@ -283,7 +281,7 @@ function deleteMovie(movieId, movieName) {
 
 function deleteSeenMovie(movieId, movieName){
 const movieItem = document.getElementById(`movieItem-${movieId}`);
-fetch(`/deleteSeenMovie/${movieId}`, {
+fetch(`/moive/seen/delete/${movieId}`, {
   method: 'DELETE'
 })
 .then(response => {

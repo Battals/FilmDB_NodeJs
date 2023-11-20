@@ -4,23 +4,6 @@ import bcrypt from 'bcrypt'
 import { usersCollection, favouriteMoviesCollection, seenMoviesCollection } from '../db/dbCollections.js';
 
 
-
-
-export const displaySingleMovie = async (req, res) => {
-    try{
-        const movieId = req.params.movieId
-        displayMovieDetails(movieId).then((data) => {
-            const movieDetails = data
-            res.render("movieDetails", {movieDetails})
-          })
-    }
-    catch (error){
-        console.log(error)
-    }
-  }
-
-
-
   export const displayProfile = async (req, res) => {
 
     const apiKey = process.env.API_KEY;
@@ -116,8 +99,6 @@ export const displaySingleMovie = async (req, res) => {
             await favouriteMoviesCollection.updateMany({userName: username}, {$set: {userName:newUserValues.username} })
             await seenMoviesCollection.updateMany({userName: username}, {$set: {userName: newUserValues.username}})
         }
-
-
 
         return res.status(200).json({token: token, username: newUserValues.username})
     } catch(error){

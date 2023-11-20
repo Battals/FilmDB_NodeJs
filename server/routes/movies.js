@@ -8,9 +8,11 @@ import {
 import { isLoggedIn } from "../middleware/auth.js";
 const router = express.Router();
 
-router.get("/popularMovies", isLoggedIn, getPopularMovies);
-router.get("/comingMovies", isLoggedIn, getUpcomingMovies);
+
+//Rest conventions - Rest API should consist of nouns and not verbs
+router.get("/movies/popular", isLoggedIn, getPopularMovies);
+router.get("/movies/upcoming", isLoggedIn, getUpcomingMovies);
 router.get("/trailer/:movieId", getTrailer);
-router.get("/findMovie/:movieId", isLoggedIn, getMovieDetails);
+router.get("/movie/:movieId", isLoggedIn, getMovieDetails);
 
 export default router;

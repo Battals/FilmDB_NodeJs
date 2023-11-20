@@ -19,7 +19,7 @@
         <a href="/login">Login</a>
         <a href="/register">Opret bruger</a>
         <a href="/">Populære film</a>
-        <a href="/upcomingMovies">Kommende film</a>
+        <a href="/movies/coming">Kommende film</a>
         <a href="/findMovie">Find film</a>
         <a href="/movieChat">Chat</a>
       </nav>
@@ -71,7 +71,7 @@
       const responseData = await response.json()
       localStorage.setItem("user_name", responseData.username)
       localStorage.setItem("access_token", responseData.token)
-      window.location.href = '/myProfile'
+      window.location.href = '/profile'
     } else {
       const errorData = await response.json()
       toastr.error(errorData.message)

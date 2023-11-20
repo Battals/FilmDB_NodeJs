@@ -6,13 +6,13 @@ import { saveMovie, seenMovie, deleteMovie, deleteSeenMovie } from "../middlewar
 
 const router = express.Router()
 
-router.get("/myProfile", isLoggedIn, displayProfile);
-router.get("/myAccount", isLoggedIn, displayAccount);
-router.get("/userMovies/:type", isLoggedIn, shareMovies);
-router.post("/updateProfile", isLoggedIn, updateProfile)
-router.post("/saveMovie/:movieId", isLoggedIn, saveMovie);
-router.post("/seenMovie/:movieId", isLoggedIn, seenMovie);
-router.delete("/deleteMovie/:movieId", isLoggedIn, deleteMovie);
-router.delete("/deleteSeenMovie/:movieId", isLoggedIn, deleteSeenMovie);
+router.get("/profile", isLoggedIn, displayProfile);
+router.get("/account", isLoggedIn, displayAccount);
+router.get("/user/movies/:type", isLoggedIn, shareMovies);
+router.post("/profile/update", isLoggedIn, updateProfile)
+router.post("/movie/save/:movieId", isLoggedIn, saveMovie);
+router.post("/movie/seen/:movieId", isLoggedIn, seenMovie);
+router.delete("/movie/delete/:movieId", isLoggedIn, deleteMovie);
+router.delete("/movie/seen/delete/:movieId", isLoggedIn, deleteSeenMovie);
 
 export default router

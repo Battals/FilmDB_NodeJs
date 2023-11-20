@@ -18,7 +18,7 @@
             <a href="/login">Login</a>
             <a href="/register">Opret bruger</a>
             <a href="/">Populære film</a>
-            <a href="/upcomingMovies">Kommende film</a>
+            <a href="/movies/coming">Kommende film</a>
             <a href="/findMovie">Find film</a>
             <a href="/movieChat">Chat</a>
         </nav>
@@ -62,7 +62,7 @@
             } else {
                 localStorage.setItem("user_name", data.userName);
                 localStorage.setItem("access_token", data.token);
-                window.location.href = `/myProfile`;
+                window.location.href = `/profile`;
             }
         }
         );
