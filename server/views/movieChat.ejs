@@ -122,7 +122,7 @@ const user = localStorage.getItem("user_name")
 
     async function shareMovieList(type) {
   try {
-      const response = await fetch(`/getUserMovies/${type}`);
+      const response = await fetch(`/userMovies/${type}`);
 
       if (response.status === 200) {
       const result = await response.json();

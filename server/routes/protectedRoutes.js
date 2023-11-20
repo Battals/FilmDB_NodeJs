@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.get("/myProfile", isLoggedIn, displayProfile);
 router.get("/myAccount", isLoggedIn, displayAccount);
-router.get("/getUserMovies/:type", isLoggedIn, shareMovies);
+router.get("/userMovies/:type", isLoggedIn, shareMovies);
 router.post("/updateProfile", isLoggedIn, updateProfile)
 router.post("/saveMovie/:movieId", isLoggedIn, saveMovie);
 router.post("/seenMovie/:movieId", isLoggedIn, seenMovie);

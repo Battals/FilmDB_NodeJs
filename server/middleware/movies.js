@@ -1,12 +1,11 @@
 const API_KEY = process.env.API_KEY;
 
-import { client } from "../db/dbConnection2.js";
+import {
+  favouriteMoviesCollection,
+  seenMoviesCollection,
+} from "../db/dbCollections.js";
 
-const userMovies = client.db("Cluster0").collection("savedMovies");
-const seenMovies = client.db("Cluster0").collection("seenMovies");
-
-
-export const getMovies = async (req, res) => {
+export const getPopularMovies = async (req, res) => {
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=da&page=1`
@@ -25,16 +24,14 @@ export const getMovies = async (req, res) => {
   }
 };
 
-
 export const getTrailer = async (req, res) => {
   try {
-
-    console.log(req.query)
     const movieId = req.params.movieId;
     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`;
 
     const response = await fetch(apiUrl);
     const data = await response.json();
+    console.log(data)
 
     if (response.ok) {
       res.json(data);
@@ -109,7 +106,7 @@ export const displaySingleMovie = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-}
+  }
 };
 
 export const saveMovie = async (req, res) => {
@@ -120,67 +117,84 @@ export const saveMovie = async (req, res) => {
   } else {
     const movieId = req.params.movieId;
     const userName = res.username;
-    const existingRecord = await userMovies.findOne({ userName, movieId });
+    const existingRecord = await favouriteMoviesCollection.findOne({
+      userName,
+      movieId,
+    });
     if (existingRecord) {
-      return res
-        .status(409)
-        .json({
-          message: "Du har allerede tilføjet denne film til favoritter",
-        });
+      return res.status(409).json({
+        message: "Du har allerede tilføjet denne film til favoritter",
+      });
     }
-    await userMovies.insertOne({ userName, movieId });
-    return res.status(200).json({message: "Tilføjet til favorit"});
+    await favouriteMoviesCollection.insertOne({ userName, movieId });
+    return res.status(200).json({ message: "Tilføjet til favorit" });
   }
 };
 
 export const seenMovie = async (req, res) => {
-  if(!res.isLoggedIn){
-    return res.status(409).json({message: "Log venligst ind for at gemme denne film"})
+  if (!res.isLoggedIn) {
+    return res
+      .status(409)
+      .json({ message: "Log venligst ind for at gemme denne film" });
   }
   const userName = res.username;
   const movieId = req.params.movieId;
 
-  const existingRecord = await seenMovies.findOne({userName, movieId})
-  if(existingRecord) {
-    return res.status(409).json({message: "Er i forvejen gemt i din Set-liste"})
+  const existingRecord = await seenMoviesCollection.findOne({
+    userName,
+    movieId,
+  });
+  if (existingRecord) {
+    return res
+      .status(409)
+      .json({ message: "Er i forvejen gemt i din Set-liste" });
   }
 
-  await seenMovies.insertOne({userName, movieId})
-  return res.status(200).json({message: "Gemt til din Set-liste"})
-}
+  await seenMoviesCollection.insertOne({ userName, movieId });
+  return res.status(200).json({ message: "Gemt til din Set-liste" });
+};
 
 export const deleteMovie = async (req, res) => {
-  if(!res.isLoggedIn){
-    return res.status(403).send({message: "Log venligst ind for at slette denne film"})
+  if (!res.isLoggedIn) {
+    return res
+      .status(403)
+      .send({ message: "Log venligst ind for at slette denne film" });
   }
 
-  const username = res.username
+  const username = res.username;
   const movieId = req.params.movieId;
 
- const result = await userMovies.deleteOne({userName: username, movieId: movieId})
- if(result.acknowledged == true){
-  return res.status(200).json({message: "Filmen er nu slettet fra din Favorit-liste"})
- } else {
-  return res.status(500)
- }
+  const result = await favouriteMoviesCollection.deleteOne({
+    userName: username,
+    movieId: movieId,
+  });
+  if (result.acknowledged == true) {
+    return res
+      .status(200)
+      .json({ message: "Filmen er nu slettet fra din Favorit-liste" });
+  } else {
+    return res.status(500);
   }
+};
 
-  export const deleteSeenMovie = async (req, res) => {
-    if(!res.isLoggedIn){
-      return res.status(403).send("Du skal logge ind for at udføre denne handling")
-    }
-    const username = res.username
-    const movieId = req.params.movieId
-
-    const result = await seenMovies.deleteOne({userName: username, movieId: movieId})
-    if(result.acknowledged === true){
-      return res.status(200).json({message: "Filmen er nu slettet fra din Set-liste"})
-    }
-    else {
-      res.status(409).json({message: "Der opstod en fejl"})
+export const deleteSeenMovie = async (req, res) => {
+  if (!res.isLoggedIn) {
+    return res
+      .status(403)
+      .send("Du skal logge ind for at udføre denne handling");
   }
-}
-  
+  const username = res.username;
+  const movieId = req.params.movieId;
 
-  
-
+  const result = await seenMoviesCollection.deleteOne({
+    userName: username,
+    movieId: movieId,
+  });
+  if (result.acknowledged === true) {
+    return res
+      .status(200)
+      .json({ message: "Filmen er nu slettet fra din Set-liste" });
+  } else {
+    res.status(409).json({ message: "Der opstod en fejl" });
+  }
+};

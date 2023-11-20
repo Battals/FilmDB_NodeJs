@@ -1,7 +1,51 @@
-let youtubePlayer;
 const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
+let youtubePlayer;
 
 
+
+  function displayMovies(response) {
+    const movieListDiv = document.querySelector(".movie-list");
+  
+    const movies = response.results || [];
+  
+    movies.forEach((movie) => {
+      const movieDiv = document.createElement("div");
+      const buttonDiv = document.createElement("div");
+  
+      movieDiv.classList.add("movie");
+  
+      const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  
+      const image = document.createElement("img");
+      image.src = imageUrl;
+      image.alt = movie.title;
+      movieDiv.appendChild(image);
+  
+      const title = document.createElement("h3");
+      title.textContent = movie.title;
+      movieDiv.appendChild(title);
+  
+      const releaseDate = document.createElement("p");
+      releaseDate.textContent = `Udgivelse: ${movie.release_date}`;
+      movieDiv.appendChild(releaseDate);
+  
+      const readMore = document.createElement("button");
+      readMore.textContent = "Læs mere";
+      buttonDiv.appendChild(readMore);
+  
+      movieDiv.appendChild(buttonDiv);
+      movieListDiv.appendChild(movieDiv);
+  
+      image.addEventListener("click", function () {
+        displayModal(movie.id);
+      });
+  
+      readMore.addEventListener("click", function () {
+        displayModal(movie.id);
+      });
+    });
+  }
+  
 async function fetchMovieSuggestions(query) {
   const suggestionList = document.getElementById("suggestions");
   const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${API_KEY}`;
@@ -55,120 +99,6 @@ posterImg.style.height = "225px";
   }
 }
 
-async function saveMovie(movieId, movieName){
-  const response = await fetch(`/saveMovie/${movieId}`, {
-    method: 'POST'
-  })
-
-  if(response.ok){
-    return await response.json()
-  }
-  else if(!response.ok){
-  const data = await response.json()
-  toastr.error(data.message, `${movieName}`)
-  }
-}
-
-async function seenMovie(movieId, movieName){
-  const response = await fetch(`/seenMovie/${movieId}`, {
-    method: 'POST'
-  })
-
-  if(response.ok){
-    return await response.json()
-  } else if(!response.ok){
-    const data = await response.json()
-    toastr.error(data.message, `${movieName}`)
-  }
-}
-
-function initYouTubePlayer(videoId) {
-  if (youtubePlayer) {
-    youtubePlayer.destroy();
-  }
-
-  youtubePlayer = new YT.Player("player", {
-    height: "315",
-    width: "560",
-    videoId: videoId,
-  });
-}
-
-function displayMovies(response) {
-  const movieListDiv = document.querySelector(".movie-list");
-
-  const movies = response.results || [];
-
-  movies.forEach((movie) => {
-    const movieDiv = document.createElement("div");
-    const buttonDiv = document.createElement("div");
-
-    movieDiv.classList.add("movie");
-
-    const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-
-    const image = document.createElement("img");
-    image.src = imageUrl;
-    image.alt = movie.title;
-    movieDiv.appendChild(image);
-
-    const title = document.createElement("h3");
-    title.textContent = movie.title;
-    movieDiv.appendChild(title);
-
-    const releaseDate = document.createElement("p");
-    releaseDate.textContent = `Udgivelse: ${movie.release_date}`;
-    movieDiv.appendChild(releaseDate);
-
-    const readMore = document.createElement("button");
-    readMore.textContent = "Læs mere";
-    buttonDiv.appendChild(readMore);
-
-    movieDiv.appendChild(buttonDiv);
-    movieListDiv.appendChild(movieDiv);
-
-    image.addEventListener("click", function () {
-      displayModal(movie.id);
-    });
-
-    readMore.addEventListener("click", function () {
-      displayModal(movie.id);
-    });
-  });
-}
-
-function getTrailer(movieId) {
-  return fetch(`/trailer/${movieId}`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      const trailer = data.results.find((item) => 
-      item.name.toLowerCase().includes("trailer")
-      )
-      return trailer;
-    })
-    .catch((error) => {
-      console.log("Error fetching trailers", error);
-      throw error;
-    });
-}
-
-function displayRating(data){
- let stars = ""
- if(data == 0){
-  stars = "Bedømmelse ikke tilgængelig"
- } else {
- for(let i = 0; i < data; i++){
-  stars += "⭐"
- }
-}
-
- return stars
-}
 
 function displayModal(movieId) {
   const modal = document.getElementById("myModal");
@@ -187,13 +117,7 @@ function displayModal(movieId) {
         modalTitle.innerHTML = data.title;
 
 
-getTrailer(movieId)
-.then((trailer) => {
-  initYouTubePlayer(trailer.key)
-})
-.catch((error) => {
-  console.log(error)
-})
+initYouTubePlayer(movieId)
       
         favorit.onclick = () => saveMovie(data.id, data.title);
         set.onclick = () => seenMovie(data.id, data.title);
@@ -268,6 +192,78 @@ getTrailer(movieId)
 
       
   };
+
+
+  async function initYouTubePlayer(movieId) {
+
+    if (youtubePlayer) {
+      youtubePlayer.destroy();
+    }
+  
+    const response = await fetch(`/trailer/${movieId}`);
+  
+    if (response.ok) {
+      const data = await response.json();
+      const trailer = data.results.find((item) => item.name.toLowerCase().includes("trailer"));
+  
+      if (trailer) {
+        youtubePlayer = new YT.Player("player", {
+          height: "315",
+          width: "560",
+          videoId: trailer.key,
+        });
+      } else {
+        console.log("Trailer not found in the data");
+      }
+    } else {
+      console.log("An error occurred");
+    }
+  }
+  
+
+function displayRating(data){
+ let stars = ""
+ if(data == 0){
+  stars = "Bedømmelse ikke tilgængelig"
+ } else {
+ for(let i = 0; i < data; i++){
+  stars += "⭐"
+ }
+}
+
+ return stars
+}
+
+
+
+  async function saveMovie(movieId, movieName){
+    const response = await fetch(`/saveMovie/${movieId}`, {
+      method: 'POST'
+    })
+  
+    if(response.ok){
+      toastr.success(`${movieName}: Gemt til din Favorit-liste`,)
+      return await response.json()
+    }
+    else if(!response.ok){
+    const data = await response.json()
+    toastr.error(data.message, `${movieName}`)
+    }
+  }
+  
+  async function seenMovie(movieId, movieName){
+    const response = await fetch(`/seenMovie/${movieId}`, {
+      method: 'POST'
+    })
+  
+    if(response.ok){
+      toastr.success(`${movieName}: Gemt til din Set-liste`,)
+      return await response.json()
+    } else if(!response.ok){
+      const data = await response.json()
+      toastr.error(data.message, `${movieName}`)
+    }
+  }
 
 function deleteMovie(movieId, movieName) {
   const movieItem = document.getElementById(`movieItem-${movieId}`);

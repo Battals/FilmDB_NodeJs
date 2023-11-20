@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt";
 import {client} from '../db/dbConnection2.js'
-
-
-const usersCollection = client.db("Cluster0").collection("users");
+import { usersCollection } from '../db/dbCollections.js';
 
 export const isLoggedIn = (req, res, next) => {
   const token = req.cookies.token;

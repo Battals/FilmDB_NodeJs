@@ -56,7 +56,9 @@
       email
     }
 
-    const response = await fetch('/registerUser', {
+    console.log(JSON.stringify(data))
+
+    const response = await fetch('/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -1,12 +1,9 @@
 import jwt from 'jsonwebtoken'
-
-import {client} from '../db/dbConnection2.js'
 import bcrypt from 'bcrypt'
 
+import { usersCollection, favouriteMoviesCollection, seenMoviesCollection } from '../db/dbCollections.js';
 
-const favoriteMovies = client.db("Cluster0").collection("savedMovies");
-const seenMovies = client.db("Cluster0").collection("seenMovies")
-const users = client.db("Cluster0").collection("users")
+
 
 
 export const displaySingleMovie = async (req, res) => {
@@ -38,11 +35,10 @@ export const displaySingleMovie = async (req, res) => {
     };
 
     try {
-        const savedMovies = await favoriteMovies.find({ userName: username }).toArray();
-        const seenMovies1 = await seenMovies.find({ userName: username }).toArray();
-        console.log("test")
+        const savedMovies = await favouriteMoviesCollection.find({ userName: username }).toArray();
+        const seenMovies = await seenMoviesCollection.find({ userName: username }).toArray();
 
-        res.render("myProfile", { savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies1), apiKey, data });
+        res.render("myProfile", { savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies), apiKey, data });
     } catch (error) {
         console.log("Error:", error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -60,7 +56,7 @@ export const displaySingleMovie = async (req, res) => {
 
 
             try{
-                const userInfo = await users.find({username: username}).toArray();
+                const userInfo = await usersCollection.find({username: username}).toArray();
                 const user = userInfo[0]
                 console.log(user)
                 res.render("myAccount", {username: username, email: user.email})
@@ -98,15 +94,15 @@ export const displaySingleMovie = async (req, res) => {
 
 
 
-        const updatedUsername = await users.findOne({username: newUserValues.username})
-        const updatedEmail = await users.findOne({email: newUserValues.email})
+        const updatedUsername = await usersCollection.findOne({username: newUserValues.username})
+        const updatedEmail = await usersCollection.findOne({email: newUserValues.email})
         if(updatedUsername || updatedEmail){
             return res.status(409).send("")
         }
 
         try{
 
-        await users.updateOne({username: username}, {$set: newUserValues})
+        await usersCollection.updateOne({username: username}, {$set: newUserValues})
 
 
         const token = jwt.sign({userName: newUserValues.username }, process.env.SECRET_KEY);
@@ -117,8 +113,8 @@ export const displaySingleMovie = async (req, res) => {
               expires: new Date(Date.now() + 3 + 3600000),
               httpOnly: true,
             });
-            await favoriteMovies.updateMany({userName: username}, {$set: {userName:newUserValues.username} })
-            await seenMovies.updateMany({userName: username}, {$set: {userName: newUserValues.username}})
+            await favouriteMoviesCollection.updateMany({userName: username}, {$set: {userName:newUserValues.username} })
+            await seenMoviesCollection.updateMany({userName: username}, {$set: {userName: newUserValues.username}})
         }
 
 
@@ -142,9 +138,9 @@ export const shareMovies = async (req, res) => {
     let movieList, movieIds;
 
     if (type === "Favorit") {
-        movieList = await favoriteMovies.find({ userName: username }).toArray();
+        movieList = await favouriteMoviesCollection.find({ userName: username }).toArray();
     } else if (type === "Set") {
-        movieList = await seenMovies.find({ userName: username }).toArray();
+        movieList = await seenMoviesCollection.find({ userName: username }).toArray();
     }
 
     if (movieList) {
