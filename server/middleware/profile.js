@@ -6,7 +6,7 @@ import { usersCollection, favouriteMoviesCollection, seenMoviesCollection } from
 
   export const displayProfile = async (req, res) => {
 
-    const apiKey = process.env.API_KEY;
+    const API_KEY = process.env.API_KEY
 
     if(!res.isLoggedIn){
         return res.status(401).send("Unauthorized")
@@ -21,7 +21,7 @@ import { usersCollection, favouriteMoviesCollection, seenMoviesCollection } from
         const savedMovies = await favouriteMoviesCollection.find({ userName: username }).toArray();
         const seenMovies = await seenMoviesCollection.find({ userName: username }).toArray();
 
-        res.render("myProfile", { savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies), apiKey, data });
+        res.render("myProfile", { savedMovies: JSON.stringify(savedMovies), seenMovies: JSON.stringify(seenMovies), API_KEY, data });
     } catch (error) {
         console.log("Error:", error);
         res.status(500).json({ error: "Internal Server Error" });

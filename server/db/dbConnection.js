@@ -7,7 +7,7 @@ const uri = process.env.dbUri
 
   console.log(uri)
 
-  async function run() {
+  async function connectToDb() {
     try {
       await client.connect();
       console.log("Succesfully connected to MongoDB");
@@ -21,4 +21,4 @@ console.log(error)
   
 
 
-export {client, run}
+export {client, connectToDb}

@@ -6,6 +6,8 @@ import { saveMovie, seenMovie, deleteMovie, deleteSeenMovie } from "../middlewar
 
 const router = express.Router()
 
+
+//Rest conventions
 router.get("/profile", isLoggedIn, displayProfile);
 router.get("/account", isLoggedIn, displayAccount);
 router.get("/user/movies/:type", isLoggedIn, shareMovies);

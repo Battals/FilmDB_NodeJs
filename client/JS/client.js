@@ -1,5 +1,5 @@
-const API_KEY = "e5cf39b959e12b923e88d332dc6c853a";
 let youtubePlayer;
+
 
 
 
@@ -45,10 +45,12 @@ let youtubePlayer;
       });
     });
   }
+
+
   
 async function fetchMovieSuggestions(query) {
   const suggestionList = document.getElementById("suggestions");
-  const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${API_KEY}`;
+  const API_URL = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=da&page=1&api_key=${apiKey}`;
   try {
     const response = await fetch(API_URL);
     const data = await response.json();
@@ -65,8 +67,6 @@ async function fetchMovieSuggestions(query) {
         if(movie.poster_path === null){
           return;
         }
-
-
 
         const movieId = movie.id;
         const listItem = document.createElement("li");
@@ -100,7 +100,10 @@ posterImg.style.height = "225px";
 }
 
 
-function displayModal(movieId) {
+async function displayModal(movieId) {
+
+  //Fix alle create element så de er i HTMLEN fremfor at blive oprettet via JS
+  
   const modal = document.getElementById("myModal");
   const modalTitle = document.getElementById("modal-title");
   const closeModal = document.getElementById("modal-close");
@@ -108,15 +111,19 @@ function displayModal(movieId) {
   const set = document.getElementById("set");
   const movieOverview = document.getElementById("movieOverview");
   const similarMovies = document.getElementById("similarMovies")
+  const similarInfoDiv = document.getElementById("similarDiv")
+  const actorDiv = document.getElementById("actorDiv")
+
+
 
   modal.classList.add("active")
+
   
-  fetch(`/movie/${movieId}`)
-    .then((response) => response.json())
-    .then((data) => {
-        modalTitle.innerHTML = data.title;
+  const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=da&append_to_response=credits,similar,details,recommendations,latest`)
 
-
+  if(response.ok){
+    const data = await response.json()
+  modalTitle.innerText = data.title
 initYouTubePlayer(movieId)
       
         favorit.onclick = () => saveMovie(data.id, data.title);
@@ -134,7 +141,6 @@ initYouTubePlayer(movieId)
 
 
         const similarResults = data.similar.results
-        const similarInfoDiv = document.getElementById("similarDiv")
 
 
         if(similarResults.length === 0){
@@ -158,9 +164,6 @@ initYouTubePlayer(movieId)
         }
       }
         similarMovies.appendChild(similarInfoDiv)    
-
-
-        const actorDiv = document.getElementById("actorDiv")
         
 
         data.credits.cast.forEach((actor) => {
@@ -181,6 +184,12 @@ initYouTubePlayer(movieId)
           actorDiv.appendChild(actorElement);
         });
 
+      
+    } else if(!response.ok){
+      console.log(response.status)
+    }
+ 
+
         closeModal.addEventListener("click", () => {
 
           modal.classList.remove("active")
@@ -188,22 +197,20 @@ initYouTubePlayer(movieId)
           actorDiv.innerHTML = ""
           youtubePlayer.destroy();
         });
-      })
 
-      
-  };
+      }
 
 
   async function initYouTubePlayer(movieId) {
-
     if (youtubePlayer) {
       youtubePlayer.destroy();
     }
   
-    const response = await fetch(`/trailer/${movieId}`);
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`);
   
     if (response.ok) {
       const data = await response.json();
+      console.log
       const trailer = data.results.find((item) => item.name.toLowerCase().includes("trailer"));
   
       if (trailer) {
@@ -281,7 +288,7 @@ function deleteMovie(movieId, movieName) {
 
 function deleteSeenMovie(movieId, movieName){
 const movieItem = document.getElementById(`movieItem-${movieId}`);
-fetch(`/moive/seen/delete/${movieId}`, {
+fetch(`/movie/seen/delete/${movieId}`, {
   method: 'DELETE'
 })
 .then(response => {

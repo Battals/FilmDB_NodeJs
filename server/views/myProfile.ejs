@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  <script src="/client/JS/client.js"></script>
 </head>
 
 <header>
@@ -86,9 +85,11 @@
 
 </body>
 <script> 
+  const apiKey = "<%= API_KEY %>"
+
 
 function displaySavedMovies() {
-  const API_KEY = '<%= apiKey %>';
+  const apiKey = "<%= API_KEY %>";
   const favoriteMovies = JSON.parse('<%- savedMovies %>');
   const seenMovies = JSON.parse('<%- seenMovies %>')
   const movieListContainer = document.getElementById("movieListContainer1");  
@@ -108,7 +109,7 @@ function displaySavedMovies() {
 
   for (const item of favoriteMovies) {
     const movieId = item.movieId;
-    const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=da`;
+    const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=da`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -168,4 +169,7 @@ function displaySavedMovies() {
 
     displaySavedMovies();
   </script>
+
+<script src="/client/JS/client.js"></script>
+
 </html>

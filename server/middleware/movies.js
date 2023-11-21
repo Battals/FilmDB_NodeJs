@@ -5,80 +5,6 @@ import {
   seenMoviesCollection,
 } from "../db/dbCollections.js";
 
-export const getPopularMovies = async (req, res) => {
-  try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=da&page=1`
-    );
-
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
-    }
-    const data = await response.json();
-    console.log("Movies fetched successfully!");
-    res.json(data);
-  } catch (error) {
-    console.log(error.message);
-    console.error("Error fetching movies:", error.message);
-    res.status(500).send("Error fetching movies");
-  }
-};
-
-export const getTrailer = async (req, res) => {
-  try {
-    const movieId = req.params.movieId;
-    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`;
-
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    console.log(data)
-
-    if (response.ok) {
-      res.json(data);
-    } else {
-      res.status(response.status).send("Error fetching trailers");
-    }
-  } catch (error) {
-    console.error("Error fetching trailers:", error);
-    res.status(500).send("Internal Server Error");
-  }
-};
-
-export const getUpcomingMovies = async (req, res) => {
-  try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=da&page=1&region=US`
-    );
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
-    }
-    const data = await response.json();
-    console.log("Movies fetched successfully!");
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching movies:", error.message);
-    res.status(500).send("Error fetching movies");
-  }
-};
-
-export const getMovieDetails = async (req, res) => {
-  const { movieId } = req.params;
-
-  try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=da&append_to_response=credits,similar,details,recommendations,latest`
-    );
-    if (!response.ok) {
-      throw new Error(`Request failed with status code ${response.status}`);
-    }
-    const data = await response.json();
-    res.json(data);
-    return data;
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
 export async function displayMovieDetails(movieId) {
   try {
     const response = await fetch(
@@ -163,6 +89,7 @@ export const deleteMovie = async (req, res) => {
 
   const username = res.username;
   const movieId = req.params.movieId;
+
 
   const result = await favouriteMoviesCollection.deleteOne({
     userName: username,

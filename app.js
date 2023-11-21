@@ -1,10 +1,9 @@
 import express from "express";
 import dotenv from "dotenv/config";
-import router from "./server/routes/pages.js";
-import pagesRouter from "./server/routes/auth.js";
-import movieRouter from "./server/routes/movies.js";
+import pagesRouter from "./server/routes/pages.js";
+import authRouter from "./server/routes/auth.js";
 import protectedRoutes from "./server/routes/protectedRoutes.js"
-import {run} from "./server/db/dbConnection2.js"
+import {connectToDb} from "./server/db/dbConnection.js"
 import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
@@ -32,13 +31,12 @@ app.set("views", path.join(__dirname, "server/views"));
 app.use("/client/JS", express.static(path.join(__dirname, "client/JS")));
 app.use("/client/CSS", express.static(path.join(__dirname, "client/CSS")));
 
-app.use(router);
 app.use(pagesRouter);
-app.use(movieRouter);
+app.use(authRouter);
 app.use(protectedRoutes)
 
 
-run()
+connectToDb()
 
 const PORT = 8080;
 
